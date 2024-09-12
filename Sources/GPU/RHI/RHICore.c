@@ -47,7 +47,10 @@ KbhRHIResult kbhRHIInit(KbhRHIType backend, KbhRHIContext* context) KANEL_CLI_NO
 
 		PFN_kbhLibFunction loader_function = kbhLoadSymbolFromLibModule(__kbh_backend_module, backends_loader_names[(int)backend]);
 		if(!loader_function)
-			kbhFatalError("RHI : could not load the '%s' backend", backends_path[(int)backend]);
+		{
+			kbhError("RHI : could not load the '%s' backend", backends_path[(int)backend]);
+			return KBH_RHI_ERROR_INITIALIZATION_FAILED;
+		}
 		(*context)->pfns = loader_function();
 		kbhDebugLog("RHI : '%s' backend loaded", backends_path[(int)backend]);
 	#else
@@ -64,6 +67,7 @@ KbhRHIResult kbhRHIInit(KbhRHIType backend, KbhRHIContext* context) KANEL_CLI_NO
 
 	kbhCheckRHI((*context)->pfns.f_kbhRHIBackendInitContext((*context)->impl_context));
 	(*context)->impl_type = backend;
+	return KBH_RHI_SUCCESS;
 }
 
 KbhRhiType kbhRHIGetBackendType(KbhRHIContext context)
