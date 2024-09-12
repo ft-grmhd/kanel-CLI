@@ -12,13 +12,13 @@ KANEL_CLI_CONSTEXPR KbhRHIType KBH_RHI_DEFAULT_BACKEND = KBH_RHI_VULKAN;
 
 KANEL_CLI_RHI_DEFINE_NULLABLE_HANDLE(KbhRHIContext);
 
-KANEL_CLI_RHI_API KbhRHIResult kbhRHIInit(KbhRHIType backend, KbhRHIContext* context) KANEL_CLI_NONNULL(2);
-KANEL_CLI_RHI_API KbhRhiType kbhRHIGetBackendType(KbhRHIContext context);
+KANEL_CLI_RHI_API KANEL_CLI_NONNULL(2) KbhRHIResult kbhRHIInit(KbhRHIType backend, KbhRHIContext* context);
+KANEL_CLI_RHI_API KbhRHIType kbhRHIGetBackendType(KbhRHIContext context);
 KANEL_CLI_RHI_API void kbhRHIUninit(KbhRHIContext context);
 
-void kbhCheckRHI(KbhRHIResult result, const char* file, const char* function, int line);
+void kbhCheckRHIBackend(KbhRHIResult result, const char* file, const char* function, int line);
 
 #undef kbhCheckRHI
-#define kbhCheckRHI(res) kbhCheckRHI(res, __FILE__, KANEL_CLI_FUNC_SIG, __LINE__)
+#define kbhCheckRHI(res) kbhCheckRHIBackend(res, __FILE__, KANEL_CLI_FUNC_SIG, __LINE__)
 
 #endif

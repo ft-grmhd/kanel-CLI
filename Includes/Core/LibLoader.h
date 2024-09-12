@@ -30,10 +30,10 @@
 
 typedef void(*PFN_kbhLibFunction)(void);
 
-KANEL_CLI_CONSTEXPR KbhLibModule KBH_NULL_LIB_MODULE = KANEL_CLI_NULLPTR;
+static const KbhLibModule KBH_NULL_LIB_MODULE = KANEL_CLI_NULLPTR;
 
-KbhLibModule kbhLoadLibrary(const char* libpath) KANEL_CLI_NONNULL(1); // Returns KBH_NULL_LIB_MODULE in case of failure
-PFN_kbhLibFunction kbhLoadSymbolFromLibModule(KbhLibModule module, const char* symbol) KANEL_CLI_NONNULL(2);
+KANEL_CLI_NONNULL(1) KbhLibModule kbhLoadLibrary(const char* libpath); // Returns KBH_NULL_LIB_MODULE in case of failure
+KANEL_CLI_NONNULL(2) PFN_kbhLibFunction kbhLoadSymbolFromLibModule(KbhLibModule module, const char* symbol);
 void kbhUnloadLibrary(KbhLibModule module);
 
 #endif

@@ -23,18 +23,18 @@
 	#define RESTORE_GCC_PEDANTIC_WARNINGS
 #endif
 
-KbhLibModule kbhLoadLibrary(const char* libpath) KANEL_CLI_NONNULL(1)
+KbhLibModule kbhLoadLibrary(const char* libpath)
 {
 	KbhLibModule module;
 	#if defined(KANEL_CLI_PLAT_WINDOWS)
 		module = LoadLibraryA(libpath);
 	#else
-		__kbh_vulkan_lib_module = dlopen(libpath, RTLD_NOW | RTLD_LOCAL);
+		module = dlopen(libpath, RTLD_NOW | RTLD_LOCAL);
 	#endif
 	return (module ? module : KBH_NULL_LIB_MODULE);
 }
 
-PFN_kbhLibFunction kbhLoadSymbolFromLibModule(KbhLibModule module, const char* symbol) KANEL_CLI_NONNULL(2)
+PFN_kbhLibFunction kbhLoadSymbolFromLibModule(KbhLibModule module, const char* symbol)
 {
 	if(module == KBH_NULL_LIB_MODULE)
 		return KANEL_CLI_NULLPTR;
@@ -42,8 +42,8 @@ PFN_kbhLibFunction kbhLoadSymbolFromLibModule(KbhLibModule module, const char* s
 	#ifdef KANEL_CLI_PLAT_WINDOWS
 		function = (PFN_kbhLibFunction)GetProcAddress(module, symbol);
 	#else
-		void* symbol = (PFN_kbhLibFunction)dlsym(module, symbol);
-		*(void**)(&function) = symbol;
+		void* symbol_ptr = (PFN_kbhLibFunction)dlsym(module, symbol);
+		*(void**)(&function) = symbol_ptr;
 	#endif
 	return function;
 }
@@ -52,6 +52,7 @@ void kbhUnloadLibrary(KbhLibModule module)
 {
 	if(module == KBH_NULL_LIB_MODULE)
 		return;
+	else {} // To avoid stupid Clang warning with lines below
 	#ifdef KANEL_CLI_PLAT_WINDOWS
 		FreeLibrary(module);
 	#else

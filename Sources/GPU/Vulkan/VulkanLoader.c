@@ -7,10 +7,12 @@
 #include <Core/LibLoader.h>
 #include <Core/Logs.h>
 
+#include <kvf.h>
+
 static KbhLibModule __kbh_vulkan_lib_module = KBH_NULL_LIB_MODULE;
 
 static void kbhVulkanLoadGlobalFunctions(void* context, PFN_vkVoidFunction (*load)(void*, const char*));
-static void kvhVulkanLoadInstanceFunctions(void* context, PFN_vkVoidFunction (*load)(void*, const char*));
+static void kbhVulkanLoadInstanceFunctions(void* context, PFN_vkVoidFunction (*load)(void*, const char*));
 static void kbhVulkanLoadDeviceFunctions(void* context, PFN_vkVoidFunction (*load)(void*, const char*));
 
 static inline PFN_vkVoidFunction vkGetInstanceProcAddrStub(void* context, const char* name)
@@ -81,7 +83,7 @@ static void kbhVulkanLoadGlobalFunctions(void* context, PFN_vkVoidFunction (*loa
 	kbhDebugLog("Vulkan RHI : vulkan global functions loaded");
 }
 
-static void kvhVulkanLoadInstanceFunctions(void* context, PFN_vkVoidFunction (*load)(void*, const char*))
+static void kbhVulkanLoadInstanceFunctions(void* context, PFN_vkVoidFunction (*load)(void*, const char*))
 {
 	#if defined(VK_VERSION_1_0)
 		vkCreateDevice = (PFN_vkCreateDevice)load(context, "vkCreateDevice");

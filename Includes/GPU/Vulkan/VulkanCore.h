@@ -19,8 +19,8 @@ typedef struct KbhVulkanContext
 	VkDevice device;
 } KbhVulkanContext;
 
-KANEL_CLI_VULKAN_API KbhRHIResult kbhVulkanInit(KbhVulkanContext** context) KANEL_CLI_NONNULL(1);
-KANEL_CLI_VULKAN_API void kbhVulkanUninit(KbhVulkanContext* context) KANEL_CLI_NONNULL(1);
+KANEL_CLI_VULKAN_API KANEL_CLI_NONNULL(1) KbhRHIResult kbhVulkanInit(KbhVulkanContext** context);
+KANEL_CLI_VULKAN_API KANEL_CLI_NONNULL(1) void kbhVulkanUninit(KbhVulkanContext* context);
 
 KANEL_CLI_VULKAN_API KbhRHILoaderPFNs kbhRHIVulkanBackendAcquirePFNs();
 

@@ -23,11 +23,14 @@ struct KbhRHIContextHandler
 
 static KbhLibModule __kbh_backend_module = KBH_NULL_LIB_MODULE;
 
-KbhRHIResult kbhRHIInit(KbhRHIType backend, KbhRHIContext* context) KANEL_CLI_NONNULL(2)
+typedef KbhRHILoaderPFNs(*PFN_kbhRHILoaderPFNs)(void);
+
+KbhRHIResult kbhRHIInit(KbhRHIType backend, KbhRHIContext* context)
 {
-	*context = (KbhRHIContextHandler)malloc(sizeof(KbhRHIContextHandler));
+	*context = (KbhRHIContext)malloc(sizeof(KbhRHIContext));
 	if(!*context)
 		return KBH_RHI_ERROR_INITIALIZATION_FAILED;
+	else {} // To avoid stupid Clang warning with lines below
 
 	#ifndef KANEL_CLI_EMBEDDED_RHI_BACKENDS
 		const char* backends_path[(int)KBH_RHI_TYPE_END_ENUM] = {
@@ -45,14 +48,14 @@ KbhRHIResult kbhRHIInit(KbhRHIType backend, KbhRHIContext* context) KANEL_CLI_NO
 		if(__kbh_backend_module == KBH_NULL_LIB_MODULE)
 			return KBH_RHI_ERROR_INITIALIZATION_FAILED;
 
-		PFN_kbhLibFunction loader_function = kbhLoadSymbolFromLibModule(__kbh_backend_module, backends_loader_names[(int)backend]);
+		PFN_kbhRHILoaderPFNs loader_function = (PFN_kbhRHILoaderPFNs)kbhLoadSymbolFromLibModule(__kbh_backend_module, backends_loader_names[(int)backend]);
 		if(!loader_function)
 		{
-			kbhError("RHI : could not load the '%s' backend", backends_path[(int)backend]);
+			kbhErrorFmt("RHI : could not load the '%s' backend", backends_path[(int)backend]);
 			return KBH_RHI_ERROR_INITIALIZATION_FAILED;
 		}
 		(*context)->pfns = loader_function();
-		kbhDebugLog("RHI : '%s' backend loaded", backends_path[(int)backend]);
+		kbhDebugLogFmt("RHI : '%s' backend loaded", backends_path[(int)backend]);
 	#else
 		KbhRHILoaderPFNs(*)(void) backends_loader[(int)KBH_RHI_TYPE_END_ENUM] = {
 			&kbhRHIVulkanBackendAcquirePFNs,
@@ -70,7 +73,7 @@ KbhRHIResult kbhRHIInit(KbhRHIType backend, KbhRHIContext* context) KANEL_CLI_NO
 	return KBH_RHI_SUCCESS;
 }
 
-KbhRhiType kbhRHIGetBackendType(KbhRHIContext context)
+KbhRHIType kbhRHIGetBackendType(KbhRHIContext context)
 {
 	if(context == KANEL_CLI_NULLPTR)
 		return KBH_RHI_NONE;
@@ -84,7 +87,7 @@ void kbhRHIUninit(KbhRHIContext context)
 	context->pfns.f_kbhRHIBackendUninitContext(context->impl_context);
 	free(context);
 	kbhUnloadLibrary(__kbh_backend_module);
-	kbhDebugLog("RHI : backend unloaded"]);
+	kbhDebugLog("RHI : backend unloaded");
 }
 
 static const char* kbhVerbaliseRHIResult(KbhRHIResult result)
@@ -99,8 +102,8 @@ static const char* kbhVerbaliseRHIResult(KbhRHIResult result)
 	return KANEL_CLI_NULLPTR; // just to avoid warnings
 }
 
-void kbhCheckRHI(KbhRHIResult result, const char* file, const char* function, int line)
+void kbhCheckRHIBackend(KbhRHIResult result, const char* file, const char* function, int line)
 {
 	if(result != KBH_RHI_SUCCESS)
-		kbhFatalError("RHI check failed in '%s'|%s:%d due to: %s", file, function, line, kbhVerbaliseRHIResult(result));
+		kbhFatalErrorBackend("RHI check failed in '%s'|%s:%d due to: %s", file, function, line, kbhVerbaliseRHIResult(result));
 }

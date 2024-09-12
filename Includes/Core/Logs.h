@@ -9,41 +9,56 @@
 
 #include <stdint.h>
 
-void kbhMessage(const char* format, const char* file, const char* function, uint32_t line, ...) KANEL_CLI_NONNULL(1, 2, 3);
-void kbhWarning(const char* format, const char* file, const char* function, uint32_t line, ...) KANEL_CLI_NONNULL(1, 2, 3);
-void kbhError(const char* format, const char* file, const char* function, uint32_t line, ...) KANEL_CLI_NONNULL(1, 2, 3);
-void kbhFatalError(const char* format, const char* file, const char* function, uint32_t line, ...) KANEL_CLI_NONNULL(1, 2, 3);
-void kbhDebugLog(const char* format, const char* file, const char* function, uint32_t line, ...) KANEL_CLI_NONNULL(1, 2, 3);
+KANEL_CLI_NONNULL(1, 2, 3) void kbhMessageBackend(const char* format, ...);
+KANEL_CLI_NONNULL(1, 2, 3) void kbhWarningBackend(const char* format, const char* file, const char* function, uint32_t line, ...);
+KANEL_CLI_NONNULL(1, 2, 3) void kbhErrorBackend(const char* format, const char* file, const char* function, uint32_t line, ...);
+KANEL_CLI_NONNULL(1, 2, 3) void kbhFatalErrorBackend(const char* format, const char* file, const char* function, uint32_t line, ...);
+KANEL_CLI_NONNULL(1, 2, 3) void kbhDebugLogBackend(const char* format, ...);
 
 #ifdef KANEL_CLI_DEBUG
 	#define kbhAssert(cond) \
 		do { \
-			if(!cond)
-				kbhFatalError("Assertion triggered !", __FILE__, KANEL_CLI_FUNC_SIG, __LINE__); \
-		} while(0);
+			if(!cond) \
+				kbhFatalErrorBackend("Assertion triggered !", __FILE__, KANEL_CLI_FUNC_SIG, __LINE__); \
+		} while(0)
 #else
-	#define kbhAssert(cond) ((void)0);
+	#define kbhAssert(cond, ...) ((void)0)
 #endif
 
 #define kbhVerify(cond) \
 	do { \
-		if(!cond)
-			kbhFatalError("Verification failed !", __FILE__, KANEL_CLI_FUNC_SIG, __LINE__); \
-	} while(0);
+		if(!cond) \
+			kbhFatalErrorBackend("Verification failed !", __FILE__, KANEL_CLI_FUNC_SIG, __LINE__); \
+	} while(0)
 
 #undef  kbhMessage
-#define kbhMessage(...) kbhMessage(__FILE__, KANEL_CLI_FUNC_SIG, __LINE__, __VA_ARGS__)
+#define kbhMessage(format) kbhMessageBackend(format)
 
 #undef  kbhWarning
-#define kbhWarning(...) kbhWarning(__FILE__, KANEL_CLI_FUNC_SIG, __LINE__, __VA_ARGS__)
+#define kbhWarning(format) kbhWarningBackend(format, __FILE__, KANEL_CLI_FUNC_SIG, __LINE__)
 
 #undef  kbhError
-#define kbhError(...) kbhError(__FILE__, KANEL_CLI_FUNC_SIG, __LINE__, __VA_ARGS__)
+#define kbhError(format) kbhErrorBackend(format, __FILE__, KANEL_CLI_FUNC_SIG, __LINE__)
 
 #undef  kbhFatalError
-#define kbhFatalError(...) kbhFatalError(__FILE__, KANEL_CLI_FUNC_SIG, __LINE__, __VA_ARGS__)
+#define kbhFatalError(format) kbhFatalErrorBackend(format, __FILE__, KANEL_CLI_FUNC_SIG, __LINE__)
 
 #undef  kbhDebugLog
-#define kbhDebugLog(...) kbhDebugLog(__FILE__, KANEL_CLI_FUNC_SIG, __LINE__, __VA_ARGS__)
+#define kbhDebugLog(format) kbhDebugLogBackend(format)
+
+#undef  kbhMessageFmt
+#define kbhMessageFmt(format, ...) kbhMessageBackend(format, __VA_ARGS__)
+
+#undef  kbhWarningFmt
+#define kbhWarningFmt(format, ...) kbhWarningBackend(format, __FILE__, KANEL_CLI_FUNC_SIG, __LINE__, __VA_ARGS__)
+
+#undef  kbhErrorFmt
+#define kbhErrorFmt(format, ...) kbhErrorBackend(format, __FILE__, KANEL_CLI_FUNC_SIG, __LINE__, __VA_ARGS__)
+
+#undef  kbhFatalErrorFmt
+#define kbhFatalErrorFmt(format, ...) kbhFatalErrorBackend(format, __FILE__, KANEL_CLI_FUNC_SIG, __LINE__, __VA_ARGS__)
+
+#undef  kbhDebugLogFmt
+#define kbhDebugLogFmt(format, ...) kbhDebugLogBackend(format, __VA_ARGS__)
 
 #endif

@@ -13,9 +13,9 @@
 #endif
 #include <kvf.h>
 
-KbhRHIResult kbhVulkanInit(KbhVulkanContext** context) KANEL_CLI_NONNULL(1)
+KbhRHIResult kbhVulkanInit(KbhVulkanContext** context)
 {
-	*context = (KbhVulkanContext)malloc(sizeof(KbhVulkanContext));
+	*context = (KbhVulkanContext*)malloc(sizeof(KbhVulkanContext));
 	if(!*context)
 		return KBH_RHI_ERROR_INITIALIZATION_FAILED;
 
@@ -26,20 +26,20 @@ KbhRHIResult kbhVulkanInit(KbhVulkanContext** context) KANEL_CLI_NONNULL(1)
 	kbhDebugLog("Vulkan RHI : instance created");
 	kbhLoadInstance((*context)->instance);
 
-	(*context->physical_device = kvfPickGoodDefaultPhysicalDevice((*context->instance), VK_NULL_HANDLE);
+	(*context)->physical_device = kvfPickGoodDefaultPhysicalDevice((*context)->instance, VK_NULL_HANDLE);
 	VkPhysicalDeviceProperties props;
-	vkGetPhysicalDeviceProperties(context->physical_device, &props);
-	kbhDebugLog("Vulkan RHI : physical device picked, '%s'", props.deviceName);
+	vkGetPhysicalDeviceProperties((*context)->physical_device, &props);
+	kbhDebugLogFmt("Vulkan RHI : physical device picked, '%s'", props.deviceName);
 
-	VkPhysicalDeviceFeatures features{};
-	vkGetPhysicalDeviceFeatures((*context->physical_device), &features);
-	(*context)->device = kvfCreateDevice((*context->physical_device), KANEL_CLI_NULLPTR, 0, &features);
+	VkPhysicalDeviceFeatures features = {};
+	vkGetPhysicalDeviceFeatures((*context)->physical_device, &features);
+	(*context)->device = kvfCreateDevice((*context)->physical_device, KANEL_CLI_NULLPTR, 0, &features);
 	kbhDebugLog("Vulkan RHI : logical device created");
 
 	return KBH_RHI_SUCCESS;
 }
 
-void kbhVulkanUninit(KbhVulkanContext* context) KANEL_CLI_NONNULL(1)
+void kbhVulkanUninit(KbhVulkanContext* context)
 {
 	vkDeviceWaitIdle(context->device);
 
@@ -55,7 +55,7 @@ void kbhVulkanUninit(KbhVulkanContext* context) KANEL_CLI_NONNULL(1)
 KbhRHILoaderPFNs kbhRHIVulkanBackendAcquirePFNs()
 {
 	KbhRHILoaderPFNs loader = { 0 };
-	loader.f_kbhRHIBackendInitContext = &kbhVulkanInit;
-	loader.f_kbhRHIBackendUninitContext = &kbhVulkanUninit;
+	loader.f_kbhRHIBackendInitContext = (PFN_kbhRHIBackendInitContext)&kbhVulkanInit;
+	loader.f_kbhRHIBackendUninitContext = (PFN_kbhRHIBackendUninitContext)&kbhVulkanUninit;
 	return loader;
 }

@@ -9,59 +9,55 @@
 #include <stdio.h>
 #include <stdarg.h>
 
-void kbhMessage(const char* format, const char* file, const char* function, uint32_t line, ...) KANEL_CLI_NONNULL(1, 2, 3)
+void kbhMessageBackend(const char* format, ...)
 {
-	printf(KBH_ANSI_BLUE "[kanel-CLI Message]" KBH_ANSI_DEF " {in '%s;', line %ld, '%s'} | ", file, line, function);
+	printf(KBH_ANSI_BLUE "[kanel-CLI Message] " KBH_ANSI_DEF);
 	va_list argptr;
-	va_start(argptr, fline);
-	vfprintf(stdout, line, argptr);
+	vfprintf(stdout, format, argptr);
 	va_end(argptr);
 	putchar('\n');
 }
 
-void kbhWarning(const char* format, const char* file, const char* function, uint32_t line, ...) KANEL_CLI_NONNULL(1, 2, 3)
+void kbhWarningBackend(const char* format, const char* file, const char* function, uint32_t line, ...)
 {
-	printf(KBH_ANSI_MAGENTA "[kanel-CLI Warning]" KBH_ANSI_DEF " {in '%s;', line %ld, '%s'} | ", file, line, function);
+	printf(KBH_ANSI_MAGENTA "[kanel-CLI Warning]" KBH_ANSI_DEF " {in '%s;', line %u, '%s'} | ", file, line, function);
 	va_list argptr;
 	va_start(argptr, fline);
-	vfprintf(stdout, line, argptr);
+	vfprintf(stdout, format, argptr);
 	va_end(argptr);
 	putchar('\n');
 }
 
-void kbhError(const char* format, const char* file, const char* function, uint32_t line, ...) KANEL_CLI_NONNULL(1, 2, 3)
+void kbhErrorBackend(const char* format, const char* file, const char* function, uint32_t line, ...)
 {
-	printf(KBH_ANSI_RED "[kanel-CLI Error]" KBH_ANSI_DEF " {in '%s;', line %ld, '%s'} | ", file, line, function);
+	fprintf(stderr, KBH_ANSI_RED "[kanel-CLI Error]" KBH_ANSI_DEF " {in '%s;', line %u, '%s'} | ", file, line, function);
 	va_list argptr;
 	va_start(argptr, fline);
-	vfprintf(stdout, line, argptr);
+	vfprintf(stderr, format, argptr);
 	va_end(argptr);
 	putchar('\n');
 }
 
-void kbhFatalError(const char* format, const char* file, const char* function, uint32_t line, ...) KANEL_CLI_NONNULL(1, 2, 3)
+void kbhFatalErrorBackend(const char* format, const char* file, const char* function, uint32_t line, ...)
 {
-	printf(KBH_ANSI_RED "[kanel-CLI Fatal Error]" KBH_ANSI_DEF " {in '%s;', line %ld, '%s'} | ", file, line, function);
+	fprintf(stderr, KBH_ANSI_RED "[kanel-CLI Fatal Error]" KBH_ANSI_DEF " {in '%s;', line %u, '%s'} | ", file, line, function);
 	va_list argptr;
 	va_start(argptr, fline);
-	vfprintf(stdout, line, argptr);
+	vfprintf(stderr, format, argptr);
 	va_end(argptr);
 	putchar('\n');
 	kbhEventBusSend("kanel_core", KBH_EVENT_FATAL_ERROR);
 }
 
-void kbhDebugLog(const char* format, const char* file, const char* function, uint32_t line, ...) KANEL_CLI_NONNULL(1, 2, 3)
+void kbhDebugLogBackend(const char* format, ...)
 {
 	#ifdef KANEL_CLI_DEBUG
 		KANEL_CLI_UNUSED(format);
-		KANEL_CLI_UNUSED(file);
-		KANEL_CLI_UNUSED(function);
-		KANEL_CLI_UNUSED(line);
 	#else
-		printf(KBH_ANSI_BLUE "[kanel-CLI Debug]" KBH_ANSI_DEF " {in '%s;', line %ld, '%s'} | ", file, line, function);
+		printf(KBH_ANSI_BLUE "[kanel-CLI Debug] " KBH_ANSI_DEF);
 		va_list argptr;
 		va_start(argptr, fline);
-		vfprintf(stdout, line, argptr);
+		vfprintf(stdout, format, argptr);
 		va_end(argptr);
 		putchar('\n');
 	#endif

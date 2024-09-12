@@ -3,6 +3,7 @@
 // For conditions of distribution and use, see copyright notice in LICENSE
 
 #include <Core/EventBus.h>
+#include <Core/Logs.h>
 
 #include <stddef.h>
 #include <stdlib.h>
@@ -18,7 +19,7 @@ static KbhEventListener* __kbh_listeners = KANEL_CLI_NULLPTR;
 static size_t __kbh_listeners_size = 0;
 static size_t __kbh_listeners_capacity = 0;
 
-void kbhEventBusSend(const char* listener_name, KbhEvents event) KANEL_CLI_NONNULL(1)
+void kbhEventBusSend(const char* listener_name, KbhEvents event)
 {
 	for(size_t i = 0; i < __kbh_listeners_size; i++)
 	{
@@ -28,7 +29,7 @@ void kbhEventBusSend(const char* listener_name, KbhEvents event) KANEL_CLI_NONNU
 			return;
 		}
 	}
-	kbhWarning("Event Bus : could not find listener '%s'", listener_name);
+	kbhWarningFmt("Event Bus : could not find listener '%s'", listener_name);
 }
 
 void kbhEventBusSendBroadcast(KbhEvents event)
@@ -37,7 +38,7 @@ void kbhEventBusSendBroadcast(KbhEvents event)
 		__kbh_listeners[i].callback(event);
 }
 
-void kbhEventBusRegisterListener(const char* name, PFN_kbhEventListenerCallback callback) KANEL_CLI_NONNULL(1, 2)
+void kbhEventBusRegisterListener(const char* name, PFN_kbhEventListenerCallback callback)
 {
 	if(__kbh_listeners_size == __kbh_listeners_capacity)
 	{
@@ -54,7 +55,7 @@ void kbhEventBusRegisterListener(const char* name, PFN_kbhEventListenerCallback 
 void kbhEventBusReleaseAllListeners()
 {
 	for(size_t i = 0; i < __kbh_listeners_size; i++)
-		free(__kbh_listeners[i].name);
+		free((void*)__kbh_listeners[i].name);
 	free(__kbh_listeners);
 	__kbh_listeners = KANEL_CLI_NULLPTR;
 	__kbh_listeners_size = 0;

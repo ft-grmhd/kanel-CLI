@@ -8,7 +8,7 @@
 #include <GPU/Vulkan/VulkanDefs.h>
 #include <GPU/Vulkan/VulkanPrototypes.h>
 
-#include <kvf.h>
+#include <vulkan/vulkan.h>
 
 VkResult kbhVulkanLoaderInit();
 void kbhLoadInstance(VkInstance instance);

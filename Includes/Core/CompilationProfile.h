@@ -161,8 +161,17 @@
 #define KANEL_CLI_UNUSED(x) (void)(x)
 
 #if KANEL_CLI_C_VERSION >= 2023
-	#define KANEL_CLI_NULLPTR nullptr
-	#define KANEL_CLI_CONSTEXPR constexpr
+	#if defined(KANEL_CLI_COMPILER_GCC) || defined(KANEL_CLI_COMPILER_CLANG) // for now only GCC and Clang supports nullptr
+		#define KANEL_CLI_NULLPTR nullptr
+	#else
+		#define KANEL_CLI_NULLPTR NULL
+	#endif
+
+	#ifdef KANEL_CLI_COMPILER_GCC // for now only GCC supports constexpr
+		#define KANEL_CLI_CONSTEXPR constexpr
+	#else
+		#define KANEL_CLI_CONSTEXPR static
+	#endif
 	#if defined(KANEL_CLI_COMPILER_GCC) || defined(KANEL_CLI_COMPILER_CLANG)
 		#define KANEL_CLI_NONNULL(...) [[gnu::nonnull(__VA_ARGS__)]]
 	#else
