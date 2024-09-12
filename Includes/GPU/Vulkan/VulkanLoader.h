@@ -8,21 +8,6 @@
 #include <GPU/Vulkan/VulkanDefs.h>
 #include <GPU/Vulkan/VulkanPrototypes.h>
 
-#ifdef KANEL_CLI_PLAT_WINDOWS
-	typedef const char* LPCSTR;
-	typedef struct HINSTANCE__* HINSTANCE;
-	typedef HINSTANCE HMODULE;
-	#if defined(_MINWINDEF_)
-		/* minwindef.h defines FARPROC, and attempting to redefine it may conflict with -Wstrict-prototypes */
-	#elif defined(_WIN64)
-		typedef __int64 (__stdcall* FARPROC)(void);
-	#else
-		typedef int (__stdcall* FARPROC)(void);
-	#endif
-#else
-	#include <dlfcn.h>
-#endif
-
 #include <kvf.h>
 
 VkResult kbhVulkanLoaderInit();

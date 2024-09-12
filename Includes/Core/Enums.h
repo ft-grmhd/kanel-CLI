@@ -5,9 +5,7 @@
 #ifndef KANEL_CLI_CORE_ENUMS
 #define KANEL_CLI_CORE_ENUMS
 
-#include <Core/CoreDefs.h>
-
-KANEL_CLI_CORE_API typedef enum KbhEvents
+typedef enum KbhEvents
 {
 	KBH_EVENT_FATAL_ERROR = 0,
 } KbhEvents;

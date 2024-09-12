@@ -7,14 +7,4 @@
 
 #include <Core/CompilationProfile.h>
 
-#ifndef KANEL_CLI_CORE_STATIC
-	#ifdef KANEL_CLI_CORE_BUILD
-		#define KANEL_CLI_CORE_API KANEL_CLI_EXPORT_API
-	#else
-		#define KANEL_CLI_CORE_API KANEL_CLI_IMPORT_API
-	#endif
-#else
-	#define KANEL_CLI_CORE_API
-#endif
-
 #endif

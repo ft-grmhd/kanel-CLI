@@ -156,19 +156,5 @@
 	extern PFN_vkUpdateDescriptorSets vkUpdateDescriptorSets;
 	extern PFN_vkWaitForFences vkWaitForFences;
 #endif /* defined(VK_VERSION_1_0) */
-#if defined(VK_KHR_swapchain)
-	extern PFN_vkAcquireNextImageKHR vkAcquireNextImageKHR;
-	extern PFN_vkCreateSwapchainKHR vkCreateSwapchainKHR;
-	extern PFN_vkDestroySwapchainKHR vkDestroySwapchainKHR;
-	extern PFN_vkGetSwapchainImagesKHR vkGetSwapchainImagesKHR;
-	extern PFN_vkQueuePresentKHR vkQueuePresentKHR;
-#endif /* defined(VK_KHR_swapchain) */
-#if defined(VK_KHR_surface)
-	extern PFN_vkDestroySurfaceKHR vkDestroySurfaceKHR;
-	extern PFN_vkGetPhysicalDeviceSurfaceCapabilitiesKHR vkGetPhysicalDeviceSurfaceCapabilitiesKHR;
-	extern PFN_vkGetPhysicalDeviceSurfaceFormatsKHR vkGetPhysicalDeviceSurfaceFormatsKHR;
-	extern PFN_vkGetPhysicalDeviceSurfacePresentModesKHR vkGetPhysicalDeviceSurfacePresentModesKHR;
-	extern PFN_vkGetPhysicalDeviceSurfaceSupportKHR vkGetPhysicalDeviceSurfaceSupportKHR;
-#endif /* defined(VK_KHR_surface) */
 
 #endif

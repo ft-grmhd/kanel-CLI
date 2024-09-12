@@ -5,37 +5,57 @@
 #include <GPU/Vulkan/VulkanCore.h>
 #include <GPU/Vulkan/VulkanLoader.h>
 
+#include <Core/Logs.h>
+
 #define KVF_IMPLEMENTATION
 #ifdef KANEL_CLI_DEBUG
 	#define KVF_ENABLE_VALIDATION_LAYERS
 #endif
 #include <kvf.h>
 
-KbhRHIResult kbhVulkanInit(KbhVulkanCore* core) KANEL_CLI_NONNULL(1)
+KbhRHIResult kbhVulkanInit(KbhVulkanContext** context) KANEL_CLI_NONNULL(1)
 {
+	*context = (KbhVulkanContext)malloc(sizeof(KbhVulkanContext));
+	if(!*context)
+		return KBH_RHI_ERROR_INITIALIZATION_FAILED;
+
 	if(kbhVulkanLoaderInit() != VK_SUCCESS)
 		return KBH_RHI_ERROR_INITIALIZATION_FAILED;
 
-	core->instance = kvfCreateInstance(KANEL_CLI_NULLPTR, 0);
-	kbhLoadInstance(core->instance);
+	(*context)->instance = kvfCreateInstance(KANEL_CLI_NULLPTR, 0);
+	kbhDebugLog("Vulkan RHI : instance created");
+	kbhLoadInstance((*context)->instance);
 
-	core->physical_device = kvfPickGoodDefaultPhysicalDevice(core->instance, VK_NULL_HANDLE);
-
+	(*context->physical_device = kvfPickGoodDefaultPhysicalDevice((*context->instance), VK_NULL_HANDLE);
 	VkPhysicalDeviceProperties props;
-	vkGetPhysicalDeviceProperties(core->physical_device, &props);
+	vkGetPhysicalDeviceProperties(context->physical_device, &props);
+	kbhDebugLog("Vulkan RHI : physical device picked, '%s'", props.deviceName);
 
 	VkPhysicalDeviceFeatures features{};
-	vkGetPhysicalDeviceFeatures(core->physical_device, &features);
-	core->device = kvfCreateDevice(core->physical_device, KANEL_CLI_NULLPTR, 0, &features);
+	vkGetPhysicalDeviceFeatures((*context->physical_device), &features);
+	(*context)->device = kvfCreateDevice((*context->physical_device), KANEL_CLI_NULLPTR, 0, &features);
+	kbhDebugLog("Vulkan RHI : logical device created");
 
 	return KBH_RHI_SUCCESS;
 }
 
-void kbhVulkanUninit(KbhVulkanCore* core) KANEL_CLI_NONNULL(1)
+void kbhVulkanUninit(KbhVulkanContext* context) KANEL_CLI_NONNULL(1)
 {
-	vkDeviceWaitIdle(core->device);
+	vkDeviceWaitIdle(context->device);
 
-	kvfDestroyDevice(core->device);
-	kvfDestroyInstance(core->instance);
+	kvfDestroyDevice(context->device);
+	kbhDebugLog("Vulkan RHI : instance destroyed");
+	kvfDestroyInstance(context->instance);
+	kbhDebugLog("Vulkan RHI : logical device destroyed");
 	kbhVulkanLoaderUninit();
+
+	free(context);
+}
+
+KbhRHILoaderPFNs kbhRHIVulkanBackendAcquirePFNs()
+{
+	KbhRHILoaderPFNs loader = { 0 };
+	loader.f_kbhRHIBackendInitContext = &kbhVulkanInit;
+	loader.f_kbhRHIBackendUninitContext = &kbhVulkanUninit;
+	return loader;
 }

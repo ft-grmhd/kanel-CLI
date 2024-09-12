@@ -5,8 +5,9 @@
 #ifndef KANEL_CLI_CORE_COMPILATION_PROFILE
 #define KANEL_CLI_CORE_COMPILATION_PROFILE
 
-#include <climits>
-#include <cstdint>
+#include <limits.h>
+#include <stdint.h>
+#include <stddef.h>
 
 // Try to identify the compiler
 #if defined(__BORLANDC__)
@@ -161,13 +162,15 @@
 
 #if KANEL_CLI_C_VERSION >= 2023
 	#define KANEL_CLI_NULLPTR nullptr
+	#define KANEL_CLI_CONSTEXPR constexpr
 	#if defined(KANEL_CLI_COMPILER_GCC) || defined(KANEL_CLI_COMPILER_CLANG)
 		#define KANEL_CLI_NONNULL(...) [[gnu::nonnull(__VA_ARGS__)]]
 	#else
 		#define KANEL_CLI_NONNULL(...)
 	#endif
 #else
-	#define KANEL_CLI_NULLPTR ((void*)(0))
+	#define KANEL_CLI_NULLPTR NULL
+	#define KANEL_CLI_CONSTEXPR
 	#if defined(KANEL_CLI_COMPILER_GCC) || defined(KANEL_CLI_COMPILER_CLANG)
 		#define KANEL_CLI_NONNULL(...) __attribute__((nonnull(__VA_ARGS__)))
 	#else
@@ -185,8 +188,6 @@
 	#if KANEL_CLI_C_VERSION < 2023
 		#include <assert.h>
 	#endif
-	#include <limits.h>
-	#include <stdint.h>
 
 	static_assert(CHAR_BIT == 8, "CHAR_BIT is expected to be 8");
 
@@ -201,9 +202,6 @@
 	static_assert(sizeof(uint64_t) == 8, "uint64_t is not of the correct size");
 #else
 	#define STATIC_ASSERT(COND, MSG) typedef char static_assertion___##MSG[(COND)?1:-1]
-
-	#include <limits.h>
-	#include <stdint.h>
 
 	STATIC_ASSERT(CHAR_BIT == 8, CHAR_BIT_is_expected_to_be_8);
 

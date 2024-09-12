@@ -5,14 +5,15 @@
 #ifndef KANEL_CLI_RHI_ENUMS
 #define KANEL_CLI_RHI_ENUMS
 
-#include <GPU/RHI/RHIDefs.h>
-
-KANEL_CLI_RHI_API typedef enum KbhRHIType
+typedef enum KbhRHIType
 {
 	KBH_RHI_VULKAN = 0,
+	KBH_RHI_NONE,
+
+	KBH_RHI_TYPE_END_ENUM // For internal use only
 } KbhRHIType;
 
-KANEL_CLI_RHI_API typedef enum KbhRHIResult
+typedef enum KbhRHIResult
 {
 	KBH_RHI_SUCCESS = 0,
 	KBH_RHI_ERROR_UNKOWN = -1,

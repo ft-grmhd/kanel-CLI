@@ -7,16 +7,6 @@
 
 #include <Core/CompilationProfile.h>
 
-#ifndef KANEL_CLI_UTILS_STATIC
-	#ifdef KANEL_CLI_UTILS_BUILD
-		#define KANEL_CLI_UTILS_API KANEL_CLI_EXPORT_API
-	#else
-		#define KANEL_CLI_UTILS_API KANEL_CLI_IMPORT_API
-	#endif
-#else
-	#define KANEL_CLI_UTILS_API
-#endif
-
 #define KBH_ANSI_RED "\033[1;31m"
 #define KBH_ANSI_GREEN "\033[1;32m"
 #define KBH_ANSI_BLUE "\033[1;34m"

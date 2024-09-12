@@ -17,6 +17,10 @@
 	#define KANEL_CLI_RHI_API
 #endif
 
-typedef void* OpaqueHandle;
+#define KANEL_CLI_RHI_DEFINE_NULLABLE_HANDLE(object) typedef struct object##Handler* object
+
+#define KANEL_CLI_RHI_NULL_HANDLE KANEL_CLI_NULLPTR
+
+typedef void* KbhRHIOpaqueHandle;
 
 #endif

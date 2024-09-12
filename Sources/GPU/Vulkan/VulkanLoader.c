@@ -4,28 +4,10 @@
 
 #include <GPU/Vulkan/VulkanLoader.h>
 
-#ifdef KANEL_CLI_PLAT_WINDOWS
-	__declspec(dllimport) HMODULE __stdcall LoadLibraryA(LPCSTR);
-	__declspec(dllimport) FARPROC __stdcall GetProcAddress(HMODULE, LPCSTR);
-	__declspec(dllimport) int __stdcall FreeLibrary(HMODULE);
-#endif
+#include <Core/LibLoader.h>
+#include <Core/Logs.h>
 
-#if defined(KANEL_CLI_COMPILER_GCC)
-	#define DISABLE_GCC_PEDANTIC_WARNINGS \
-		_Pragma("GCC diagnostic push") \
-		_Pragma("GCC diagnostic ignored \"-Wpedantic\"")
-	#define RESTORE_GCC_PEDANTIC_WARNINGS \
-		_Pragma("GCC diagnostic pop")
-#else
-	#define DISABLE_GCC_PEDANTIC_WARNINGS
-	#define RESTORE_GCC_PEDANTIC_WARNINGS
-#endif
-
-#ifdef _WIN32
-	static HMODULE __kbh_vulkan_lib_module = KANEL_CLI_NULLPTR;
-#else
-	static void* __kbh_vulkan_lib_module = KANEL_CLI_NULLPTR;
-#endif
+static KbhLibModule __kbh_vulkan_lib_module = KBH_NULL_LIB_MODULE;
 
 static void kbhVulkanLoadGlobalFunctions(void* context, PFN_vkVoidFunction (*load)(void*, const char*));
 static void kvhVulkanLoadInstanceFunctions(void* context, PFN_vkVoidFunction (*load)(void*, const char*));
@@ -38,43 +20,39 @@ static inline PFN_vkVoidFunction vkGetInstanceProcAddrStub(void* context, const 
 
 VkResult kbhVulkanLoaderInit()
 {
-	#if defined(_WIN32)
-		__kbh_vulkan_lib_module = LoadLibraryA("vulkan-1.dll");
+	#if defined(KANEL_CLI_PLAT_WINDOWS)
+		__kbh_vulkan_lib_module = kbhLoadLibrary("vulkan-1.dll");
 		if(!__kbh_vulkan_lib_module)
 			return VK_ERROR_INITIALIZATION_FAILED;
-		vkGetInstanceProcAddr = (PFN_vkGetInstanceProcAddr)(void(*)(void))GetProcAddress(__kbh_vulkan_lib_module, "vkGetInstanceProcAddr");
-	#elif defined(__APPLE__)
-		__kbh_vulkan_lib_module = dlopen("libvulkan.dylib", RTLD_NOW | RTLD_LOCAL);
+	#elif defined(KANEL_CLI_PLAT_MACOS)
+		__kbh_vulkan_lib_module = kbhLoadLibrary("libvulkan.dylib");
 		if(!__kbh_vulkan_lib_module)
-			__kbh_vulkan_lib_module = dlopen("libvulkan.1.dylib", RTLD_NOW | RTLD_LOCAL);
+			__kbh_vulkan_lib_module = kbhLoadLibrary("libvulkan.1.dylib");
 		if(!__kbh_vulkan_lib_module)
-			__kbh_vulkan_lib_module = dlopen("libMoltenVK.dylib", RTLD_NOW | RTLD_LOCAL);
+			__kbh_vulkan_lib_module = kbhLoadLibrary("libMoltenVK.dylib");
 
 		// Add support for using Vulkan and MoltenVK in a Framework. App store rules for iOS
 		// strictly enforce no .dylib's. If they aren't found it just falls through
 		if(!__kbh_vulkan_lib_module)
-			__kbh_vulkan_lib_module = dlopen("vulkan.framework/vulkan", RTLD_NOW | RTLD_LOCAL);
+			__kbh_vulkan_lib_module = kbhLoadLibrary("vulkan.framework/vulkan");
 		if(!__kbh_vulkan_lib_module)
-			__kbh_vulkan_lib_module = dlopen("MoltenVK.framework/MoltenVK", RTLD_NOW | RTLD_LOCAL);
+			__kbh_vulkan_lib_module = kbhLoadLibrary("MoltenVK.framework/MoltenVK");
 
 		// modern versions of macOS don't search /usr/local/lib automatically contrary to what man dlopen says
 		// Vulkan SDK uses this as the system-wide installation location, so we're going to fallback to this if all else fails
 		if(!__kbh_vulkan_lib_module && getenv("DYLD_FALLBACK_LIBRARY_PATH") == NULL)
-			__kbh_vulkan_lib_module = dlopen("/usr/local/lib/libvulkan.dylib", RTLD_NOW | RTLD_LOCAL);
+			__kbh_vulkan_lib_module = kbhLoadLibrary("/usr/local/lib/libvulkan.dylib");
 		if(!__kbh_vulkan_lib_module)
 			return VK_ERROR_INITIALIZATION_FAILED;
-
-		vkGetInstanceProcAddr = (PFN_vkGetInstanceProcAddr)dlsym(__kbh_vulkan_lib_module, "vkGetInstanceProcAddr");
 	#else
-		__kbh_vulkan_lib_module = dlopen("libvulkan.so.1", RTLD_NOW | RTLD_LOCAL);
+		__kbh_vulkan_lib_module = kbhLoadLibrary("libvulkan.so.1");
 		if(!__kbh_vulkan_lib_module)
-			__kbh_vulkan_lib_module = dlopen("libvulkan.so", RTLD_NOW | RTLD_LOCAL);
+			__kbh_vulkan_lib_module = kbhLoadLibrary("libvulkan.so");
 		if(!__kbh_vulkan_lib_module)
 			return VK_ERROR_INITIALIZATION_FAILED;
-		DISABLE_GCC_PEDANTIC_WARNINGS
-		vkGetInstanceProcAddr = (PFN_vkGetInstanceProcAddr)dlsym(__kbh_vulkan_lib_module, "vkGetInstanceProcAddr");
-		RESTORE_GCC_PEDANTIC_WARNINGS
 	#endif
+	vkGetInstanceProcAddr = (PFN_vkGetInstanceProcAddr)kbhLoadSymbolFromLibModule(__kbh_vulkan_lib_module, "vkGetInstanceProcAddr");
+	kbhDebugLog("Vulkan RHI : vulkan library loaded");
 	kbhVulkanLoadGlobalFunctions(KANEL_CLI_NULLPTR, vkGetInstanceProcAddrStub);
 
 	return VK_SUCCESS;
@@ -88,12 +66,9 @@ void kbhLoadInstance(VkInstance instance)
 
 void kbhVulkanLoaderUninit()
 {
-	#ifdef KANEL_CLI_PLAT_WINDOWS
-		FreeLibrary((HMODULE)__kbh_vulkan_lib_module);
-	#else
-		dlclose(__kbh_vulkan_lib_module);
-	#endif
-	__kbh_vulkan_lib_module = KANEL_CLI_NULLPTR;
+	kbhUnloadLibrary(__kbh_vulkan_lib_module);
+	__kbh_vulkan_lib_module = KBH_NULL_LIB_MODULE;
+	kbhDebugLog("Vulkan RHI : vulkan library unloaded");
 }
 
 static void kbhVulkanLoadGlobalFunctions(void* context, PFN_vkVoidFunction (*load)(void*, const char*))
@@ -103,6 +78,7 @@ static void kbhVulkanLoadGlobalFunctions(void* context, PFN_vkVoidFunction (*loa
 		vkEnumerateInstanceExtensionProperties = (PFN_vkEnumerateInstanceExtensionProperties)load(context, "vkEnumerateInstanceExtensionProperties");
 		vkEnumerateInstanceLayerProperties = (PFN_vkEnumerateInstanceLayerProperties)load(context, "vkEnumerateInstanceLayerProperties");
 	#endif /* defined(VK_VERSION_1_0) */
+	kbhDebugLog("Vulkan RHI : vulkan global functions loaded");
 }
 
 static void kvhVulkanLoadInstanceFunctions(void* context, PFN_vkVoidFunction (*load)(void*, const char*))
@@ -122,13 +98,7 @@ static void kvhVulkanLoadInstanceFunctions(void* context, PFN_vkVoidFunction (*l
 		vkGetPhysicalDeviceQueueFamilyProperties = (PFN_vkGetPhysicalDeviceQueueFamilyProperties)load(context, "vkGetPhysicalDeviceQueueFamilyProperties");
 		vkGetPhysicalDeviceSparseImageFormatProperties = (PFN_vkGetPhysicalDeviceSparseImageFormatProperties)load(context, "vkGetPhysicalDeviceSparseImageFormatProperties");
 	#endif /* defined(VK_VERSION_1_0) */
-	#if defined(VK_KHR_surface)
-		vkDestroySurfaceKHR = (PFN_vkDestroySurfaceKHR)load(context, "vkDestroySurfaceKHR");
-		vkGetPhysicalDeviceSurfaceCapabilitiesKHR = (PFN_vkGetPhysicalDeviceSurfaceCapabilitiesKHR)load(context, "vkGetPhysicalDeviceSurfaceCapabilitiesKHR");
-		vkGetPhysicalDeviceSurfaceFormatsKHR = (PFN_vkGetPhysicalDeviceSurfaceFormatsKHR)load(context, "vkGetPhysicalDeviceSurfaceFormatsKHR");
-		vkGetPhysicalDeviceSurfacePresentModesKHR = (PFN_vkGetPhysicalDeviceSurfacePresentModesKHR)load(context, "vkGetPhysicalDeviceSurfacePresentModesKHR");
-		vkGetPhysicalDeviceSurfaceSupportKHR = (PFN_vkGetPhysicalDeviceSurfaceSupportKHR)load(context, "vkGetPhysicalDeviceSurfaceSupportKHR");
-	#endif /* defined(VK_KHR_surface) */
+	kbhDebugLog("Vulkan RHI : vulkan instance function loaded");
 }
 
 static void kbhVulkanLoadDeviceFunctions(void* context, PFN_vkVoidFunction (*load)(void*, const char*))
@@ -255,13 +225,7 @@ static void kbhVulkanLoadDeviceFunctions(void* context, PFN_vkVoidFunction (*loa
 		vkUpdateDescriptorSets = (PFN_vkUpdateDescriptorSets)load(context, "vkUpdateDescriptorSets");
 		vkWaitForFences = (PFN_vkWaitForFences)load(context, "vkWaitForFences");
 	#endif /* defined(VK_VERSION_1_0) */
-	#if defined(VK_KHR_swapchain)
-		vkAcquireNextImageKHR = (PFN_vkAcquireNextImageKHR)load(context, "vkAcquireNextImageKHR");
-		vkCreateSwapchainKHR = (PFN_vkCreateSwapchainKHR)load(context, "vkCreateSwapchainKHR");
-		vkDestroySwapchainKHR = (PFN_vkDestroySwapchainKHR)load(context, "vkDestroySwapchainKHR");
-		vkGetSwapchainImagesKHR = (PFN_vkGetSwapchainImagesKHR)load(context, "vkGetSwapchainImagesKHR");
-		vkQueuePresentKHR = (PFN_vkQueuePresentKHR)load(context, "vkQueuePresentKHR");
-	#endif /* defined(VK_KHR_swapchain) */
+	kbhDebugLog("Vulkan RHI : vulkan device function loaded");
 }
 
 #if defined(VK_VERSION_1_0)
@@ -403,17 +367,3 @@ static void kbhVulkanLoadDeviceFunctions(void* context, PFN_vkVoidFunction (*loa
 	PFN_vkUpdateDescriptorSets vkUpdateDescriptorSets;
 	PFN_vkWaitForFences vkWaitForFences;
 #endif /* defined(VK_VERSION_1_0) */
-#if defined(VK_KHR_swapchain)
-	PFN_vkAcquireNextImageKHR vkAcquireNextImageKHR;
-	PFN_vkCreateSwapchainKHR vkCreateSwapchainKHR;
-	PFN_vkDestroySwapchainKHR vkDestroySwapchainKHR;
-	PFN_vkGetSwapchainImagesKHR vkGetSwapchainImagesKHR;
-	PFN_vkQueuePresentKHR vkQueuePresentKHR;
-#endif /* defined(VK_KHR_swapchain) */
-#if defined(VK_KHR_surface)
-	PFN_vkDestroySurfaceKHR vkDestroySurfaceKHR;
-	PFN_vkGetPhysicalDeviceSurfaceCapabilitiesKHR vkGetPhysicalDeviceSurfaceCapabilitiesKHR;
-	PFN_vkGetPhysicalDeviceSurfaceFormatsKHR vkGetPhysicalDeviceSurfaceFormatsKHR;
-	PFN_vkGetPhysicalDeviceSurfacePresentModesKHR vkGetPhysicalDeviceSurfacePresentModesKHR;
-	PFN_vkGetPhysicalDeviceSurfaceSupportKHR vkGetPhysicalDeviceSurfaceSupportKHR;
-#endif /* defined(VK_KHR_surface) */

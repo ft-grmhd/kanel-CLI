@@ -9,11 +9,11 @@
 
 #include <stdint.h>
 
-KANEL_CLI_CORE_API void kbhMessage(const char* format, const char* file, const char* function, uint32_t line, ...) KANEL_CLI_NONNULL(1, 2, 3);
-KANEL_CLI_CORE_API void kbhWarning(const char* format, const char* file, const char* function, uint32_t line, ...) KANEL_CLI_NONNULL(1, 2, 3);
-KANEL_CLI_CORE_API void kbhError(const char* format, const char* file, const char* function, uint32_t line, ...) KANEL_CLI_NONNULL(1, 2, 3);
-KANEL_CLI_CORE_API void kbhFatalError(const char* format, const char* file, const char* function, uint32_t line, ...) KANEL_CLI_NONNULL(1, 2, 3);
-KANEL_CLI_CORE_API void kbhDebugLog(const char* format, const char* file, const char* function, uint32_t line, ...) KANEL_CLI_NONNULL(1, 2, 3);
+void kbhMessage(const char* format, const char* file, const char* function, uint32_t line, ...) KANEL_CLI_NONNULL(1, 2, 3);
+void kbhWarning(const char* format, const char* file, const char* function, uint32_t line, ...) KANEL_CLI_NONNULL(1, 2, 3);
+void kbhError(const char* format, const char* file, const char* function, uint32_t line, ...) KANEL_CLI_NONNULL(1, 2, 3);
+void kbhFatalError(const char* format, const char* file, const char* function, uint32_t line, ...) KANEL_CLI_NONNULL(1, 2, 3);
+void kbhDebugLog(const char* format, const char* file, const char* function, uint32_t line, ...) KANEL_CLI_NONNULL(1, 2, 3);
 
 #ifdef KANEL_CLI_DEBUG
 	#define kbhAssert(cond) \
