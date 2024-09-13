@@ -1,0 +1,15 @@
+[nzsl_version("1.0")]
+module;
+
+const workgroup_size = vec3[u32](u32(8), u32(8), u32(8));
+
+struct Input
+{
+	[builtin(global_invocation_indices)] indices: vec3[u32]
+}
+
+[entry(compute)]
+[workgroup(workgroup_size.x, workgroup_size.y, workgroup_size.z)]
+fn main(input : Input)
+{
+}

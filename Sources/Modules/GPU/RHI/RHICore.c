@@ -2,8 +2,8 @@
 // This file is part of "kanel-CLI"
 // For conditions of distribution and use, see copyright notice in LICENSE
 
-#include <GPU/RHI/RHICore.h>
-#include <GPU/RHI/RHILoader.h>
+#include <Modules/GPU/RHI/RHICore.h>
+#include <Modules/GPU/RHI/RHILoader.h>
 
 #include <Core/LibLoader.h>
 #include <Core/Logs.h>
@@ -25,7 +25,7 @@ static KbhLibModule __kbh_backend_module = KBH_NULL_LIB_MODULE;
 
 typedef KbhRHILoaderPFNs(*PFN_kbhRHILoaderPFNs)(void);
 
-KbhRHIResult kbhRHIInit(KbhRHIType backend, KbhRHIContext* context)
+KbhRHIResult kbhRHIInit(KbhRHIContext* context)
 {
 	*context = (KbhRHIContext)malloc(sizeof(KbhRHIContext));
 	if(!*context)
@@ -34,7 +34,7 @@ KbhRHIResult kbhRHIInit(KbhRHIType backend, KbhRHIContext* context)
 
 	#ifndef KANEL_CLI_EMBEDDED_RHI_BACKENDS
 		const char* backends_path[(int)KBH_RHI_TYPE_END_ENUM] = {
-			KANEL_CLI_LIB_PREFIX "kanelcli_vulkan" KANEL_CLI_LIB_EXTENSION,
+			KANEL_CLI_LIB_PREFIX "kanel_vulkan" KANEL_CLI_LIB_EXTENSION,
 			KANEL_CLI_NULLPTR
 		};
 		const char* backends_loader_names[(int)KBH_RHI_TYPE_END_ENUM] = {
@@ -42,6 +42,8 @@ KbhRHIResult kbhRHIInit(KbhRHIType backend, KbhRHIContext* context)
 			KANEL_CLI_NULLPTR
 		};
 	#endif
+
+	KbhRHIType backend = KBH_RHI_DEFAULT_BACKEND; // TODO : possibilty to override backend in the command line
 
 	#ifndef KANEL_CLI_EMBEDDED_RHI_BACKENDS
 		__kbh_backend_module = kbhLoadLibrary(backends_path[(int)backend]);
@@ -68,7 +70,7 @@ KbhRHIResult kbhRHIInit(KbhRHIType backend, KbhRHIContext* context)
 		kbhDebugLog("RHI : backend loaded");
 	#endif
 
-	kbhCheckRHI((*context)->pfns.f_kbhRHIBackendInitContext((*context)->impl_context));
+	kbhCheckRHI((*context)->pfns.f_kbhRHIBackendInitContext(&(*context)->impl_context));
 	(*context)->impl_type = backend;
 	return KBH_RHI_SUCCESS;
 }
@@ -90,20 +92,10 @@ void kbhRHIUninit(KbhRHIContext context)
 	kbhDebugLog("RHI : backend unloaded");
 }
 
-static const char* kbhVerbaliseRHIResult(KbhRHIResult result)
+KANEL_CLI_RHI_API KbhRHILoaderPFNs kbhRHIFrontendAcquirePFNs()
 {
-	switch(result)
-	{
-		case KBH_RHI_SUCCESS: return "Success";
-		case KBH_RHI_ERROR_INITIALIZATION_FAILED: return "Initialization of an object could not be completed for implementation-specific reasons";
-
-		default: return "Unknown RHI error";
-	}
-	return KANEL_CLI_NULLPTR; // just to avoid warnings
-}
-
-void kbhCheckRHIBackend(KbhRHIResult result, const char* file, const char* function, int line)
-{
-	if(result != KBH_RHI_SUCCESS)
-		kbhFatalErrorBackend("RHI check failed in '%s'|%s:%d due to: %s", file, function, line, kbhVerbaliseRHIResult(result));
+	KbhRHILoaderPFNs loader = { 0 };
+	loader.f_kbhRHIBackendInitContext = (PFN_kbhRHIBackendInitContext)&kbhRHIInit;
+	loader.f_kbhRHIBackendUninitContext = (PFN_kbhRHIBackendUninitContext)&kbhRHIUninit;
+	return loader;
 }

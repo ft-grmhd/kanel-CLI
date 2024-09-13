@@ -40,7 +40,7 @@ set_optimize("fastest")
 local gpu_backends = {
 	Vulkan = {
 		option = "vulkan",
-		deps = {"kanelcli_gpu"},
+		deps = {"kanel_gpu"},
 		packages = {"kvf", "nzsl", "vulkan-headers", "vulkan-memory-allocator"},
 		dir = "GPU/",
 		custom = function()
@@ -111,9 +111,16 @@ option("compile_shaders", { description = "Compile nzsl shaders into an includab
 option("static", { description = "Build the engine statically (implies embed_gpu_backends)", default = is_plat("wasm") or false })
 option("embed_gpu_backends", { description = "Embed GPU backend code into libkanelcli_gpu instead of loading them dynamically", default = is_plat("wasm") or false })
 
+add_requires("vrg")
+
 if has_config("vulkan") and not is_plat("wasm") then
 	add_requires("vulkan-headers", "vulkan-memory-allocator", "kvf")
 	add_requires("nzsl >=2023.12.31", { debug = is_mode("debug"), configs = { symbols = not is_mode("release"), shared = false } })
+
+	-- When cross-compiling, compile shaders using host shader compiler
+	if has_config("compile_shaders") and is_cross() then
+		add_requires("nzsl~host", { kind = "binary", host = true })
+	end
 end
 
 function ModuleTargetConfig(name, module)
@@ -129,36 +136,36 @@ function ModuleTargetConfig(name, module)
 	-- Add header and source files
 	for _, ext in ipairs({".h", ".inl"}) do
 		if module.overrideDir then
-			add_headerfiles("Includes/" .. module.overrideDir .. "/**" .. ext)
-			add_headerfiles("Sources/" .. module.overrideDir .. "/**" .. ext, { prefixdir = "private", install = false })
+			add_headerfiles("Includes/Modules/" .. module.overrideDir .. "/**" .. ext)
+			add_headerfiles("Sources/Modules/" .. module.overrideDir .. "/**" .. ext, { prefixdir = "private", install = false })
 		elseif module.dir then
-			add_headerfiles("Includes/" .. module.dir .. name .. "/**" .. ext)
-			add_headerfiles("Sources/" .. module.dir .. name .. "/**" .. ext, { prefixdir = "private", install = false })
+			add_headerfiles("Includes/Modules/" .. module.dir .. name .. "/**" .. ext)
+			add_headerfiles("Sources/Modules/" .. module.dir .. name .. "/**" .. ext, { prefixdir = "private", install = false })
 		else
-			add_headerfiles("Includes/" .. name .. "/**" .. ext)
-			add_headerfiles("Sources/" .. name .. "/**" .. ext, { prefixdir = "private", install = false })
+			add_headerfiles("Includes/Modules/" .. name .. "/**" .. ext)
+			add_headerfiles("Sources/Modules/" .. name .. "/**" .. ext, { prefixdir = "private", install = false })
 		end
 	end
 
 	if module.overrideDir then
-		remove_headerfiles("Sources/" .. module.overrideDir .. "/Resources/**.h")
+		remove_headerfiles("Sources/Modules/" .. module.overrideDir .. "/Resources/**.h")
 	elseif module.dir then
-		remove_headerfiles("Sources/" .. module.dir .. name .. "/Resources/**.h")
+		remove_headerfiles("Sources/Modules/" .. module.dir .. name .. "/Resources/**.h")
 	else
-		remove_headerfiles("Sources/" .. name .. "/Resources/**.h")
+		remove_headerfiles("Sources/Modules/" .. name .. "/Resources/**.h")
 	end
 
 	-- Add extra files for projects
 	for _, ext in ipairs({".nzsl"}) do
 		if module.overrideDir then
-			add_extrafiles("Includes/" .. module.overrideDir .. "/**" .. ext)
-			add_extrafiles("Sources" .. module.overrideDir .. "/**" .. ext)
+			add_extrafiles("Includes/Modules/" .. module.overrideDir .. "/**" .. ext)
+			add_extrafiles("Sources/Modules/" .. module.overrideDir .. "/**" .. ext)
 		elseif module.dir then
-			add_extrafiles("Includes/" .. module.dir .. name .. "/**" .. ext)
-			add_extrafiles("Sources" .. module.dir .. name .. "/**" .. ext)
+			add_extrafiles("Includes/Modules/" .. module.dir .. name .. "/**" .. ext)
+			add_extrafiles("Sources/Modules" .. module.dir .. name .. "/**" .. ext)
 		else
-			add_extrafiles("Includes/" .. name .. "/**" .. ext)
-			add_extrafiles("Sources" .. name .. "/**" .. ext)
+			add_extrafiles("Includes/Modules/" .. name .. "/**" .. ext)
+			add_extrafiles("Sources/Modules" .. name .. "/**" .. ext)
 		end
 	end
 
@@ -183,11 +190,26 @@ function ModuleTargetConfig(name, module)
 	end
 
 	if module.overrideDir then
-		add_files("Sources/" .. module.overrideDir .. "/**.c")
+		add_files("Sources/Modules/" .. module.overrideDir .. "/**.c")
 	elseif module.dir then
-		add_files("Sources/" .. module.dir .. name .. "/**.c")
+		add_files("Sources/Modules/" .. module.dir .. name .. "/**.c")
 	else
-		add_files("Sources/" .. name .. "/**.c")
+		add_files("Sources/Modules/" .. name .. "/**.c")
+	end
+
+	if has_config("compile_shaders") then
+		add_rules("@nzsl/compile.shaders", { inplace = true })
+		local dir = ""
+		if module.overrideDir then
+			dir = "Sources/Modules/" .. module.overrideDir
+		elseif module.dir then
+			dir = "Sources/Modules/" .. module.dir .. name
+		else
+			dir = "Sources/Modules/" .. name
+		end
+		for _, filepath in pairs(table.join(os.files(dir .. "/Resources/**.nzsl"), os.files(dir .. "/Resources/**.nzslb"))) do
+			add_files(filepath)
+		end
 	end
 
 	if module.custom then
@@ -200,7 +222,7 @@ for name, module in pairs(modules) do
 		goto continue
 	end
 
-	target("kanelcli_" .. string.lower(name), function()
+	target("kanel_" .. name:lower(), function()
 		set_group("Modules")
 
 		-- handle shared/static kind
@@ -208,6 +230,7 @@ for name, module in pairs(modules) do
 			set_kind("static")
 		else
 			set_kind("shared")
+			add_cflags("-fPIC")
 		end
 
 		add_includedirs("Sources")
@@ -241,14 +264,18 @@ target("kanel_cli")
 	add_includedirs("Sources")
 	add_rpathdirs("$ORIGIN")
 
+	add_ldflags("-Wl,--export-dynamic")
+
+	if is_plat("linux") then
+		add_syslinks("dl")
+	end
+
+	add_packages("vrg")
+
 	for _, dir in ipairs(os.dirs("Sources/*")) do
-		for name, _ in pairs(modules) do
-			if dir == "Sources/" .. name then
-				goto continue
-			end
+		if dir ~= "Sources/Modules" then
+			add_files(dir .. "/**.c")
 		end
-		add_files(dir .. "/**.c")
-		::continue::
 	end
 
 	on_clean(function(target)
@@ -277,7 +304,7 @@ rule("build.gpu_plugins")
 
 		if target:kind() == "binary" and table.contains(deps, "kanelcli_gpu") then
 			for name, _ in pairs(gpu_backends) do
-				local depName = "kanelcli_" .. string.lower(name)
+				local depName = "kanelcli_" .. name:lower()
 				if not table.contains(deps, depName) then -- don't overwrite dependency
 					target:add("deps", depName, {inherit = false})
 				end

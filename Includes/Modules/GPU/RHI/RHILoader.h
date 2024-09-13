@@ -5,8 +5,8 @@
 #ifndef KANEL_CLI_RHI_LOADER
 #define KANEL_CLI_RHI_LOADER
 
-#include <GPU/RHI/RHIDefs.h>
-#include <GPU/RHI/RHIEnums.h>
+#include <Modules/GPU/RHI/RHIDefs.h>
+#include <Modules/GPU/RHI/RHIEnums.h>
 
 typedef KbhRHIResult(*PFN_kbhRHIBackendInitContext)(KbhRHIOpaqueHandle);
 typedef void        (*PFN_kbhRHIBackendUninitContext)(KbhRHIOpaqueHandle);

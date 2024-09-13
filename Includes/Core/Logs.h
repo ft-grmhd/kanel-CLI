@@ -9,16 +9,16 @@
 
 #include <stdint.h>
 
-KANEL_CLI_NONNULL(1, 2, 3) void kbhMessageBackend(const char* format, ...);
+KANEL_CLI_NONNULL(1) void kbhMessageBackend(const char* format, ...);
 KANEL_CLI_NONNULL(1, 2, 3) void kbhWarningBackend(const char* format, const char* file, const char* function, uint32_t line, ...);
 KANEL_CLI_NONNULL(1, 2, 3) void kbhErrorBackend(const char* format, const char* file, const char* function, uint32_t line, ...);
 KANEL_CLI_NONNULL(1, 2, 3) void kbhFatalErrorBackend(const char* format, const char* file, const char* function, uint32_t line, ...);
-KANEL_CLI_NONNULL(1, 2, 3) void kbhDebugLogBackend(const char* format, ...);
+KANEL_CLI_NONNULL(1) void kbhDebugLogBackend(const char* format, ...);
 
 #ifdef KANEL_CLI_DEBUG
 	#define kbhAssert(cond) \
 		do { \
-			if(!cond) \
+			if(!(cond)) \
 				kbhFatalErrorBackend("Assertion triggered !", __FILE__, KANEL_CLI_FUNC_SIG, __LINE__); \
 		} while(0)
 #else
@@ -27,7 +27,7 @@ KANEL_CLI_NONNULL(1, 2, 3) void kbhDebugLogBackend(const char* format, ...);
 
 #define kbhVerify(cond) \
 	do { \
-		if(!cond) \
+		if(!(cond)) \
 			kbhFatalErrorBackend("Verification failed !", __FILE__, KANEL_CLI_FUNC_SIG, __LINE__); \
 	} while(0)
 

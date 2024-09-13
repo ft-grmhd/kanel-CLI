@@ -8,6 +8,7 @@
 #include <limits.h>
 #include <stdint.h>
 #include <stddef.h>
+#include <stdbool.h>
 
 // Try to identify the compiler
 #if defined(__BORLANDC__)

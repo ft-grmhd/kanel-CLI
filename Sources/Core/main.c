@@ -2,10 +2,29 @@
 // This file is part of "kanel-CLI"
 // For conditions of distribution and use, see copyright notice in LICENSE
 
-#include <Core/Logs.h>
+#include <Core/RuntimeOptions.h>
+#include <Core/ModuleLoader.h>
 
-int main(void)
+#include <GPU/GPUSupport.h>
+
+int main(int argc, char *argv[])
 {
-	kbhMessage("test");
+	if(!kbhRuntimeOptionsParseCmd(argc, argv))
+	{
+		kbhRuntimeOptionsClear();
+		return 0;
+	}
+	kbhCoreLoadAllModulesFromCmdLine();
+
+	// tests
+	char dummy[1024];
+	if(kbhRuntimeOptionsGetString("gpu", dummy, 1024))
+	{
+		kbhInitGPUSupport();
+		kbhUninitGPUSupport();
+	}
+
+	kbhCoreUnloadAllModules();
+	kbhRuntimeOptionsClear();
 	return 0;
 }

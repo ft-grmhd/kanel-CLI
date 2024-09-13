@@ -2,7 +2,7 @@
 // This file is part of "kanel-CLI"
 // For conditions of distribution and use, see copyright notice in LICENSE
 
-#include <GPU/Vulkan/VulkanLoader.h>
+#include <Modules/GPU/Vulkan/VulkanLoader.h>
 
 #include <Core/LibLoader.h>
 #include <Core/Logs.h>
@@ -54,7 +54,7 @@ VkResult kbhVulkanLoaderInit()
 			return VK_ERROR_INITIALIZATION_FAILED;
 	#endif
 	vkGetInstanceProcAddr = (PFN_vkGetInstanceProcAddr)kbhLoadSymbolFromLibModule(__kbh_vulkan_lib_module, "vkGetInstanceProcAddr");
-	kbhDebugLog("Vulkan RHI : vulkan library loaded");
+	kbhDebugLog("Vulkan : vulkan library loaded");
 	kbhVulkanLoadGlobalFunctions(KANEL_CLI_NULLPTR, vkGetInstanceProcAddrStub);
 
 	return VK_SUCCESS;
@@ -70,7 +70,7 @@ void kbhVulkanLoaderUninit()
 {
 	kbhUnloadLibrary(__kbh_vulkan_lib_module);
 	__kbh_vulkan_lib_module = KBH_NULL_LIB_MODULE;
-	kbhDebugLog("Vulkan RHI : vulkan library unloaded");
+	kbhDebugLog("Vulkan : vulkan library unloaded");
 }
 
 static void kbhVulkanLoadGlobalFunctions(void* context, PFN_vkVoidFunction (*load)(void*, const char*))
@@ -80,7 +80,7 @@ static void kbhVulkanLoadGlobalFunctions(void* context, PFN_vkVoidFunction (*loa
 		vkEnumerateInstanceExtensionProperties = (PFN_vkEnumerateInstanceExtensionProperties)load(context, "vkEnumerateInstanceExtensionProperties");
 		vkEnumerateInstanceLayerProperties = (PFN_vkEnumerateInstanceLayerProperties)load(context, "vkEnumerateInstanceLayerProperties");
 	#endif /* defined(VK_VERSION_1_0) */
-	kbhDebugLog("Vulkan RHI : vulkan global functions loaded");
+	kbhDebugLog("Vulkan : vulkan global functions loaded");
 }
 
 static void kbhVulkanLoadInstanceFunctions(void* context, PFN_vkVoidFunction (*load)(void*, const char*))
@@ -100,7 +100,7 @@ static void kbhVulkanLoadInstanceFunctions(void* context, PFN_vkVoidFunction (*l
 		vkGetPhysicalDeviceQueueFamilyProperties = (PFN_vkGetPhysicalDeviceQueueFamilyProperties)load(context, "vkGetPhysicalDeviceQueueFamilyProperties");
 		vkGetPhysicalDeviceSparseImageFormatProperties = (PFN_vkGetPhysicalDeviceSparseImageFormatProperties)load(context, "vkGetPhysicalDeviceSparseImageFormatProperties");
 	#endif /* defined(VK_VERSION_1_0) */
-	kbhDebugLog("Vulkan RHI : vulkan instance function loaded");
+	kbhDebugLog("Vulkan : vulkan instance function loaded");
 }
 
 static void kbhVulkanLoadDeviceFunctions(void* context, PFN_vkVoidFunction (*load)(void*, const char*))
@@ -227,7 +227,7 @@ static void kbhVulkanLoadDeviceFunctions(void* context, PFN_vkVoidFunction (*loa
 		vkUpdateDescriptorSets = (PFN_vkUpdateDescriptorSets)load(context, "vkUpdateDescriptorSets");
 		vkWaitForFences = (PFN_vkWaitForFences)load(context, "vkWaitForFences");
 	#endif /* defined(VK_VERSION_1_0) */
-	kbhDebugLog("Vulkan RHI : vulkan device function loaded");
+	kbhDebugLog("Vulkan : vulkan device function loaded");
 }
 
 #if defined(VK_VERSION_1_0)

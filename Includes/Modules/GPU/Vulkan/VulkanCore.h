@@ -5,12 +5,12 @@
 #ifndef KANEL_CLI_VULKAN_CORE
 #define KANEL_CLI_VULKAN_CORE
 
-#include <GPU/Vulkan/VulkanDefs.h>
-#include <GPU/Vulkan/VulkanPrototypes.h>
+#include <Modules/GPU/Vulkan/VulkanDefs.h>
+#include <Modules/GPU/Vulkan/VulkanPrototypes.h>
 
-#include <GPU/RHI/RHILoader.h>
+#include <Modules/GPU/RHI/RHILoader.h>
 
-#include <GPU/RHI/RHIEnums.h>
+#include <Modules/GPU/RHI/RHIEnums.h>
 
 typedef struct KbhVulkanContext
 {
@@ -19,8 +19,8 @@ typedef struct KbhVulkanContext
 	VkDevice device;
 } KbhVulkanContext;
 
-KANEL_CLI_VULKAN_API KANEL_CLI_NONNULL(1) KbhRHIResult kbhVulkanInit(KbhVulkanContext** context);
-KANEL_CLI_VULKAN_API KANEL_CLI_NONNULL(1) void kbhVulkanUninit(KbhVulkanContext* context);
+KANEL_CLI_NONNULL(1) KbhRHIResult kbhVulkanInit(KbhVulkanContext** context);
+void kbhVulkanUninit(KbhVulkanContext* context);
 
 KANEL_CLI_VULKAN_API KbhRHILoaderPFNs kbhRHIVulkanBackendAcquirePFNs();
 

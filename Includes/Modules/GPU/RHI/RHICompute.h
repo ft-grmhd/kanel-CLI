@@ -5,9 +5,9 @@
 #ifndef KANEL_CLI_RHI_COMPUTE
 #define KANEL_CLI_RHI_COMPUTE
 
-#include <GPU/RHI/RHIDefs.h>
-#include <GPU/RHI/RHIEnums.h>
-#include <GPU/RHI/RHICore.h>
+#include <Modules/GPU/RHI/RHIDefs.h>
+#include <Modules/GPU/RHI/RHIEnums.h>
+#include <Modules/GPU/RHI/RHICore.h>
 
 KANEL_CLI_RHI_DEFINE_NULLABLE_HANDLE(KbhRHIComputePipeline);
 
