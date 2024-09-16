@@ -8,6 +8,7 @@
 !/Kanel/
 !/Xmake/
 !/.github/
+Kanel/Build/Config.h
 *.o
 *.swp
 *.swx
