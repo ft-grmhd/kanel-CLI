@@ -3,6 +3,7 @@ name: macOS build
 on:
   pull_request:
   push:
+    branches: [ "master" ]
     paths-ignore:
       - '.github/workflows/linux-build.yml'
       - '.github/workflows/windows-build.yml'
