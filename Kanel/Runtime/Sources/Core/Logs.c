@@ -13,6 +13,7 @@ void kbhMessageBackend(const char* format, ...)
 {
 	printf(KBH_ANSI_BLUE "[kanel-CLI Message] " KBH_ANSI_DEF);
 	va_list argptr;
+	va_start(argptr, format);
 	vfprintf(stdout, format, argptr);
 	va_end(argptr);
 	putchar('\n');
@@ -56,7 +57,7 @@ void kbhDebugLogBackend(const char* format, ...)
 	#else
 		printf(KBH_ANSI_BLUE "[kanel-CLI Debug] " KBH_ANSI_DEF);
 		va_list argptr;
-		va_start(argptr, line);
+		va_start(argptr, format);
 		vfprintf(stdout, format, argptr);
 		va_end(argptr);
 		putchar('\n');
