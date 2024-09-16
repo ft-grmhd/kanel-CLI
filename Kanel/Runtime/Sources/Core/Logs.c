@@ -22,7 +22,7 @@ void kbhWarningBackend(const char* format, const char* file, const char* functio
 {
 	printf(KBH_ANSI_YELLOW "[kanel-CLI Warning]" KBH_ANSI_DEF " {in '%s;', line %u, '%s'} | ", file, line, function);
 	va_list argptr;
-	va_start(argptr, fline);
+	va_start(argptr, line);
 	vfprintf(stdout, format, argptr);
 	va_end(argptr);
 	putchar('\n');
@@ -32,7 +32,7 @@ void kbhErrorBackend(const char* format, const char* file, const char* function,
 {
 	fprintf(stderr, KBH_ANSI_RED "[kanel-CLI Error]" KBH_ANSI_DEF " {in '%s;', line %u, '%s'} | ", file, line, function);
 	va_list argptr;
-	va_start(argptr, fline);
+	va_start(argptr, line);
 	vfprintf(stderr, format, argptr);
 	va_end(argptr);
 	putchar('\n');
@@ -42,7 +42,7 @@ void kbhFatalErrorBackend(const char* format, const char* file, const char* func
 {
 	fprintf(stderr, KBH_ANSI_RED "[kanel-CLI Fatal Error]" KBH_ANSI_DEF " {in '%s;', line %u, '%s'} | ", file, line, function);
 	va_list argptr;
-	va_start(argptr, fline);
+	va_start(argptr, line);
 	vfprintf(stderr, format, argptr);
 	va_end(argptr);
 	putchar('\n');
@@ -56,7 +56,7 @@ void kbhDebugLogBackend(const char* format, ...)
 	#else
 		printf(KBH_ANSI_BLUE "[kanel-CLI Debug] " KBH_ANSI_DEF);
 		va_list argptr;
-		va_start(argptr, fline);
+		va_start(argptr, line);
 		vfprintf(stdout, format, argptr);
 		va_end(argptr);
 		putchar('\n');
