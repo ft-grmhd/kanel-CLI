@@ -5,7 +5,9 @@
 #ifndef KANEL_CLI_GPU_SUPPORT
 #define KANEL_CLI_GPU_SUPPORT
 
- bool kbhInitGPUSupport();
- void kbhUninitGPUSupport();
+#include <stdbool.h>
+
+bool kbhInitGPUSupport();
+void kbhUninitGPUSupport();
 
 #endif
