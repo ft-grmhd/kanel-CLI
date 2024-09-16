@@ -7,6 +7,11 @@
 #include <Core/LibLoader.h>
 #include <Core/Logs.h>
 
+
+#ifdef KANEL_CLI_PLAT_MACOS
+	#include <stdlib.h> // getenv
+#endif
+
 static KbhLibModule __kbh_vulkan_lib_module = KBH_NULL_LIB_MODULE;
 
 static void kbhVulkanLoadGlobalFunctions(void* context, PFN_vkVoidFunction (*load)(void*, const char*));
