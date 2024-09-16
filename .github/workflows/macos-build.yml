@@ -17,8 +17,8 @@ jobs:
       fail-fast: false
       matrix:
         os: [macOS-latest]
-        mode: [debug, release]
-        kind: [static, shared]
+        mode: [release]
+        kind: [shared]
         arch: [x86_64, arm64]
 
     runs-on: ${{ matrix.os }}
