@@ -16,7 +16,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [macOS-latest]
-        mode: [debug, releasedbg]
+        mode: [debug, release]
         kind: [static, shared]
         arch: [x86_64, arm64]
 
