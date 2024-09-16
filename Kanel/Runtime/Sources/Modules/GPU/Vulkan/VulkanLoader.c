@@ -11,7 +11,7 @@ static KbhLibModule __kbh_vulkan_lib_module = KBH_NULL_LIB_MODULE;
 
 static void kbhVulkanLoadGlobalFunctions(void* context, PFN_vkVoidFunction (*load)(void*, const char*));
 static void kbhVulkanLoadInstanceFunctions(void* context, PFN_vkVoidFunction (*load)(void*, const char*));
-static void kbhVulkanLoadDeviceFunctions(void* context, PFN_vkVoidFunction (*load)(void*, const char*));
+static void kbhVulkanLoadDeviceFunctions(KbhVulkanDevice device, PFN_vkVoidFunction (*load)(void*, const char*));
 
 static inline PFN_vkVoidFunction vkGetInstanceProcAddrStub(void* context, const char* name)
 {
@@ -76,6 +76,11 @@ void kbhLoadInstance(VkInstance instance)
 	kbhVulkanLoadInstanceFunctions(instance, vkGetInstanceProcAddrStub);
 }
 
+void kbhLoadDevice(KbhVulkanDevice device)
+{
+	kbhVulkanLoadDeviceFunctions(device, vkGetDeviceProcAddrStub);
+}
+
 void kbhVulkanLoaderUninit()
 {
 	kbhUnloadLibrary(__kbh_vulkan_lib_module);
@@ -113,8 +118,12 @@ static void kbhVulkanLoadInstanceFunctions(void* context, PFN_vkVoidFunction (*l
 	kbhDebugLog("Vulkan : vulkan instance function loaded");
 }
 
-static void kbhVulkanLoadDeviceFunctions(void* context, PFN_vkVoidFunction (*load)(void*, const char*))
+static void kbhVulkanLoadDeviceFunctions(KbhVulkanDevice device, PFN_vkVoidFunction (*load)(void*, const char*))
 {
+	#define KANEL_CLI_VULKAN_DEVICE_FUNCTION(func) device->func = (PFN_##func)load(device->device, #func);
+	#include <Modules/GPU/Vulkan/VulkanDevicePrototypes.h>
+	#undef KANEL_CLI_VULKAN_DEVICE_FUNCTION
+
 	kbhDebugLog("Vulkan : vulkan device function loaded");
 }
 

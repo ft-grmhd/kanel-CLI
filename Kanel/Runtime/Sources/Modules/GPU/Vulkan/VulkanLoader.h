@@ -7,12 +7,13 @@
 
 #include <Modules/GPU/Vulkan/VulkanDefs.h>
 #include <Modules/GPU/Vulkan/VulkanPrototypes.h>
+#include <Modules/GPU/Vulkan/VulkanDevice.h>
 
 #include <vulkan/vulkan.h>
 
 VkResult kbhVulkanLoaderInit();
 void kbhLoadInstance(VkInstance instance);
-void kbhLoadDevice(VkDevice device);
+void kbhLoadDevice(KbhVulkanDevice device);
 void kbhVulkanLoaderUninit();
 
 #endif

@@ -10,7 +10,7 @@ set_version("0.0.1beta")
 add_repositories("local-repo Xmake")
 add_repositories("nazara-engine-repo https://github.com/NazaraEngine/xmake-repo")
 
-set_languages("clatest")
+set_languages("clatest", "cxx20")
 
 add_rules("mode.debug", "mode.release")
 set_allowedplats("windows", "mingw", "linux", "macosx", "wasm")
@@ -196,10 +196,13 @@ function ModuleTargetConfig(name, module)
 
 	if module.overrideDir then
 		add_files("Kanel/Runtime/Sources/Modules/" .. module.overrideDir .. "/**.c")
+		add_files("Kanel/Runtime/Sources/Modules/" .. module.overrideDir .. "/**.cpp")
 	elseif module.dir then
 		add_files("Kanel/Runtime/Sources/Modules/" .. module.dir .. name .. "/**.c")
+		add_files("Kanel/Runtime/Sources/Modules/" .. module.dir .. name .. "/**.cpp")
 	else
 		add_files("Kanel/Runtime/Sources/Modules/" .. name .. "/**.c")
+		add_files("Kanel/Runtime/Sources/Modules/" .. name .. "/**.cpp")
 	end
 
 	if has_config("compile_shaders") then
@@ -280,6 +283,7 @@ target("kanel_cli")
 	for _, dir in ipairs(os.dirs("Kanel/Runtime/Sources/*")) do
 		if dir ~= "Kanel/Runtime/Sources/Modules" then
 			add_files(dir .. "/**.c")
+			add_files(dir .. "/**.cpp")
 		end
 	end
 
@@ -297,7 +301,7 @@ target("kanel_cli")
 			os.rm(target:targetfile())
 		end
 	end)
-target_end() -- optional
+target_end()
 
 rule("build.gpu_plugins")
 	on_load(function(target)
@@ -316,3 +320,4 @@ rule("build.gpu_plugins")
 			end
 		end
 	end)
+rule_end()

@@ -26,6 +26,7 @@ static inline const char* kbhVerbaliseRHIResult(KbhRHIResult result)
 	switch(result)
 	{
 		case KBH_RHI_SUCCESS: return "Success";
+		case KBH_RHI_INCOMPLETE: return "Incomplete data";
 		case KBH_RHI_ERROR_INITIALIZATION_FAILED: return "Initialization of an object could not be completed for implementation-specific reasons";
 
 		default: return "Unknown RHI error";
@@ -35,8 +36,10 @@ static inline const char* kbhVerbaliseRHIResult(KbhRHIResult result)
 
 static inline void kbhCheckRHIBackend(KbhRHIResult result, const char* file, const char* function, int line)
 {
-	if(result != KBH_RHI_SUCCESS)
+	if(result < KBH_RHI_SUCCESS)
 		kbhFatalErrorBackend("RHI check failed due to: %s", file, function, line, kbhVerbaliseRHIResult(result));
+	else if(result > KBH_RHI_SUCCESS)
+		kbhErrorBackend("RHI check failed due to: %s", file, function, line, kbhVerbaliseRHIResult(result));
 }
 
 #undef kbhCheckRHI

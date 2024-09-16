@@ -17,4 +17,8 @@
 	#define KANEL_CLI_VULKAN_API
 #endif
 
+#define KANEL_CLI_VULKAN_DEFINE_NULLABLE_HANDLE(object) typedef struct object##Handler* object
+
+#define KANEL_CLI_VULKAN_NULL_HANDLE KANEL_CLI_NULLPTR
+
 #endif

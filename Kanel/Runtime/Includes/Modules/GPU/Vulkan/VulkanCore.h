@@ -24,17 +24,20 @@
 
 #include <Core/Logs.h>
 
-typedef struct VulkanDevice VulkanDevice;
+KANEL_CLI_VULKAN_DEFINE_NULLABLE_HANDLE(KbhVulkanContext);
+KANEL_CLI_VULKAN_DEFINE_NULLABLE_HANDLE(KbhVulkanDevice);
 
-typedef struct KbhVulkanContext
+typedef struct KbhVulkanContextHandler
 {
 	VkInstance instance;
-	VulkanDevice* devices;
+	KbhVulkanDevice* devices;
 	size_t devices_count;
-} KbhVulkanContext;
+} KbhVulkanContextHandler;
 
-KANEL_CLI_NONNULL(1) KbhRHIResult kbhVulkanInit(KbhVulkanContext** context);
-void kbhVulkanUninit(KbhVulkanContext* context);
+
+KANEL_CLI_NONNULL(1) KbhRHIResult kbhVulkanInit(KbhVulkanContext* context);
+KbhRHIResult kbhVulkanLoadNewDevice(KbhVulkanContext context);
+void kbhVulkanUninit(KbhVulkanContext context);
 
 KANEL_CLI_VULKAN_API KbhRHILoaderPFNs kbhRHIVulkanBackendAcquirePFNs();
 
@@ -73,7 +76,7 @@ static inline const char* kbhVerbaliseVkResult(VkResult result)
 
 static inline void kbhCheckVkBackend(VkResult result, const char* file, const char* function, int line)
 {
-	if(result != KBH_RHI_SUCCESS)
+	if(result != VK_SUCCESS)
 		kbhFatalErrorBackend("Vulkan check failed due to: %s", file, function, line, kbhVerbaliseVkResult(result));
 }
 
