@@ -2,11 +2,16 @@
 // This file is part of "kanel-CLI"
 // For conditions of distribution and use, see copyright notice in LICENSE
 
+#include "Modules/GPU/RHI/RHIEnums.h"
 #include <Modules/GPU/RHI/RHICore.h>
 #include <Modules/GPU/RHI/RHILoader.h>
 
+#include <Config.h>
+
 #include <Core/LibLoader.h>
 #include <Core/Logs.h>
+
+#include <string.h>
 
 #ifdef KANEL_CLI_EMBEDDED_RHI_BACKENDS
 	#include <GPU/Vulkan/VulkanCore.h>
@@ -25,9 +30,14 @@ static KbhLibModule __kbh_backend_module = KBH_NULL_LIB_MODULE;
 
 typedef KbhRHILoaderPFNs(*PFN_kbhRHILoaderPFNs)(void);
 
+static const char* kbhGetBuildVersion()
+{
+	return KANEL_CLI_VERSION;
+}
+
 KbhRHIResult kbhRHIInit(KbhRHIContext* context)
 {
-	*context = (KbhRHIContext)malloc(sizeof(KbhRHIContext));
+	*context = (KbhRHIContext)malloc(sizeof(struct KbhRHIContextHandler));
 	if(!*context)
 		return KBH_RHI_ERROR_INITIALIZATION_FAILED;
 	else {} // To avoid stupid Clang warning with lines below
@@ -57,6 +67,11 @@ KbhRHIResult kbhRHIInit(KbhRHIContext* context)
 			return KBH_RHI_ERROR_INITIALIZATION_FAILED;
 		}
 		(*context)->pfns = loader_function();
+		if(strcmp((*context)->pfns.f_kbhRHIBackendGetBuildVersion(), kbhGetBuildVersion()) != 0)
+		{
+			kbhErrorFmt("RHI : cannot load '%' backend, conflict in build versions", backends_path[(int)backend]);
+			return KBH_RHI_ERROR_INITIALIZATION_FAILED;
+		}
 		kbhDebugLogFmt("RHI : '%s' backend loaded", backends_path[(int)backend]);
 	#else
 		KbhRHILoaderPFNs(*)(void) backends_loader[(int)KBH_RHI_TYPE_END_ENUM] = {
@@ -97,5 +112,6 @@ KANEL_CLI_RHI_API KbhRHILoaderPFNs kbhRHIFrontendAcquirePFNs()
 	KbhRHILoaderPFNs loader = { 0 };
 	loader.f_kbhRHIBackendInitContext = (PFN_kbhRHIBackendInitContext)&kbhRHIInit;
 	loader.f_kbhRHIBackendUninitContext = (PFN_kbhRHIBackendUninitContext)&kbhRHIUninit;
+	loader.f_kbhRHIBackendGetBuildVersion = (PFN_kbhRHIBackendGetBuildVersion)&kbhGetBuildVersion;
 	return loader;
 }

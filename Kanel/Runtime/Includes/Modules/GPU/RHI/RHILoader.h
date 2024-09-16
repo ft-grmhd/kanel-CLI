@@ -13,12 +13,16 @@ typedef void        (*PFN_kbhRHIBackendUninitContext)(KbhRHIOpaqueHandle);
 typedef KbhRHIResult(*PFN_kbhRHIBackendCreateComputePipeline)(KbhRHIOpaqueHandle, KbhRHIOpaqueHandle);
 typedef void        (*PFN_kbhRHIBackendDestroyComputePipeline)(KbhRHIOpaqueHandle, KbhRHIOpaqueHandle);
 
+typedef const char* (*PFN_kbhRHIBackendGetBuildVersion)();
+
 typedef struct KbhRHILoaderPFNs
 {
 	PFN_kbhRHIBackendInitContext f_kbhRHIBackendInitContext;
 	PFN_kbhRHIBackendUninitContext f_kbhRHIBackendUninitContext;
 	PFN_kbhRHIBackendCreateComputePipeline f_kbhRHIBackendCreateComputePipeline;
 	PFN_kbhRHIBackendDestroyComputePipeline f_kbhRHIBackendDestroyComputePipeline;
+
+	PFN_kbhRHIBackendGetBuildVersion f_kbhRHIBackendGetBuildVersion;
 } KbhRHILoaderPFNs;
 
 #endif

@@ -5,8 +5,7 @@
 !LICENSE
 !xmake.lua
 !compile_commands.json
-!/Includes/
-!/Sources/
+!/Kanel/
 !/Xmake/
 !/.github/
 *.o

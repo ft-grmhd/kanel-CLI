@@ -12,6 +12,7 @@
 
 VkResult kbhVulkanLoaderInit();
 void kbhLoadInstance(VkInstance instance);
+void kbhLoadDevice(VkDevice device);
 void kbhVulkanLoaderUninit();
 
 #endif

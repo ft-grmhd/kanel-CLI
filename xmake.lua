@@ -5,6 +5,8 @@
 -- Credits to SirLynix (https://github.com/SirLynix) for this xmake.lua
 -- Inspired by https://github.com/NazaraEngine/NazaraEngine
 
+set_version("0.0.1beta")
+
 add_repositories("local-repo Xmake")
 add_repositories("nazara-engine-repo https://github.com/NazaraEngine/xmake-repo")
 
@@ -28,7 +30,8 @@ elseif is_mode("release") then
 	add_vectorexts("avx", "avx2", "avx512")
 end
 
-add_includedirs("Includes")
+add_includedirs("Kanel/Runtime/Includes")
+add_includedirs("Kanel/Build")
 
 set_objectdir("build/Objs/$(os)_$(arch)")
 set_targetdir("build/Bin/$(os)_$(arch)")
@@ -37,15 +40,17 @@ set_dependir("build/.deps")
 
 set_optimize("fastest")
 
+set_configdir("Kanel/Build/")
+add_configfiles("Kanel/Build/Config.h.in")
+
 local gpu_backends = {
 	Vulkan = {
 		option = "vulkan",
 		deps = {"kanel_gpu"},
-		packages = {"kvf", "nzsl", "vulkan-headers", "vulkan-memory-allocator"},
+		packages = {"nzsl", "vulkan-headers", "vulkan-memory-allocator"},
 		dir = "GPU/",
 		custom = function()
 			add_defines("VK_NO_PROTOTYPES")
-			add_defines("KVF_NO_KHR")
 		end
 	}
 }
@@ -114,7 +119,7 @@ option("embed_gpu_backends", { description = "Embed GPU backend code into libkan
 add_requires("vrg")
 
 if has_config("vulkan") and not is_plat("wasm") then
-	add_requires("vulkan-headers", "vulkan-memory-allocator", "kvf")
+	add_requires("vulkan-headers", "vulkan-memory-allocator")
 	add_requires("nzsl >=2023.12.31", { debug = is_mode("debug"), configs = { symbols = not is_mode("release"), shared = false } })
 
 	-- When cross-compiling, compile shaders using host shader compiler
@@ -136,36 +141,36 @@ function ModuleTargetConfig(name, module)
 	-- Add header and source files
 	for _, ext in ipairs({".h", ".inl"}) do
 		if module.overrideDir then
-			add_headerfiles("Includes/Modules/" .. module.overrideDir .. "/**" .. ext)
-			add_headerfiles("Sources/Modules/" .. module.overrideDir .. "/**" .. ext, { prefixdir = "private", install = false })
+			add_headerfiles("Kanel/Runtime/Includes/Modules/" .. module.overrideDir .. "/**" .. ext)
+			add_headerfiles("Kanel/Runtime/Sources/Modules/" .. module.overrideDir .. "/**" .. ext, { prefixdir = "private", install = false })
 		elseif module.dir then
-			add_headerfiles("Includes/Modules/" .. module.dir .. name .. "/**" .. ext)
-			add_headerfiles("Sources/Modules/" .. module.dir .. name .. "/**" .. ext, { prefixdir = "private", install = false })
+			add_headerfiles("Kanel/Runtime/Includes/Modules/" .. module.dir .. name .. "/**" .. ext)
+			add_headerfiles("Kanel/Runtime/Sources/Modules/" .. module.dir .. name .. "/**" .. ext, { prefixdir = "private", install = false })
 		else
-			add_headerfiles("Includes/Modules/" .. name .. "/**" .. ext)
-			add_headerfiles("Sources/Modules/" .. name .. "/**" .. ext, { prefixdir = "private", install = false })
+			add_headerfiles("Kanel/Runtime/Includes/Modules/" .. name .. "/**" .. ext)
+			add_headerfiles("Kanel/Runtime/Sources/Modules/" .. name .. "/**" .. ext, { prefixdir = "private", install = false })
 		end
 	end
 
 	if module.overrideDir then
-		remove_headerfiles("Sources/Modules/" .. module.overrideDir .. "/Resources/**.h")
+		remove_headerfiles("Kanel/Runtime/Sources/Modules/" .. module.overrideDir .. "/Resources/**.h")
 	elseif module.dir then
-		remove_headerfiles("Sources/Modules/" .. module.dir .. name .. "/Resources/**.h")
+		remove_headerfiles("Kanel/Runtime/Sources/Modules/" .. module.dir .. name .. "/Resources/**.h")
 	else
-		remove_headerfiles("Sources/Modules/" .. name .. "/Resources/**.h")
+		remove_headerfiles("Kanel/Runtime/Sources/Modules/" .. name .. "/Resources/**.h")
 	end
 
 	-- Add extra files for projects
 	for _, ext in ipairs({".nzsl"}) do
 		if module.overrideDir then
-			add_extrafiles("Includes/Modules/" .. module.overrideDir .. "/**" .. ext)
-			add_extrafiles("Sources/Modules/" .. module.overrideDir .. "/**" .. ext)
+			add_extrafiles("Kanel/Runtime/Includes/Modules/" .. module.overrideDir .. "/**" .. ext)
+			add_extrafiles("Kanel/Runtime/Sources/Modules/" .. module.overrideDir .. "/**" .. ext)
 		elseif module.dir then
-			add_extrafiles("Includes/Modules/" .. module.dir .. name .. "/**" .. ext)
-			add_extrafiles("Sources/Modules" .. module.dir .. name .. "/**" .. ext)
+			add_extrafiles("Kanel/Runtime/Includes/Modules/" .. module.dir .. name .. "/**" .. ext)
+			add_extrafiles("Kanel/Runtime/Sources/Modules" .. module.dir .. name .. "/**" .. ext)
 		else
-			add_extrafiles("Includes/Modules/" .. name .. "/**" .. ext)
-			add_extrafiles("Sources/Modules" .. name .. "/**" .. ext)
+			add_extrafiles("Kanel/Runtime/Includes/Modules/" .. name .. "/**" .. ext)
+			add_extrafiles("Kanel/Runtime/Sources/Modules" .. name .. "/**" .. ext)
 		end
 	end
 
@@ -190,22 +195,22 @@ function ModuleTargetConfig(name, module)
 	end
 
 	if module.overrideDir then
-		add_files("Sources/Modules/" .. module.overrideDir .. "/**.c")
+		add_files("Kanel/Runtime/Sources/Modules/" .. module.overrideDir .. "/**.c")
 	elseif module.dir then
-		add_files("Sources/Modules/" .. module.dir .. name .. "/**.c")
+		add_files("Kanel/Runtime/Sources/Modules/" .. module.dir .. name .. "/**.c")
 	else
-		add_files("Sources/Modules/" .. name .. "/**.c")
+		add_files("Kanel/Runtime/Sources/Modules/" .. name .. "/**.c")
 	end
 
 	if has_config("compile_shaders") then
 		add_rules("@nzsl/compile.shaders", { inplace = true })
 		local dir = ""
 		if module.overrideDir then
-			dir = "Sources/Modules/" .. module.overrideDir
+			dir = "Kanel/Runtime/Sources/Modules/" .. module.overrideDir
 		elseif module.dir then
-			dir = "Sources/Modules/" .. module.dir .. name
+			dir = "Kanel/Runtime/Sources/Modules/" .. module.dir .. name
 		else
-			dir = "Sources/Modules/" .. name
+			dir = "Kanel/Runtime/Sources/Modules/" .. name
 		end
 		for _, filepath in pairs(table.join(os.files(dir .. "/Resources/**.nzsl"), os.files(dir .. "/Resources/**.nzslb"))) do
 			add_files(filepath)
@@ -233,7 +238,7 @@ for name, module in pairs(modules) do
 			add_cflags("-fPIC")
 		end
 
-		add_includedirs("Sources")
+		add_includedirs("Kanel/Runtime/Sources")
 		add_rpathdirs("$ORIGIN")
 
 		on_clean(function(target)
@@ -260,8 +265,8 @@ end
 target("kanel_cli")
 	set_kind("binary")
 
-	add_includedirs("Includes")
-	add_includedirs("Sources")
+	add_includedirs("Kanel/Runtime/Includes")
+	add_includedirs("Kanel/Runtime/Sources")
 	add_rpathdirs("$ORIGIN")
 
 	add_ldflags("-Wl,--export-dynamic")
@@ -272,8 +277,8 @@ target("kanel_cli")
 
 	add_packages("vrg")
 
-	for _, dir in ipairs(os.dirs("Sources/*")) do
-		if dir ~= "Sources/Modules" then
+	for _, dir in ipairs(os.dirs("Kanel/Runtime/Sources/*")) do
+		if dir ~= "Kanel/Runtime/Sources/Modules" then
 			add_files(dir .. "/**.c")
 		end
 	end

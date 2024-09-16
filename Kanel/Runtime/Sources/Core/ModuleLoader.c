@@ -7,7 +7,10 @@
 #include <GPU/RHIBindPoint.h>
 #include <Core/Logs.h>
 
+#include <Config.h>
+
 #include <stdlib.h>
+#include <string.h>
 
 typedef struct KbhCoreModuleDescriptor
 {
@@ -69,6 +72,8 @@ static void kbhCompleteRHILoad(KbhLibModule module)
 	kbhVerify(module != KBH_NULL_LIB_MODULE);
 	PFN_kbhRHILoaderPFNs loader_function = (PFN_kbhRHILoaderPFNs)kbhLoadSymbolFromLibModule(module, "kbhRHIFrontendAcquirePFNs");
 	*kbhGetRHILoaderPFNs() = loader_function();
+	if(strcmp(kbhGetRHILoaderPFNs()->f_kbhRHIBackendGetBuildVersion(), KANEL_CLI_VERSION) != 0)
+		kbhFatalError("Module loader : cannot load RHI backend, conflict in build versions");
 	kbhDebugLog("Module loader : "KANEL_CLI_LIB_PREFIX "kanel_gpu" KANEL_CLI_LIB_EXTENSION " loaded ");
 }
 
