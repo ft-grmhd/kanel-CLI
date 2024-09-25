@@ -16,17 +16,6 @@
 	#include <dlfcn.h>
 #endif
 
-#ifdef KANEL_CLI_COMPILER_GCC
-	#define DISABLE_GCC_PEDANTIC_WARNINGS \
-		_Pragma("GCC diagnostic push") \
-		_Pragma("GCC diagnostic ignored \"-Wpedantic\"")
-	#define RESTORE_GCC_PEDANTIC_WARNINGS \
-		_Pragma("GCC diagnostic pop")
-#else
-	#define DISABLE_GCC_PEDANTIC_WARNINGS
-	#define RESTORE_GCC_PEDANTIC_WARNINGS
-#endif
-
 KbhLibModule kbhLoadLibrary(const char* libpath)
 {
 	KbhLibModule module;
@@ -36,7 +25,7 @@ KbhLibModule kbhLoadLibrary(const char* libpath)
 			kbhErrorFmt("Lib Loader : could not load %s", libpath);
 	#else
 		dlerror();
-		module = dlopen(libpath, RTLD_LAZY | RTLD_GLOBAL);
+		module = dlopen(libpath, RTLD_NOW | RTLD_GLOBAL);
 		if(!module)
 			kbhErrorFmt("Lib Loader : could not load %s. %s", libpath, dlerror());
 	#endif

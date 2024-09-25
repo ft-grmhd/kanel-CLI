@@ -4,7 +4,7 @@
 
 #include <Modules/GPU/Backends/Vulkan/VulkanQueue.h>
 #include <Modules/GPU/Backends/Vulkan/VulkanDevice.h>
-#include <Modules/GPU/Backends/Vulkan/VulkanPrototypes.h>
+#include <Modules/GPU/Backends/Vulkan/VulkanCoreInternal.h>
 
 #include <Modules/GPU/RHI/RHICore.h>
 
@@ -18,11 +18,11 @@ KbhRHIResult kbhFindPhysicalDeviceQueueFamily(VkPhysicalDevice physical, KbhVulk
 		return KBH_RHI_ERROR_INVALID_HANDLE;
 
 	uint32_t queue_family_count;
-	vkGetPhysicalDeviceQueueFamilyProperties(physical, &queue_family_count, KANEL_CLI_NULLPTR);
+	kbhGetVulkanPFNs()->vkGetPhysicalDeviceQueueFamilyProperties(physical, &queue_family_count, KANEL_CLI_NULLPTR);
 	VkQueueFamilyProperties* queue_families = (VkQueueFamilyProperties*)malloc(sizeof(VkQueueFamilyProperties) * queue_family_count);
 	if(!queue_families)
 		return KBH_RHI_ERROR_INITIALIZATION_FAILED;
-	vkGetPhysicalDeviceQueueFamilyProperties(physical, &queue_family_count, queue_families);
+	kbhGetVulkanPFNs()->vkGetPhysicalDeviceQueueFamilyProperties(physical, &queue_family_count, queue_families);
 
 	bool found = false;
 	for(int32_t i = 0; i < queue_family_count; i++)
@@ -63,20 +63,30 @@ KbhRHIResult kbhFindPhysicalDeviceQueueFamily(VkPhysicalDevice physical, KbhVulk
 	return (found ? KBH_RHI_SUCCESS : KBH_RHI_INCOMPLETE);
 }
 
-KbhRHIResult kbhRetrieveDeviceQueue(KbhVulkanDevice device, KbhVulkanQueueType type)
+KbhRHIResult kbhPrepareDeviceQueue(KbhVulkanDevice device, KbhVulkanQueueType type)
 {
 	if(device == KANEL_CLI_VULKAN_NULL_HANDLE)
 		return KBH_RHI_ERROR_INVALID_HANDLE;
 
 	device->queues[(int)type] = (KbhVulkanQueue)malloc(sizeof(KbhVulkanQueueHandler));
+	if(!device->queues[(int)type])
+		return KBH_RHI_ERROR_ALLOCATION_FAILED;
 	KbhVulkanQueue queue = device->queues[(int)type];
 	if(!queue)
 		return KBH_RHI_ERROR_INITIALIZATION_FAILED;
 
 	if(kbhFindPhysicalDeviceQueueFamily(device->physical, type, &queue->queue_family_index) != KBH_RHI_SUCCESS)
 		return KBH_RHI_INCOMPLETE;
+	return KBH_RHI_SUCCESS;
+}
 
+KbhRHIResult kbhRetrieveDeviceQueue(KbhVulkanDevice device, KbhVulkanQueueType type)
+{
+	if(device == KANEL_CLI_VULKAN_NULL_HANDLE)
+		return KBH_RHI_ERROR_INVALID_HANDLE;
+	KbhVulkanQueue queue = device->queues[(int)type];
+	if(!queue)
+		return KBH_RHI_ERROR_INITIALIZATION_FAILED;
 	device->vkGetDeviceQueue(device->device, queue->queue_family_index, 0, &queue->queue);
-
 	return KBH_RHI_SUCCESS;
 }

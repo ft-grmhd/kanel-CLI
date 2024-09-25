@@ -20,6 +20,7 @@ typedef struct KbhVulkanQueueHandler
 } KbhVulkanQueueHandler;
 
 KANEL_CLI_NONNULL(3) KbhRHIResult kbhFindPhysicalDeviceQueueFamily(VkPhysicalDevice physical, KbhVulkanQueueType type, int32_t* queue_family_index);
+KbhRHIResult kbhPrepareDeviceQueue(KbhVulkanDevice device, KbhVulkanQueueType type);
 KbhRHIResult kbhRetrieveDeviceQueue(KbhVulkanDevice device, KbhVulkanQueueType type);
 
 #endif

@@ -28,21 +28,21 @@ static inline const char* kbhVerbaliseRHIResult(KbhRHIResult result)
 		case KBH_RHI_SUCCESS: return "Success";
 		case KBH_RHI_INCOMPLETE: return "Incomplete data";
 		case KBH_RHI_ERROR_INITIALIZATION_FAILED: return "Initialization of an object could not be completed for implementation-specific reasons";
+		case KBH_RHI_ERROR_ALLOCATION_FAILED: return "A memory allocation failed";
 
 		default: return "Unknown RHI error";
 	}
 	return KANEL_CLI_NULLPTR; // just to avoid warnings
 }
 
-static inline void kbhCheckRHIBackend(KbhRHIResult result, const char* file, const char* function, int line)
-{
-	if(result < KBH_RHI_SUCCESS)
-		kbhFatalErrorBackend("RHI check failed due to: %s", file, function, line, kbhVerbaliseRHIResult(result));
-	else if(result > KBH_RHI_SUCCESS)
-		kbhErrorBackend("RHI check failed due to: %s", file, function, line, kbhVerbaliseRHIResult(result));
-}
-
 #undef kbhCheckRHI
-#define kbhCheckRHI(res) kbhCheckRHIBackend(res, __FILE__, KANEL_CLI_FUNC_SIG, __LINE__)
+#define kbhCheckRHI(op) \
+	do { \
+		KbhRHIResult result = op; \
+		if(result < KBH_RHI_SUCCESS) \
+			kbhFatalErrorFmt("RHI check failed due to: %s", kbhVerbaliseRHIResult(result)); \
+		else if(result > KBH_RHI_SUCCESS) \
+			kbhErrorFmt("RHI check failed due to: %s", kbhVerbaliseRHIResult(result)); \
+	} while(0);
 
 #endif

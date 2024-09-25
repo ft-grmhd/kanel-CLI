@@ -2,10 +2,12 @@
 // This file is part of "kanel-CLI"
 // For conditions of distribution and use, see copyright notice in LICENSE
 
-#include <Modules/GPU/Backends/Vulkan/VulkanDevice.h>
+extern "C"
+{
+	#include <Modules/GPU/Backends/Vulkan/VulkanDevice.h>
+	#include <Core/Logs.h>
+	#define VMA_ASSERT(expr) kbhAssert(expr)
+}
 
-#include <Core/Logs.h>
-
-#define VMA_ASSERT(expr) kbhAssert(expr)
 #define VMA_IMPLEMENTATION
 #include <vk_mem_alloc.h>

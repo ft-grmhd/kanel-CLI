@@ -15,22 +15,6 @@ KANEL_CLI_NONNULL(1, 2, 3) void kbhErrorBackend(const char* format, const char* 
 KANEL_CLI_NONNULL(1, 2, 3) void kbhFatalErrorBackend(const char* format, const char* file, const char* function, uint32_t line, ...);
 KANEL_CLI_NONNULL(1) void kbhDebugLogBackend(const char* format, ...);
 
-#ifdef KANEL_CLI_DEBUG
-	#define kbhAssert(cond) \
-		do { \
-			if(!(cond)) \
-				kbhFatalErrorBackend("Assertion triggered !", __FILE__, KANEL_CLI_FUNC_SIG, __LINE__); \
-		} while(0)
-#else
-	#define kbhAssert(cond, ...) ((void)0)
-#endif
-
-#define kbhVerify(cond) \
-	do { \
-		if(!(cond)) \
-			kbhFatalErrorBackend("Verification failed !", __FILE__, KANEL_CLI_FUNC_SIG, __LINE__); \
-	} while(0)
-
 #undef  kbhMessage
 #define kbhMessage(format) kbhMessageBackend(format)
 
@@ -60,5 +44,21 @@ KANEL_CLI_NONNULL(1) void kbhDebugLogBackend(const char* format, ...);
 
 #undef  kbhDebugLogFmt
 #define kbhDebugLogFmt(format, ...) kbhDebugLogBackend(format, __VA_ARGS__)
+
+#ifdef KANEL_CLI_DEBUG
+	#define kbhAssert(cond) \
+		do { \
+			if(!(cond)) \
+				kbhFatalError("Assertion triggered ! '" #cond "'"); \
+		} while(0)
+#else
+	#define kbhAssert(cond, ...) ((void)0)
+#endif
+
+#define kbhVerify(cond) \
+	do { \
+		if(!(cond)) \
+			kbhFatalError("Verification failed ! '" #cond "'"); \
+	} while(0)
 
 #endif

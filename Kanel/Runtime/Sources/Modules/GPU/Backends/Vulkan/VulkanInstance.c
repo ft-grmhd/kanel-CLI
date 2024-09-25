@@ -3,7 +3,7 @@
 // For conditions of distribution and use, see copyright notice in LICENSE
 
 #include <Modules/GPU/Backends/Vulkan/VulkanInstance.h>
-#include <Modules/GPU/Backends/Vulkan/VulkanPrototypes.h>
+#include <Modules/GPU/Backends/Vulkan/VulkanCoreInternal.h>
 
 #include <Config.h>
 
@@ -19,9 +19,9 @@ static size_t __kbh_extra_layers_count = 0;
 	static bool kbhVulkanCheckValidationLayerSupport()
 	{
 		uint32_t layer_count;
-		vkEnumerateInstanceLayerProperties(&layer_count, KANEL_CLI_NULLPTR);
+		kbhGetVulkanPFNs()->vkEnumerateInstanceLayerProperties(&layer_count, KANEL_CLI_NULLPTR);
 		VkLayerProperties* available_layers = (VkLayerProperties*)malloc(sizeof(VkLayerProperties) * layer_count);
-		vkEnumerateInstanceLayerProperties(&layer_count, available_layers);
+		kbhGetVulkanPFNs()->vkEnumerateInstanceLayerProperties(&layer_count, available_layers);
 		for(size_t i = 0; i < __kbh_extra_layers_count; i++)
 		{
 			bool found = false;
@@ -62,16 +62,16 @@ static size_t __kbh_extra_layers_count = 0;
 
 	static VkResult kbhVulkanCreateDebugUtilsMessengerEXT(VkInstance instance, const VkDebugUtilsMessengerCreateInfoEXT* create_info, VkDebugUtilsMessengerEXT* messenger)
 	{
-		PFN_vkCreateDebugUtilsMessengerEXT func = (PFN_vkCreateDebugUtilsMessengerEXT)vkGetInstanceProcAddr(instance, "vkCreateDebugUtilsMessengerEXT");
+		PFN_vkCreateDebugUtilsMessengerEXT func = (PFN_vkCreateDebugUtilsMessengerEXT)kbhGetVulkanPFNs()->vkGetInstanceProcAddr(instance, "vkCreateDebugUtilsMessengerEXT");
 		return func ? func(instance, create_info, KANEL_CLI_NULLPTR, messenger) : VK_ERROR_EXTENSION_NOT_PRESENT;
 	}
 
 	static void kbhVulkanInitValidationLayers(VkInstance instance)
 	{
 		uint32_t extension_count;
-		vkEnumerateInstanceExtensionProperties(KANEL_CLI_NULLPTR, &extension_count, KANEL_CLI_NULLPTR);
+		kbhGetVulkanPFNs()->vkEnumerateInstanceExtensionProperties(KANEL_CLI_NULLPTR, &extension_count, KANEL_CLI_NULLPTR);
 		VkExtensionProperties* extensions = (VkExtensionProperties*)malloc(extension_count * sizeof(VkExtensionProperties));
-		vkEnumerateInstanceExtensionProperties(KANEL_CLI_NULLPTR, &extension_count, extensions);
+		kbhGetVulkanPFNs()->vkEnumerateInstanceExtensionProperties(KANEL_CLI_NULLPTR, &extension_count, extensions);
 		bool extension_found = false;
 		for(uint32_t i = 0; i < extension_count; i++)
 		{
@@ -94,7 +94,7 @@ static size_t __kbh_extra_layers_count = 0;
 
 	static void kbhVulkanDestroyDebugUtilsMessengerEXT(VkInstance instance)
 	{
-		PFN_vkDestroyDebugUtilsMessengerEXT func = (PFN_vkDestroyDebugUtilsMessengerEXT)vkGetInstanceProcAddr(instance, "vkDestroyDebugUtilsMessengerEXT");
+		PFN_vkDestroyDebugUtilsMessengerEXT func = (PFN_vkDestroyDebugUtilsMessengerEXT)kbhGetVulkanPFNs()->vkGetInstanceProcAddr(instance, "vkDestroyDebugUtilsMessengerEXT");
 		if(func)
 			func(instance, __kbh_debug_messenger, KANEL_CLI_NULLPTR);
 	}
@@ -159,7 +159,7 @@ VkInstance kbhVulkanCreateInstance(const char** extensions_enabled, uint32_t ext
 	}
 #endif
 
-	kbhCheckVk(vkCreateInstance(&create_info, KANEL_CLI_NULLPTR, &instance));
+	kbhCheckVk(kbhGetVulkanPFNs()->vkCreateInstance(&create_info, KANEL_CLI_NULLPTR, &instance));
 #ifdef KANEL_CLI_VULKAN_DEBUG
 	free(new_extension_set);
 	kbhVulkanInitValidationLayers(instance);
@@ -179,6 +179,6 @@ void kbhVulkanDestroyInstance(VkInstance instance)
 	free(__kbh_extra_layers);
 	__kbh_extra_layers_count = 0;
 #endif
-	vkDestroyInstance(instance, KANEL_CLI_NULLPTR);
+	kbhGetVulkanPFNs()->vkDestroyInstance(instance, KANEL_CLI_NULLPTR);
 	kbhDebugLog("Vulkan : instance destroyed");
 }

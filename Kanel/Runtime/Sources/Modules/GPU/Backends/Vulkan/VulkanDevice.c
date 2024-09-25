@@ -3,7 +3,7 @@
 // For conditions of distribution and use, see copyright notice in LICENSE
 
 #include <Modules/GPU/Backends/Vulkan/VulkanDevice.h>
-#include <Modules/GPU/Backends/Vulkan/VulkanPrototypes.h>
+#include <Modules/GPU/Backends/Vulkan/VulkanCoreInternal.h>
 #include <Modules/GPU/Backends/Vulkan/VulkanQueue.h>
 #include <Modules/GPU/Backends/Vulkan/VulkanLoader.h>
 
@@ -13,16 +13,17 @@
 
 #include <string.h>
 #include <stdlib.h>
+#include <vulkan/vulkan_core.h>
 
 static int32_t kbhScorePhysicalDevice(VkPhysicalDevice device, const char** device_extensions, uint32_t device_extensions_count)
 {
 	/* Check extensions support */
 	uint32_t extension_count;
-	vkEnumerateDeviceExtensionProperties(device, KANEL_CLI_NULLPTR, &extension_count, KANEL_CLI_NULLPTR);
+	kbhGetVulkanPFNs()->vkEnumerateDeviceExtensionProperties(device, KANEL_CLI_NULLPTR, &extension_count, KANEL_CLI_NULLPTR);
 	VkExtensionProperties* props = (VkExtensionProperties*)malloc(sizeof(VkExtensionProperties) * extension_count + 1);
 	if(!props)
 		return -1;
-	vkEnumerateDeviceExtensionProperties(device, KANEL_CLI_NULLPTR, &extension_count, props);
+	kbhGetVulkanPFNs()->vkEnumerateDeviceExtensionProperties(device, KANEL_CLI_NULLPTR, &extension_count, props);
 
 	bool are_there_required_device_extensions = true;
 	for(int j = 0; j < device_extensions_count; j++)
@@ -52,10 +53,10 @@ static int32_t kbhScorePhysicalDevice(VkPhysicalDevice device, const char** devi
 		return -1;
 
 	VkPhysicalDeviceProperties device_props;
-	vkGetPhysicalDeviceProperties(device, &device_props);
+	kbhGetVulkanPFNs()->vkGetPhysicalDeviceProperties(device, &device_props);
 
 	VkPhysicalDeviceFeatures device_features;
-	vkGetPhysicalDeviceFeatures(device, &device_features);
+	kbhGetVulkanPFNs()->vkGetPhysicalDeviceFeatures(device, &device_features);
 
 	int32_t score = -1;
 	if(device_props.deviceType == VK_PHYSICAL_DEVICE_TYPE_DISCRETE_GPU)
@@ -79,11 +80,11 @@ static KbhRHIResult kbhPickPhysicalDevice(VkInstance instance, VkPhysicalDevice*
 	kbhAssert(instance != VK_NULL_HANDLE);
 	kbhAssert(device != KANEL_CLI_NULLPTR);
 
-	vkEnumeratePhysicalDevices(instance, &device_count, KANEL_CLI_NULLPTR);
+	kbhGetVulkanPFNs()->vkEnumeratePhysicalDevices(instance, &device_count, KANEL_CLI_NULLPTR);
 	devices = (VkPhysicalDevice*)malloc(sizeof(VkPhysicalDevice) * device_count + 1);
 	if(!devices)
-		return KBH_RHI_ERROR_INITIALIZATION_FAILED;
-	vkEnumeratePhysicalDevices(instance, &device_count, devices);
+		return KBH_RHI_ERROR_ALLOCATION_FAILED;
+	kbhGetVulkanPFNs()->vkEnumeratePhysicalDevices(instance, &device_count, devices);
 
 	for(int i = 0; i < device_count; i++)
 	{
@@ -108,19 +109,23 @@ KbhRHIResult kbhCreateVulkanDevice(KbhVulkanContext context, KbhVulkanDevice* de
 	if(context == KANEL_CLI_VULKAN_NULL_HANDLE)
 		return KBH_RHI_ERROR_INVALID_HANDLE;
 
-	*device = (KbhVulkanDevice)malloc(sizeof(KbhVulkanDeviceHandler));
+	*device = (KbhVulkanDevice)calloc(1, sizeof(KbhVulkanDeviceHandler));
 	if(!*device)
-		return KBH_RHI_ERROR_INITIALIZATION_FAILED;
+		return KBH_RHI_ERROR_ALLOCATION_FAILED;
+
+	kbhCheckRHI(kbhPickPhysicalDevice(context->instance, &(*device)->physical));
 
 	const float queue_priority = 1.0f;
 
-	kbhCheckRHI(kbhRetrieveDeviceQueue(*device, KBH_VULKAN_QUEUE_COMPUTE));
-
-	VkDeviceQueueCreateInfo* queue_create_infos = (VkDeviceQueueCreateInfo*)malloc(KBH_VULKAN_QUEUE_END_ENUM * sizeof(VkDeviceQueueCreateInfo));
+	VkDeviceQueueCreateInfo* queue_create_infos = (VkDeviceQueueCreateInfo*)calloc(1, KBH_VULKAN_QUEUE_END_ENUM * sizeof(VkDeviceQueueCreateInfo));
 	if(!queue_create_infos)
-		return KBH_RHI_ERROR_INITIALIZATION_FAILED;
+		return KBH_RHI_ERROR_ALLOCATION_FAILED;
 
-	uint32_t unique_queues_count = 0;
+	uint32_t unique_queues_count = 1;
+
+	#pragma omp parallel for
+	for(int i = 0; i < KBH_VULKAN_QUEUE_END_ENUM; i++) // Needs to be done before next loop
+		kbhCheckRHI(kbhPrepareDeviceQueue(*device, i));
 
 	#pragma omp parallel for
 	for(int i = 0; i < KBH_VULKAN_QUEUE_END_ENUM; i++)
@@ -130,7 +135,7 @@ KbhRHIResult kbhCreateVulkanDevice(KbhVulkanContext context, KbhVulkanDevice* de
 		int j;
 		for(j = i; j < KBH_VULKAN_QUEUE_END_ENUM; j++) // Ugly shit but array will never be big so it's okay
 		{
-			if((*device)->queues[i] == (*device)->queues[j])
+			if((*device)->queues[i]->queue_family_index == (*device)->queues[j]->queue_family_index)
 				break;
 		}
 		if(j == KBH_VULKAN_QUEUE_END_ENUM)
@@ -155,27 +160,30 @@ KbhRHIResult kbhCreateVulkanDevice(KbhVulkanContext context, KbhVulkanDevice* de
 	create_info.flags = 0;
 	create_info.pNext = KANEL_CLI_NULLPTR;
 
-	kbhCheckVk(vkCreateDevice((*device)->physical, &create_info, KANEL_CLI_NULLPTR, &(*device)->device));
+	kbhCheckVk(kbhGetVulkanPFNs()->vkCreateDevice((*device)->physical, &create_info, KANEL_CLI_NULLPTR, &(*device)->device));
 	kbhLoadDevice(*device);
+	for(int i = 0; i < KBH_VULKAN_QUEUE_END_ENUM; i++)
+		kbhCheckRHI(kbhRetrieveDeviceQueue(*device, i));
+	kbhDebugLog("Vulkan : retrieved device queues");
 
 	VmaVulkanFunctions vma_vulkan_func = {};
 	vma_vulkan_func.vkAllocateMemory                    = (*device)->vkAllocateMemory;
 	vma_vulkan_func.vkBindBufferMemory                  = (*device)->vkBindBufferMemory;
-	vma_vulkan_func.vkBindImageMemory                   = KANEL_CLI_NULLPTR;
+	vma_vulkan_func.vkBindImageMemory                   = (*device)->vkBindImageMemory;
 	vma_vulkan_func.vkCreateBuffer                      = (*device)->vkCreateBuffer;
-	vma_vulkan_func.vkCreateImage                       = KANEL_CLI_NULLPTR;
+	vma_vulkan_func.vkCreateImage                       = (*device)->vkCreateImage;
 	vma_vulkan_func.vkDestroyBuffer                     = (*device)->vkDestroyBuffer;
-	vma_vulkan_func.vkDestroyImage                      = KANEL_CLI_NULLPTR;
+	vma_vulkan_func.vkDestroyImage                      = (*device)->vkDestroyImage;
 	vma_vulkan_func.vkFlushMappedMemoryRanges           = (*device)->vkFlushMappedMemoryRanges;
 	vma_vulkan_func.vkFreeMemory                        = (*device)->vkFreeMemory;
 	vma_vulkan_func.vkGetBufferMemoryRequirements       = (*device)->vkGetBufferMemoryRequirements;
-	vma_vulkan_func.vkGetImageMemoryRequirements        = KANEL_CLI_NULLPTR;
+	vma_vulkan_func.vkGetImageMemoryRequirements        = (*device)->vkGetImageMemoryRequirements;
 	vma_vulkan_func.vkInvalidateMappedMemoryRanges      = (*device)->vkInvalidateMappedMemoryRanges;
 	vma_vulkan_func.vkMapMemory                         = (*device)->vkMapMemory;
 	vma_vulkan_func.vkUnmapMemory                       = (*device)->vkUnmapMemory;
 	vma_vulkan_func.vkCmdCopyBuffer                     = (*device)->vkCmdCopyBuffer;
-	vma_vulkan_func.vkGetPhysicalDeviceMemoryProperties = vkGetPhysicalDeviceMemoryProperties;
-	vma_vulkan_func.vkGetPhysicalDeviceProperties       = vkGetPhysicalDeviceProperties;
+	vma_vulkan_func.vkGetPhysicalDeviceMemoryProperties = kbhGetVulkanPFNs()->vkGetPhysicalDeviceMemoryProperties;
+	vma_vulkan_func.vkGetPhysicalDeviceProperties       = kbhGetVulkanPFNs()->vkGetPhysicalDeviceProperties;
 
 	VmaAllocatorCreateInfo allocator_create_info = {};
 	allocator_create_info.vulkanApiVersion = VK_API_VERSION_1_0;
@@ -195,6 +203,6 @@ void kbhDestroyVulkanDevice(KbhVulkanDevice device)
 	if(device == KANEL_CLI_VULKAN_NULL_HANDLE)
 		return;
 	vmaDestroyAllocator(device->allocator);
-	vkDestroyDevice(device->device, KANEL_CLI_NULLPTR);
+	device->vkDestroyDevice(device->device, KANEL_CLI_NULLPTR);
 	kbhDebugLog("Vulkan : logical device destroyed");
 }

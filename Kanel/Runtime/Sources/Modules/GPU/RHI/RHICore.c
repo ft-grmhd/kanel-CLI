@@ -63,16 +63,16 @@ KbhRHIResult kbhRHIInit(KbhRHIContext* context)
 		PFN_kbhRHILoaderPFNs loader_function = (PFN_kbhRHILoaderPFNs)kbhLoadSymbolFromLibModule(__kbh_backend_module, backends_loader_names[(int)backend]);
 		if(!loader_function)
 		{
-			kbhErrorFmt("RHI : could not load the '%s' backend", backends_path[(int)backend]);
+			kbhErrorFmt("RHI : could not load the %s backend", backends_path[(int)backend]);
 			return KBH_RHI_ERROR_INITIALIZATION_FAILED;
 		}
 		(*context)->pfns = loader_function();
 		if(strcmp((*context)->pfns.f_kbhRHIBackendGetBuildVersion(), kbhGetBuildVersion()) != 0)
 		{
-			kbhErrorFmt("RHI : cannot load '%' backend, conflict in build versions", backends_path[(int)backend]);
+			kbhErrorFmt("RHI : cannot load %s backend, conflict in build versions", backends_path[(int)backend]);
 			return KBH_RHI_ERROR_INITIALIZATION_FAILED;
 		}
-		kbhDebugLogFmt("RHI : '%s' backend loaded", backends_path[(int)backend]);
+		kbhDebugLogFmt("RHI : %s backend loaded", backends_path[(int)backend]);
 	#else
 		PFN_kbhRHILoaderPFNs backends_loader[(int)KBH_RHI_TYPE_END_ENUM] = {
 			(PFN_kbhRHILoaderPFNs)kbhRHIVulkanBackendAcquirePFNs,
