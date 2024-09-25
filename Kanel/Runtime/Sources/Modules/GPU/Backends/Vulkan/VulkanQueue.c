@@ -2,9 +2,9 @@
 // This file is part of "kanel-CLI"
 // For conditions of distribution and use, see copyright notice in LICENSE
 
-#include <Modules/GPU/Vulkan/VulkanQueue.h>
-#include <Modules/GPU/Vulkan/VulkanDevice.h>
-#include <Modules/GPU/Vulkan/VulkanPrototypes.h>
+#include <Modules/GPU/Backends/Vulkan/VulkanQueue.h>
+#include <Modules/GPU/Backends/Vulkan/VulkanDevice.h>
+#include <Modules/GPU/Backends/Vulkan/VulkanPrototypes.h>
 
 #include <Modules/GPU/RHI/RHICore.h>
 

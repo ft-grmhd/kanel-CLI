@@ -2,14 +2,14 @@
 // This file is part of "kanel-CLI"
 // For conditions of distribution and use, see copyright notice in LICENSE
 
-#include <Modules/GPU/Vulkan/VulkanShaderLoader.h>
+#include <Modules/GPU/Backends/Vulkan/VulkanShaderLoader.h>
 
 #include <stdint.h>
 #include <stdlib.h>
 
 // Modules
 const uint8_t maths_constants_module[] = {
-	#include <Modules/GPU/Vulkan/Resources/Shaders/Modules/Maths/Constants.nzslb.h>
+	#include <Modules/GPU/Backends/Vulkan/Resources/Shaders/Modules/Maths/Constants.nzslb.h>
 };
 
 KbhRHIResult kbhVulkanCreateShaderLoader(KbhVulkanShaderLoader** loader)

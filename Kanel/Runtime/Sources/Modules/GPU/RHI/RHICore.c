@@ -14,7 +14,7 @@
 #include <string.h>
 
 #ifdef KANEL_CLI_EMBEDDED_RHI_BACKENDS
-	#include <GPU/Vulkan/VulkanCore.h>
+	#include <Modules/GPU/Backends/Vulkan/VulkanCore.h>
 #endif
 
 #include <stdlib.h>
@@ -74,8 +74,8 @@ KbhRHIResult kbhRHIInit(KbhRHIContext* context)
 		}
 		kbhDebugLogFmt("RHI : '%s' backend loaded", backends_path[(int)backend]);
 	#else
-		KbhRHILoaderPFNs(*)(void) backends_loader[(int)KBH_RHI_TYPE_END_ENUM] = {
-			&kbhRHIVulkanBackendAcquirePFNs,
+		PFN_kbhRHILoaderPFNs backends_loader[(int)KBH_RHI_TYPE_END_ENUM] = {
+			(PFN_kbhRHILoaderPFNs)kbhRHIVulkanBackendAcquirePFNs,
 			KANEL_CLI_NULLPTR
 		};
 

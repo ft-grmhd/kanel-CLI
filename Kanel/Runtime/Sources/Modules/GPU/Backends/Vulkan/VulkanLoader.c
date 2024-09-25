@@ -2,7 +2,7 @@
 // This file is part of "kanel-CLI"
 // For conditions of distribution and use, see copyright notice in LICENSE
 
-#include <Modules/GPU/Vulkan/VulkanLoader.h>
+#include <Modules/GPU/Backends/Vulkan/VulkanLoader.h>
 
 #include <Core/LibLoader.h>
 #include <Core/Logs.h>
@@ -126,7 +126,7 @@ static void kbhVulkanLoadInstanceFunctions(void* context, PFN_vkVoidFunction (*l
 static void kbhVulkanLoadDeviceFunctions(KbhVulkanDevice device, PFN_vkVoidFunction (*load)(void*, const char*))
 {
 	#define KANEL_CLI_VULKAN_DEVICE_FUNCTION(func) device->func = (PFN_##func)load(device->device, #func);
-	#include <Modules/GPU/Vulkan/VulkanDevicePrototypes.h>
+	#include <Modules/GPU/Backends/Vulkan/VulkanDevicePrototypes.h>
 	#undef KANEL_CLI_VULKAN_DEVICE_FUNCTION
 
 	kbhDebugLog("Vulkan : vulkan device function loaded");

@@ -5,7 +5,7 @@
 #ifndef KANEL_CLI_VULKAN_INSTANCE
 #define KANEL_CLI_VULKAN_INSTANCE
 
-#include <Modules/GPU/Vulkan/VulkanCore.h>
+#include <Modules/GPU/Backends/Vulkan/VulkanCore.h>
 
 VkInstance kbhVulkanCreateInstance(const char** extensions_enabled, uint32_t extensions_count);
 void kbhVulkanDestroyInstance(VkInstance instance);

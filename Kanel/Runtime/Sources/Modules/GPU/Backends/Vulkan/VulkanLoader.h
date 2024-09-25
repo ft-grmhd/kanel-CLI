@@ -5,9 +5,9 @@
 #ifndef KANEL_CLI_VULKAN_LOADER
 #define KANEL_CLI_VULKAN_LOADER
 
-#include <Modules/GPU/Vulkan/VulkanDefs.h>
-#include <Modules/GPU/Vulkan/VulkanPrototypes.h>
-#include <Modules/GPU/Vulkan/VulkanDevice.h>
+#include <Modules/GPU/Backends/Vulkan/VulkanDefs.h>
+#include <Modules/GPU/Backends/Vulkan/VulkanPrototypes.h>
+#include <Modules/GPU/Backends/Vulkan/VulkanDevice.h>
 
 #include <vulkan/vulkan.h>
 

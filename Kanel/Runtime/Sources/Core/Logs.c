@@ -8,6 +8,13 @@
 
 #include <stdio.h>
 #include <stdarg.h>
+#include <string.h>
+
+#ifdef KANEL_CLI_PLAT_WINDOWS
+	#define PATH_SEPARATOR '\\'
+#else
+	#define PATH_SEPARATOR '/'
+#endif
 
 void kbhMessageBackend(const char* format, ...)
 {
@@ -21,7 +28,7 @@ void kbhMessageBackend(const char* format, ...)
 
 void kbhWarningBackend(const char* format, const char* file, const char* function, uint32_t line, ...)
 {
-	printf(KBH_ANSI_YELLOW "[kanel-CLI Warning]" KBH_ANSI_DEF " {in '%s;', line %u, '%s'} | ", file, line, function);
+	printf(KBH_ANSI_YELLOW "[kanel-CLI Warning]" KBH_ANSI_DEF " {in '%s;', line %u, '%s'} | ", strrchr(file, PATH_SEPARATOR), line, function);
 	va_list argptr;
 	va_start(argptr, line);
 	vfprintf(stdout, format, argptr);
@@ -31,7 +38,7 @@ void kbhWarningBackend(const char* format, const char* file, const char* functio
 
 void kbhErrorBackend(const char* format, const char* file, const char* function, uint32_t line, ...)
 {
-	fprintf(stderr, KBH_ANSI_RED "[kanel-CLI Error]" KBH_ANSI_DEF " {in '%s;', line %u, '%s'} | ", file, line, function);
+	fprintf(stderr, KBH_ANSI_RED "[kanel-CLI Error]" KBH_ANSI_DEF " {in '%s;', line %u, '%s'} | ", strrchr(file, PATH_SEPARATOR), line, function);
 	va_list argptr;
 	va_start(argptr, line);
 	vfprintf(stderr, format, argptr);
@@ -41,7 +48,7 @@ void kbhErrorBackend(const char* format, const char* file, const char* function,
 
 void kbhFatalErrorBackend(const char* format, const char* file, const char* function, uint32_t line, ...)
 {
-	fprintf(stderr, KBH_ANSI_RED "[kanel-CLI Fatal Error]" KBH_ANSI_DEF " {in '%s;', line %u, '%s'} | ", file, line, function);
+	fprintf(stderr, KBH_ANSI_RED "[kanel-CLI Fatal Error]" KBH_ANSI_DEF " {in '%s;', line %u, '%s'} | ", strrchr(file, PATH_SEPARATOR), line, function);
 	va_list argptr;
 	va_start(argptr, line);
 	vfprintf(stderr, format, argptr);

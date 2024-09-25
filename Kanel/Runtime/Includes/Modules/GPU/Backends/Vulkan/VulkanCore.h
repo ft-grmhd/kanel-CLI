@@ -5,7 +5,7 @@
 #ifndef KANEL_CLI_VULKAN_CORE
 #define KANEL_CLI_VULKAN_CORE
 
-#include <Modules/GPU/Vulkan/VulkanDefs.h>
+#include <Modules/GPU/Backends/Vulkan/VulkanDefs.h>
 
 #if defined(VULKAN_H_) && !defined(VK_NO_PROTOTYPES)
 	#error define VK_NO_PROTOTYPES needed
@@ -16,7 +16,7 @@
 #endif
 
 #ifndef VULKAN_H_
-	#include <vulkan/vulkan.h>
+	#include <vulkan/vulkan_core.h>
 #endif
 
 #include <Modules/GPU/RHI/RHILoader.h>

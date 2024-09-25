@@ -7,13 +7,8 @@
 
 #include <Core/CoreDefs.h>
 
-typedef struct KbhCoreApplication
-{
-	
-} KbhCoreApplication;
-
-KbhCoreApplication* kbhCreateCoreApplication(int argc, char** argv);
-KANEL_CLI_NONNULL(1) void kbhLaunchCoreApplication(const KbhCoreApplication* application);
-KANEL_CLI_NONNULL(1) void kbhDestroyCoreApplication(const KbhCoreApplication* application);
+int32_t kbhInitCoreApplication(int argc, char** argv);
+void kbhLaunchCoreApplication();
+void kbhShutdownCoreApplication();
 
 #endif

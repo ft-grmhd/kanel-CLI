@@ -6,10 +6,10 @@
 
 int main(int argc, char *argv[])
 {
-	KbhCoreApplication* application = kbhCreateCoreApplication(argc, argv);
-	if(!application)
-		return 1;
-	kbhLaunchCoreApplication(application);
-	kbhDestroyCoreApplication(application);
+	int32_t init_res = kbhInitCoreApplication(argc, argv);
+	if(init_res < 1)
+		return init_res;
+	kbhLaunchCoreApplication();
+	kbhShutdownCoreApplication();
 	return 0;
 }

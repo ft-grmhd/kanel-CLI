@@ -48,7 +48,7 @@ local gpu_backends = {
 		option = "vulkan",
 		deps = {"kanel_gpu"},
 		packages = {"nzsl", "vulkan-headers", "vulkan-memory-allocator"},
-		dir = "GPU/",
+		dir = "GPU/Backends/",
 		custom = function()
 			add_defines("VK_NO_PROTOTYPES")
 		end
@@ -65,6 +65,13 @@ local modules = {
 				add_defines("KANEL_CLI_EMBEDDED_RHI_BACKENDS")
 				for name, module in table.orderpairs(gpu_backends) do
 					if not module.option or has_config(module.option) then
+						if module.deps then
+							module = table.clone(module, 1)
+							module.deps = table.remove_if(table.clone(module.deps), function (idx, dep) return dep == "kanel_gpu" end)
+							if #module.deps == 0 then
+								module.deps = nil
+							end
+						end
 						ModuleTargetConfig(name, module)
 					end
 				end
@@ -195,15 +202,14 @@ function ModuleTargetConfig(name, module)
 		end
 	end
 
-	if module.overrideDir then
-		add_files("Kanel/Runtime/Sources/Modules/" .. module.overrideDir .. "/**.c")
-		add_files("Kanel/Runtime/Sources/Modules/" .. module.overrideDir .. "/**.cpp")
-	elseif module.dir then
-		add_files("Kanel/Runtime/Sources/Modules/" .. module.dir .. name .. "/**.c")
-		add_files("Kanel/Runtime/Sources/Modules/" .. module.dir .. name .. "/**.cpp")
-	else
-		add_files("Kanel/Runtime/Sources/Modules/" .. name .. "/**.c")
-		add_files("Kanel/Runtime/Sources/Modules/" .. name .. "/**.cpp")
+	for _, ext in ipairs({".c", ".cpp"}) do
+		if module.overrideDir then
+			add_files("Kanel/Runtime/Sources/Modules/" .. module.overrideDir .. "/**" .. ext)
+		elseif module.dir then
+			add_files("Kanel/Runtime/Sources/Modules/" .. module.dir .. name .. "/**" .. ext)
+		else
+			add_files("Kanel/Runtime/Sources/Modules/" .. name .. "/**" .. ext)
+		end
 	end
 
 	if has_config("compile_shaders") then
@@ -242,13 +248,14 @@ for name, module in pairs(modules) do
 			add_cflags("-fPIC")
 		end
 
-		add_ldflags("-Wl,--export-dynamic")
+		add_ldflags("-Wl,--export-dynamic", "-rdynamic")
 
 		add_includedirs("Kanel/Runtime/Sources")
 		add_rpathdirs("$ORIGIN")
 
 		if has_config("unitybuild") then
 			add_rules("c.unity_build", { batchsize = 12 })
+			add_defines("UNITY_BUILD_ENABLED")
 		end
 
 		on_clean(function(target)
@@ -279,7 +286,7 @@ target("kanel_cli")
 	add_includedirs("Kanel/Runtime/Sources")
 	add_rpathdirs("$ORIGIN")
 
-	add_ldflags("-Wl,--export-dynamic")
+	add_ldflags("-Wl,--export-dynamic", "-rdynamic")
 
 	if is_plat("linux") then
 		add_syslinks("dl")
@@ -289,12 +296,12 @@ target("kanel_cli")
 
 	if has_config("unitybuild") then
 		add_rules("c.unity_build", { batchsize = 0 })
+		add_defines("UNITY_BUILD_ENABLED")
 	end
 
 	for _, dir in ipairs(os.dirs("Kanel/Runtime/Sources/*")) do
 		if dir ~= "Kanel/Runtime/Sources/Modules" then
 			add_files(dir .. "/**.c", { unity_group = dir })
-			add_files(dir .. "/**.cpp")
 		end
 	end
 

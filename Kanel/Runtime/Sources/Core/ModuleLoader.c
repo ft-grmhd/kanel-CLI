@@ -4,7 +4,7 @@
 
 #include <Core/ModuleLoader.h>
 #include <Core/RuntimeOptions.h>
-#include <GPU/RHIBindPoint.h>
+#include <Core/ModulesBindPoints/GPU/RHIBindPoint.h>
 #include <Core/Logs.h>
 
 #include <Config.h>

@@ -5,9 +5,9 @@
 #ifndef KANEL_CLI_VULKAN_DEVICE
 #define KANEL_CLI_VULKAN_DEVICE
 
-#include <Modules/GPU/Vulkan/VulkanCore.h>
-#include <Modules/GPU/Vulkan/VulkanQueue.h>
-#include <Modules/GPU/Vulkan/VulkanInternalEnums.h>
+#include <Modules/GPU/Backends/Vulkan/VulkanCore.h>
+#include <Modules/GPU/Backends/Vulkan/VulkanQueue.h>
+#include <Modules/GPU/Backends/Vulkan/VulkanInternalEnums.h>
 
 #define VMA_STATIC_VULKAN_FUNCTIONS 0
 #define VMA_DYNAMIC_VULKAN_FUNCTIONS 0
@@ -30,7 +30,7 @@ typedef struct KbhVulkanDeviceHandler
 	VmaAllocator allocator;
 
 	#define KANEL_CLI_VULKAN_DEVICE_FUNCTION(func) PFN_##func func;
-	#include <Modules/GPU/Vulkan/VulkanDevicePrototypes.h>
+	#include <Modules/GPU/Backends/Vulkan/VulkanDevicePrototypes.h>
 	#undef KANEL_CLI_VULKAN_DEVICE_FUNCTION
 } KbhVulkanDeviceHandler;
 

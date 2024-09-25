@@ -2,7 +2,7 @@
 // This file is part of "kanel-CLI"
 // For conditions of distribution and use, see copyright notice in LICENSE
 
-#include <GPU/RHIBindPoint.h>
+#include <Core/ModulesBindPoints/GPU/RHIBindPoint.h>
 #include <Core/CompilationProfile.h>
 #include <Core/Logs.h>
 

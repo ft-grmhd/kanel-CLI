@@ -5,8 +5,8 @@
 #ifndef KANEL_CLI_VULKAN_QUEUE
 #define KANEL_CLI_VULKAN_QUEUE
 
-#include <Modules/GPU/Vulkan/VulkanCore.h>
-#include <Modules/GPU/Vulkan/VulkanInternalEnums.h>
+#include <Modules/GPU/Backends/Vulkan/VulkanCore.h>
+#include <Modules/GPU/Backends/Vulkan/VulkanInternalEnums.h>
 
 #include <stdint.h>
 

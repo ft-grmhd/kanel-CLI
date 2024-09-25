@@ -5,25 +5,32 @@
 #include <Core/Application.h>
 #include <Core/RuntimeOptions.h>
 #include <Core/ModuleLoader.h>
-#include <GPU/GPUSupport.h>
+#include <Core/ModulesBindPoints/GPU/GPUSupport.h>
 
 #include <stdlib.h>
 
-KbhCoreApplication* kbhCreateCoreApplication(int argc, char** argv)
+typedef struct KbhCoreApplication
 {
-	KbhCoreApplication* application = (KbhCoreApplication*)malloc(sizeof(KbhCoreApplication));
-	if(!application)
-		return KANEL_CLI_NULLPTR;
+	
+} KbhCoreApplication;
+
+static KbhCoreApplication* core_application = KANEL_CLI_NULLPTR;
+
+int32_t kbhInitCoreApplication(int argc, char** argv)
+{
+	core_application = (KbhCoreApplication*)malloc(sizeof(KbhCoreApplication));
+	if(!core_application)
+		return -1;
 	if(!kbhRuntimeOptionsParseCmd(argc, argv))
 	{
 		kbhRuntimeOptionsClear();
 		return 0;
 	}
 	kbhCoreLoadAllModulesFromCmdLine();
-	return application;
+	return 1;
 }
 
-void kbhLaunchCoreApplication(const KbhCoreApplication* application)
+void kbhLaunchCoreApplication()
 {
 	// tests
 	char dummy[1024];
@@ -34,9 +41,9 @@ void kbhLaunchCoreApplication(const KbhCoreApplication* application)
 	}
 }
 
-void kbhDestroyCoreApplication(const KbhCoreApplication* application)
+void kbhShutdownCoreApplication()
 {
 	kbhCoreUnloadAllModules();
 	kbhRuntimeOptionsClear();
-	free((void*)application);
+	free((void*)core_application);
 }

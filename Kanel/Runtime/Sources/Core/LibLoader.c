@@ -36,7 +36,7 @@ KbhLibModule kbhLoadLibrary(const char* libpath)
 			kbhErrorFmt("Lib Loader : could not load %s", libpath);
 	#else
 		dlerror();
-		module = dlopen(libpath, RTLD_NOW | RTLD_LOCAL);
+		module = dlopen(libpath, RTLD_LAZY | RTLD_GLOBAL);
 		if(!module)
 			kbhErrorFmt("Lib Loader : could not load %s. %s", libpath, dlerror());
 	#endif
