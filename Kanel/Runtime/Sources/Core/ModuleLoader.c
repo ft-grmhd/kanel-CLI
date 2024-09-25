@@ -19,27 +19,27 @@ typedef struct KbhCoreModuleDescriptor
 	KbhCoreModule type;
 } KbhCoreModuleDescriptor;
 
-static KbhCoreModuleDescriptor* head = KANEL_CLI_NULLPTR;
+static KbhCoreModuleDescriptor* module_descriptors_head = KANEL_CLI_NULLPTR;
 
 static void kbhAddLibModule(KbhLibModule module, KbhCoreModule type)
 {
 	KbhCoreModuleDescriptor* descriptor = (KbhCoreModuleDescriptor*)malloc(sizeof(KbhCoreModuleDescriptor));
 	if(!descriptor)
 		kbhFatalError("allocation failed");
-	descriptor->next = head;
+	descriptor->next = module_descriptors_head;
 	descriptor->module = module;
 	descriptor->type = type;
-	head = descriptor;
+	module_descriptors_head = descriptor;
 }
 
 static void kbhRemoveLibModule(KbhCoreModule type)
 {
-	KbhCoreModuleDescriptor* ptr = head;
+	KbhCoreModuleDescriptor* ptr = module_descriptors_head;
 	if(ptr == KANEL_CLI_NULLPTR)
 		return;
 	if(ptr->type == type)
 	{
-		head = ptr->next;
+		module_descriptors_head = ptr->next;
 		free((void*)ptr);
 		return;
 	}
@@ -93,8 +93,8 @@ KbhLibModule kbhCoreLoadModule(KbhCoreModule type)
 
 void kbhCoreUnloadAllModules()
 {
-	while(head != KANEL_CLI_NULLPTR)
-		kbhCoreUnloadModule(head->type);
+	while(module_descriptors_head != KANEL_CLI_NULLPTR)
+		kbhCoreUnloadModule(module_descriptors_head->type);
 }
 
 void kbhCoreUnloadModule(KbhCoreModule type)

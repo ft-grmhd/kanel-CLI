@@ -35,14 +35,14 @@ typedef struct KbhRuntimeOption
 	KbhRuntimeOptionType type;
 } KbhRuntimeOption;
 
-static KbhRuntimeOption* head = KANEL_CLI_NULLPTR;
+static KbhRuntimeOption* runtime_options_head = KANEL_CLI_NULLPTR;
 
 static void kbhAddRuntimeOptionStringToList(const char* name, const char* string)
 {
 	KbhRuntimeOption* option = (KbhRuntimeOption*)malloc(sizeof(KbhRuntimeOption));
 	if(!option)
 		kbhFatalError("allocation failed");
-	option->next = head;
+	option->next = runtime_options_head;
 	option->name = strdup(name);
 	if(!option->name)
 		kbhFatalError("allocation failed");
@@ -50,7 +50,7 @@ static void kbhAddRuntimeOptionStringToList(const char* name, const char* string
 	if(!option->string)
 		kbhFatalError("allocation failed");
 	option->type = KBH_RUNTIME_OPTION_STRING;
-	head = option;
+	runtime_options_head = option;
 }
 
 static void kbhAddRuntimeOptionFloat32ToList(const char* name, float f32)
@@ -58,13 +58,13 @@ static void kbhAddRuntimeOptionFloat32ToList(const char* name, float f32)
 	KbhRuntimeOption* option = (KbhRuntimeOption*)malloc(sizeof(KbhRuntimeOption));
 	if(!option)
 		kbhFatalError("allocation failed");
-	option->next = head;
+	option->next = runtime_options_head;
 	option->name = strdup(name);
 	if(!option->name)
 		kbhFatalError("allocation failed");
 	option->f32 = f32;
 	option->type = KBH_RUNTIME_OPTION_FLOAT32;
-	head = option;
+	runtime_options_head = option;
 }
 
 static void kbhAddRuntimeOptionFloat64ToList(const char* name, double f64)
@@ -72,13 +72,13 @@ static void kbhAddRuntimeOptionFloat64ToList(const char* name, double f64)
 	KbhRuntimeOption* option = (KbhRuntimeOption*)malloc(sizeof(KbhRuntimeOption));
 	if(!option)
 		kbhFatalError("allocation failed");
-	option->next = head;
+	option->next = runtime_options_head;
 	option->name = strdup(name);
 	if(!option->name)
 		kbhFatalError("allocation failed");
 	option->f64 = f64;
 	option->type = KBH_RUNTIME_OPTION_INT;
-	head = option;
+	runtime_options_head = option;
 }
 
 static void kbhAddRuntimeOptionIntegerToList(const char* name, int32_t integer)
@@ -86,13 +86,13 @@ static void kbhAddRuntimeOptionIntegerToList(const char* name, int32_t integer)
 	KbhRuntimeOption* option = (KbhRuntimeOption*)malloc(sizeof(KbhRuntimeOption));
 	if(!option)
 		kbhFatalError("allocation failed");
-	option->next = head;
+	option->next = runtime_options_head;
 	option->name = strdup(name);
 	if(!option->name)
 		kbhFatalError("allocation failed");
 	option->integer = integer;
 	option->type = KBH_RUNTIME_OPTION_INT;
-	head = option;
+	runtime_options_head = option;
 }
 
 static void kbhAddRuntimeOptionBooleanToList(const char* name, bool boolean)
@@ -100,13 +100,13 @@ static void kbhAddRuntimeOptionBooleanToList(const char* name, bool boolean)
 	KbhRuntimeOption* option = (KbhRuntimeOption*)malloc(sizeof(KbhRuntimeOption));
 	if(!option)
 		kbhFatalError("allocation failed");
-	option->next = head;
+	option->next = runtime_options_head;
 	option->name = strdup(name);
 	if(!option->name)
 		kbhFatalError("allocation failed");
 	option->boolean = boolean;
 	option->type = KBH_RUNTIME_OPTION_BOOL;
-	head = option;
+	runtime_options_head = option;
 }
 
 bool kbhRuntimeOptionsParseCmd(int argc, char** argv)
@@ -140,7 +140,7 @@ bool kbhRuntimeOptionsParseCmd(int argc, char** argv)
 
 bool kbhRuntimeOptionsGetString(const char* opt_name, char* dst, size_t dst_len)
 {
-	KbhRuntimeOption* ptr = head;
+	KbhRuntimeOption* ptr = runtime_options_head;
 	while(ptr != KANEL_CLI_NULLPTR)
 	{
 		if(strcmp(ptr->name, opt_name) == 0)
@@ -163,7 +163,7 @@ bool kbhRuntimeOptionsGetString(const char* opt_name, char* dst, size_t dst_len)
 
 bool kbhRuntimeOptionsGetFloat64(const char* opt_name, double* dst)
 {
-	KbhRuntimeOption* ptr = head;
+	KbhRuntimeOption* ptr = runtime_options_head;
 	while(ptr != KANEL_CLI_NULLPTR)
 	{
 		if(strcmp(ptr->name, opt_name) == 0)
@@ -181,7 +181,7 @@ bool kbhRuntimeOptionsGetFloat64(const char* opt_name, double* dst)
 
 bool kbhRuntimeOptionsGetFloat32(const char* opt_name, float* dst)
 {
-	KbhRuntimeOption* ptr = head;
+	KbhRuntimeOption* ptr = runtime_options_head;
 	while(ptr != KANEL_CLI_NULLPTR)
 	{
 		if(strcmp(ptr->name, opt_name) == 0)
@@ -199,7 +199,7 @@ bool kbhRuntimeOptionsGetFloat32(const char* opt_name, float* dst)
 
 bool kbhRuntimeOptionsGetInt(const char* opt_name, int32_t* dst)
 {
-	KbhRuntimeOption* ptr = head;
+	KbhRuntimeOption* ptr = runtime_options_head;
 	while(ptr != KANEL_CLI_NULLPTR)
 	{
 		if(strcmp(ptr->name, opt_name) == 0)
@@ -217,7 +217,7 @@ bool kbhRuntimeOptionsGetInt(const char* opt_name, int32_t* dst)
 
 bool kbhRuntimeOptionsGetBool(const char* opt_name, bool* dst)
 {
-	KbhRuntimeOption* ptr = head;
+	KbhRuntimeOption* ptr = runtime_options_head;
 	while(ptr != KANEL_CLI_NULLPTR)
 	{
 		if(strcmp(ptr->name, opt_name) == 0)
@@ -235,7 +235,7 @@ bool kbhRuntimeOptionsGetBool(const char* opt_name, bool* dst)
 
 void kbhRuntimeOptionsClear()
 {
-	KbhRuntimeOption* ptr = head;
+	KbhRuntimeOption* ptr = runtime_options_head;
 	while(ptr != KANEL_CLI_NULLPTR)
 	{
 		KbhRuntimeOption* tmp = ptr->next;

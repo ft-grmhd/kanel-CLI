@@ -115,6 +115,7 @@ add_rules("build.gpu_plugins")
 option("compile_shaders", { description = "Compile nzsl shaders into an includable binary version", default = true })
 option("static", { description = "Build the engine statically (implies embed_gpu_backends)", default = is_plat("wasm") or false })
 option("embed_gpu_backends", { description = "Embed GPU backend code into libkanelcli_gpu instead of loading them dynamically", default = is_plat("wasm") or false })
+option("unitybuild", { description = "Build the engine using unity build", default = false })
 
 add_requires("vrg")
 
@@ -241,8 +242,14 @@ for name, module in pairs(modules) do
 			add_cflags("-fPIC")
 		end
 
+		add_ldflags("-Wl,--export-dynamic")
+
 		add_includedirs("Kanel/Runtime/Sources")
 		add_rpathdirs("$ORIGIN")
+
+		if has_config("unitybuild") then
+			add_rules("c.unity_build", { batchsize = 12 })
+		end
 
 		on_clean(function(target)
 			if target:objectfiles() then
@@ -280,9 +287,13 @@ target("kanel_cli")
 
 	add_packages("vrg")
 
+	if has_config("unitybuild") then
+		add_rules("c.unity_build", { batchsize = 0 })
+	end
+
 	for _, dir in ipairs(os.dirs("Kanel/Runtime/Sources/*")) do
 		if dir ~= "Kanel/Runtime/Sources/Modules" then
-			add_files(dir .. "/**.c")
+			add_files(dir .. "/**.c", { unity_group = dir })
 			add_files(dir .. "/**.cpp")
 		end
 	end

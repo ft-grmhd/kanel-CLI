@@ -1,96 +1,101 @@
 [
 {
-  "directory": "/home/kbz8/Documents/Code/GRMHD/kanel-CLI",
+  "directory": "/home/kbz_8/Documents/Code/GRMHD/kanel-CLI",
+  "arguments": ["/usr/bin/clang", "-c", "-Qunused-arguments", "-m64", "-fPIC", "-g", "-O3", "-std=c++20", "-IKanel/Runtime/Includes", "-IKanel/Build", "-IKanel/Runtime/Sources", "-DKANEL_CLI_DEBUG", "-DKANEL_CLI_VULKAN_BUILD", "-DKANEL_CLI_VULKAN_DEBUG", "-DVK_NO_PROTOTYPES", "-DNZSL_STATIC", "-I", "/home/kbz_8/.xmake/packages/n/nzsl/2024.09.14/f8c5efc4c4b245579e8bacfb7125a63c/include", "-I", "/home/kbz_8/.xmake/packages/n/nazarautils/2024.08.27/c5665ee714854eb0b8ca0680632e4dc1/include", "-I", "/home/kbz_8/.xmake/packages/f/fmt/11.0.2/d396b4e809304cf1ad4202e5aa292d4c/include", "-I", "/home/kbz_8/.xmake/packages/e/efsw/1.4.0/6f9ce721488c4ab5b84d813f9ec32998/include", "-I", "/home/kbz_8/.xmake/packages/v/vulkan-memory-allocator/v3.1.0/0071e6d310bd4794889fe99914304a77/include", "-o", "build/Objs/linux_x86_64/kanel_vulkan/linux/x86_64/debug/Kanel/Runtime/Sources/Modules/GPU/Vulkan/VulkanVMAImplementation.cpp.o", "Kanel/Runtime/Sources/Modules/GPU/Vulkan/VulkanVMAImplementation.cpp"],
+  "file": "Kanel/Runtime/Sources/Modules/GPU/Vulkan/VulkanVMAImplementation.cpp"
+},
+{
+  "directory": "/home/kbz_8/Documents/Code/GRMHD/kanel-CLI",
+  "arguments": ["/usr/bin/clang", "-c", "-Qunused-arguments", "-m64", "-g", "-O3", "-std=c23", "-IKanel/Runtime/Includes", "-IKanel/Build", "-IKanel/Runtime/Sources", "-DKANEL_CLI_DEBUG", "-DKANEL_CLI_VULKAN_BUILD", "-DKANEL_CLI_VULKAN_DEBUG", "-DVK_NO_PROTOTYPES", "-DNZSL_STATIC", "-I", "/home/kbz_8/.xmake/packages/n/nzsl/2024.09.14/f8c5efc4c4b245579e8bacfb7125a63c/include", "-I", "/home/kbz_8/.xmake/packages/n/nazarautils/2024.08.27/c5665ee714854eb0b8ca0680632e4dc1/include", "-I", "/home/kbz_8/.xmake/packages/f/fmt/11.0.2/d396b4e809304cf1ad4202e5aa292d4c/include", "-I", "/home/kbz_8/.xmake/packages/e/efsw/1.4.0/6f9ce721488c4ab5b84d813f9ec32998/include", "-I", "/home/kbz_8/.xmake/packages/v/vulkan-memory-allocator/v3.1.0/0071e6d310bd4794889fe99914304a77/include", "-fPIC", "-o", "build/Objs/linux_x86_64/kanel_vulkan/linux/x86_64/debug/Kanel/Runtime/Sources/Modules/GPU/Vulkan/VulkanCommandBuffer.c.o", "Kanel/Runtime/Sources/Modules/GPU/Vulkan/VulkanCommandBuffer.c"],
+  "file": "Kanel/Runtime/Sources/Modules/GPU/Vulkan/VulkanCommandBuffer.c"
+},
+{
+  "directory": "/home/kbz_8/Documents/Code/GRMHD/kanel-CLI",
+  "arguments": ["/usr/bin/clang", "-c", "-Qunused-arguments", "-m64", "-g", "-O3", "-std=c23", "-IKanel/Runtime/Includes", "-IKanel/Build", "-IKanel/Runtime/Sources", "-DKANEL_CLI_DEBUG", "-DKANEL_CLI_VULKAN_BUILD", "-DKANEL_CLI_VULKAN_DEBUG", "-DVK_NO_PROTOTYPES", "-DNZSL_STATIC", "-I", "/home/kbz_8/.xmake/packages/n/nzsl/2024.09.14/f8c5efc4c4b245579e8bacfb7125a63c/include", "-I", "/home/kbz_8/.xmake/packages/n/nazarautils/2024.08.27/c5665ee714854eb0b8ca0680632e4dc1/include", "-I", "/home/kbz_8/.xmake/packages/f/fmt/11.0.2/d396b4e809304cf1ad4202e5aa292d4c/include", "-I", "/home/kbz_8/.xmake/packages/e/efsw/1.4.0/6f9ce721488c4ab5b84d813f9ec32998/include", "-I", "/home/kbz_8/.xmake/packages/v/vulkan-memory-allocator/v3.1.0/0071e6d310bd4794889fe99914304a77/include", "-fPIC", "-o", "build/Objs/linux_x86_64/kanel_vulkan/linux/x86_64/debug/Kanel/Runtime/Sources/Modules/GPU/Vulkan/VulkanCommandPool.c.o", "Kanel/Runtime/Sources/Modules/GPU/Vulkan/VulkanCommandPool.c"],
+  "file": "Kanel/Runtime/Sources/Modules/GPU/Vulkan/VulkanCommandPool.c"
+},
+{
+  "directory": "/home/kbz_8/Documents/Code/GRMHD/kanel-CLI",
+  "arguments": ["/usr/bin/clang", "-c", "-Qunused-arguments", "-m64", "-g", "-O3", "-std=c23", "-IKanel/Runtime/Includes", "-IKanel/Build", "-IKanel/Runtime/Sources", "-DKANEL_CLI_DEBUG", "-DKANEL_CLI_VULKAN_BUILD", "-DKANEL_CLI_VULKAN_DEBUG", "-DVK_NO_PROTOTYPES", "-DNZSL_STATIC", "-I", "/home/kbz_8/.xmake/packages/n/nzsl/2024.09.14/f8c5efc4c4b245579e8bacfb7125a63c/include", "-I", "/home/kbz_8/.xmake/packages/n/nazarautils/2024.08.27/c5665ee714854eb0b8ca0680632e4dc1/include", "-I", "/home/kbz_8/.xmake/packages/f/fmt/11.0.2/d396b4e809304cf1ad4202e5aa292d4c/include", "-I", "/home/kbz_8/.xmake/packages/e/efsw/1.4.0/6f9ce721488c4ab5b84d813f9ec32998/include", "-I", "/home/kbz_8/.xmake/packages/v/vulkan-memory-allocator/v3.1.0/0071e6d310bd4794889fe99914304a77/include", "-fPIC", "-o", "build/Objs/linux_x86_64/kanel_vulkan/linux/x86_64/debug/Kanel/Runtime/Sources/Modules/GPU/Vulkan/VulkanCore.c.o", "Kanel/Runtime/Sources/Modules/GPU/Vulkan/VulkanCore.c"],
+  "file": "Kanel/Runtime/Sources/Modules/GPU/Vulkan/VulkanCore.c"
+},
+{
+  "directory": "/home/kbz_8/Documents/Code/GRMHD/kanel-CLI",
+  "arguments": ["/usr/bin/clang", "-c", "-Qunused-arguments", "-m64", "-g", "-O3", "-std=c23", "-IKanel/Runtime/Includes", "-IKanel/Build", "-IKanel/Runtime/Sources", "-DKANEL_CLI_DEBUG", "-DKANEL_CLI_VULKAN_BUILD", "-DKANEL_CLI_VULKAN_DEBUG", "-DVK_NO_PROTOTYPES", "-DNZSL_STATIC", "-I", "/home/kbz_8/.xmake/packages/n/nzsl/2024.09.14/f8c5efc4c4b245579e8bacfb7125a63c/include", "-I", "/home/kbz_8/.xmake/packages/n/nazarautils/2024.08.27/c5665ee714854eb0b8ca0680632e4dc1/include", "-I", "/home/kbz_8/.xmake/packages/f/fmt/11.0.2/d396b4e809304cf1ad4202e5aa292d4c/include", "-I", "/home/kbz_8/.xmake/packages/e/efsw/1.4.0/6f9ce721488c4ab5b84d813f9ec32998/include", "-I", "/home/kbz_8/.xmake/packages/v/vulkan-memory-allocator/v3.1.0/0071e6d310bd4794889fe99914304a77/include", "-fPIC", "-o", "build/Objs/linux_x86_64/kanel_vulkan/linux/x86_64/debug/Kanel/Runtime/Sources/Modules/GPU/Vulkan/VulkanQueue.c.o", "Kanel/Runtime/Sources/Modules/GPU/Vulkan/VulkanQueue.c"],
+  "file": "Kanel/Runtime/Sources/Modules/GPU/Vulkan/VulkanQueue.c"
+},
+{
+  "directory": "/home/kbz_8/Documents/Code/GRMHD/kanel-CLI",
+  "arguments": ["/usr/bin/clang", "-c", "-Qunused-arguments", "-m64", "-g", "-O3", "-std=c23", "-IKanel/Runtime/Includes", "-IKanel/Build", "-IKanel/Runtime/Sources", "-DKANEL_CLI_DEBUG", "-DKANEL_CLI_VULKAN_BUILD", "-DKANEL_CLI_VULKAN_DEBUG", "-DVK_NO_PROTOTYPES", "-DNZSL_STATIC", "-I", "/home/kbz_8/.xmake/packages/n/nzsl/2024.09.14/f8c5efc4c4b245579e8bacfb7125a63c/include", "-I", "/home/kbz_8/.xmake/packages/n/nazarautils/2024.08.27/c5665ee714854eb0b8ca0680632e4dc1/include", "-I", "/home/kbz_8/.xmake/packages/f/fmt/11.0.2/d396b4e809304cf1ad4202e5aa292d4c/include", "-I", "/home/kbz_8/.xmake/packages/e/efsw/1.4.0/6f9ce721488c4ab5b84d813f9ec32998/include", "-I", "/home/kbz_8/.xmake/packages/v/vulkan-memory-allocator/v3.1.0/0071e6d310bd4794889fe99914304a77/include", "-fPIC", "-o", "build/Objs/linux_x86_64/kanel_vulkan/linux/x86_64/debug/Kanel/Runtime/Sources/Modules/GPU/Vulkan/VulkanLoader.c.o", "Kanel/Runtime/Sources/Modules/GPU/Vulkan/VulkanLoader.c"],
+  "file": "Kanel/Runtime/Sources/Modules/GPU/Vulkan/VulkanLoader.c"
+},
+{
+  "directory": "/home/kbz_8/Documents/Code/GRMHD/kanel-CLI",
+  "arguments": ["/usr/bin/clang", "-c", "-Qunused-arguments", "-m64", "-g", "-O3", "-std=c23", "-IKanel/Runtime/Includes", "-IKanel/Build", "-IKanel/Runtime/Sources", "-DKANEL_CLI_DEBUG", "-DKANEL_CLI_VULKAN_BUILD", "-DKANEL_CLI_VULKAN_DEBUG", "-DVK_NO_PROTOTYPES", "-DNZSL_STATIC", "-I", "/home/kbz_8/.xmake/packages/n/nzsl/2024.09.14/f8c5efc4c4b245579e8bacfb7125a63c/include", "-I", "/home/kbz_8/.xmake/packages/n/nazarautils/2024.08.27/c5665ee714854eb0b8ca0680632e4dc1/include", "-I", "/home/kbz_8/.xmake/packages/f/fmt/11.0.2/d396b4e809304cf1ad4202e5aa292d4c/include", "-I", "/home/kbz_8/.xmake/packages/e/efsw/1.4.0/6f9ce721488c4ab5b84d813f9ec32998/include", "-I", "/home/kbz_8/.xmake/packages/v/vulkan-memory-allocator/v3.1.0/0071e6d310bd4794889fe99914304a77/include", "-fPIC", "-o", "build/Objs/linux_x86_64/kanel_vulkan/linux/x86_64/debug/Kanel/Runtime/Sources/Modules/GPU/Vulkan/VulkanShaderLoader.c.o", "Kanel/Runtime/Sources/Modules/GPU/Vulkan/VulkanShaderLoader.c"],
+  "file": "Kanel/Runtime/Sources/Modules/GPU/Vulkan/VulkanShaderLoader.c"
+},
+{
+  "directory": "/home/kbz_8/Documents/Code/GRMHD/kanel-CLI",
+  "arguments": ["/usr/bin/clang", "-c", "-Qunused-arguments", "-m64", "-g", "-O3", "-std=c23", "-IKanel/Runtime/Includes", "-IKanel/Build", "-IKanel/Runtime/Sources", "-DKANEL_CLI_DEBUG", "-DKANEL_CLI_VULKAN_BUILD", "-DKANEL_CLI_VULKAN_DEBUG", "-DVK_NO_PROTOTYPES", "-DNZSL_STATIC", "-I", "/home/kbz_8/.xmake/packages/n/nzsl/2024.09.14/f8c5efc4c4b245579e8bacfb7125a63c/include", "-I", "/home/kbz_8/.xmake/packages/n/nazarautils/2024.08.27/c5665ee714854eb0b8ca0680632e4dc1/include", "-I", "/home/kbz_8/.xmake/packages/f/fmt/11.0.2/d396b4e809304cf1ad4202e5aa292d4c/include", "-I", "/home/kbz_8/.xmake/packages/e/efsw/1.4.0/6f9ce721488c4ab5b84d813f9ec32998/include", "-I", "/home/kbz_8/.xmake/packages/v/vulkan-memory-allocator/v3.1.0/0071e6d310bd4794889fe99914304a77/include", "-fPIC", "-o", "build/Objs/linux_x86_64/kanel_vulkan/linux/x86_64/debug/Kanel/Runtime/Sources/Modules/GPU/Vulkan/VulkanPipeline.c.o", "Kanel/Runtime/Sources/Modules/GPU/Vulkan/VulkanPipeline.c"],
+  "file": "Kanel/Runtime/Sources/Modules/GPU/Vulkan/VulkanPipeline.c"
+},
+{
+  "directory": "/home/kbz_8/Documents/Code/GRMHD/kanel-CLI",
+  "arguments": ["/usr/bin/clang", "-c", "-Qunused-arguments", "-m64", "-g", "-O3", "-std=c23", "-IKanel/Runtime/Includes", "-IKanel/Build", "-IKanel/Runtime/Sources", "-DKANEL_CLI_DEBUG", "-DKANEL_CLI_VULKAN_BUILD", "-DKANEL_CLI_VULKAN_DEBUG", "-DVK_NO_PROTOTYPES", "-DNZSL_STATIC", "-I", "/home/kbz_8/.xmake/packages/n/nzsl/2024.09.14/f8c5efc4c4b245579e8bacfb7125a63c/include", "-I", "/home/kbz_8/.xmake/packages/n/nazarautils/2024.08.27/c5665ee714854eb0b8ca0680632e4dc1/include", "-I", "/home/kbz_8/.xmake/packages/f/fmt/11.0.2/d396b4e809304cf1ad4202e5aa292d4c/include", "-I", "/home/kbz_8/.xmake/packages/e/efsw/1.4.0/6f9ce721488c4ab5b84d813f9ec32998/include", "-I", "/home/kbz_8/.xmake/packages/v/vulkan-memory-allocator/v3.1.0/0071e6d310bd4794889fe99914304a77/include", "-fPIC", "-o", "build/Objs/linux_x86_64/kanel_vulkan/linux/x86_64/debug/Kanel/Runtime/Sources/Modules/GPU/Vulkan/VulkanInstance.c.o", "Kanel/Runtime/Sources/Modules/GPU/Vulkan/VulkanInstance.c"],
+  "file": "Kanel/Runtime/Sources/Modules/GPU/Vulkan/VulkanInstance.c"
+},
+{
+  "directory": "/home/kbz_8/Documents/Code/GRMHD/kanel-CLI",
+  "arguments": ["/usr/bin/clang", "-c", "-Qunused-arguments", "-m64", "-g", "-O3", "-std=c23", "-IKanel/Runtime/Includes", "-IKanel/Build", "-IKanel/Runtime/Sources", "-DKANEL_CLI_DEBUG", "-DKANEL_CLI_VULKAN_BUILD", "-DKANEL_CLI_VULKAN_DEBUG", "-DVK_NO_PROTOTYPES", "-DNZSL_STATIC", "-I", "/home/kbz_8/.xmake/packages/n/nzsl/2024.09.14/f8c5efc4c4b245579e8bacfb7125a63c/include", "-I", "/home/kbz_8/.xmake/packages/n/nazarautils/2024.08.27/c5665ee714854eb0b8ca0680632e4dc1/include", "-I", "/home/kbz_8/.xmake/packages/f/fmt/11.0.2/d396b4e809304cf1ad4202e5aa292d4c/include", "-I", "/home/kbz_8/.xmake/packages/e/efsw/1.4.0/6f9ce721488c4ab5b84d813f9ec32998/include", "-I", "/home/kbz_8/.xmake/packages/v/vulkan-memory-allocator/v3.1.0/0071e6d310bd4794889fe99914304a77/include", "-fPIC", "-o", "build/Objs/linux_x86_64/kanel_vulkan/linux/x86_64/debug/Kanel/Runtime/Sources/Modules/GPU/Vulkan/VulkanDevice.c.o", "Kanel/Runtime/Sources/Modules/GPU/Vulkan/VulkanDevice.c"],
+  "file": "Kanel/Runtime/Sources/Modules/GPU/Vulkan/VulkanDevice.c"
+},
+{
+  "directory": "/home/kbz_8/Documents/Code/GRMHD/kanel-CLI",
+  "arguments": ["/usr/bin/clang", "-c", "-Qunused-arguments", "-m64", "-g", "-O3", "-std=c23", "-IKanel/Runtime/Includes", "-IKanel/Build", "-IKanel/Runtime/Sources", "-DKANEL_CLI_DEBUG", "-DKANEL_CLI_VULKAN_BUILD", "-DKANEL_CLI_VULKAN_DEBUG", "-DVK_NO_PROTOTYPES", "-DNZSL_STATIC", "-I", "/home/kbz_8/.xmake/packages/n/nzsl/2024.09.14/f8c5efc4c4b245579e8bacfb7125a63c/include", "-I", "/home/kbz_8/.xmake/packages/n/nazarautils/2024.08.27/c5665ee714854eb0b8ca0680632e4dc1/include", "-I", "/home/kbz_8/.xmake/packages/f/fmt/11.0.2/d396b4e809304cf1ad4202e5aa292d4c/include", "-I", "/home/kbz_8/.xmake/packages/e/efsw/1.4.0/6f9ce721488c4ab5b84d813f9ec32998/include", "-I", "/home/kbz_8/.xmake/packages/v/vulkan-memory-allocator/v3.1.0/0071e6d310bd4794889fe99914304a77/include", "-fPIC", "-o", "build/Objs/linux_x86_64/kanel_vulkan/linux/x86_64/debug/Kanel/Runtime/Sources/Modules/GPU/Vulkan/VulkanBuffer.c.o", "Kanel/Runtime/Sources/Modules/GPU/Vulkan/VulkanBuffer.c"],
+  "file": "Kanel/Runtime/Sources/Modules/GPU/Vulkan/VulkanBuffer.c"
+},
+{
+  "directory": "/home/kbz_8/Documents/Code/GRMHD/kanel-CLI",
   "arguments": ["/usr/bin/clang", "-c", "-Qunused-arguments", "-m64", "-g", "-O3", "-std=c23", "-IKanel/Runtime/Includes", "-IKanel/Build", "-IKanel/Runtime/Sources", "-DKANEL_CLI_DEBUG", "-DKANEL_CLI_GPU_BUILD", "-DKANEL_CLI_GPU_DEBUG", "-fPIC", "-o", "build/Objs/linux_x86_64/kanel_gpu/linux/x86_64/debug/Kanel/Runtime/Sources/Modules/GPU/RHI/RHICore.c.o", "Kanel/Runtime/Sources/Modules/GPU/RHI/RHICore.c"],
   "file": "Kanel/Runtime/Sources/Modules/GPU/RHI/RHICore.c"
 },
 {
-  "directory": "/home/kbz8/Documents/Code/GRMHD/kanel-CLI",
-  "arguments": ["/usr/bin/clang", "-c", "-Qunused-arguments", "-m64", "-g", "-O3", "-std=c23", "-IKanel/Runtime/Includes", "-IKanel/Build", "-IKanel/Runtime/Sources", "-DKANEL_CLI_DEBUG", "-I", "/home/kbz8/.xmake/packages/v/vrg/@default/725e51fe81b74141ade9efbd3ccaf900/include", "-o", "build/Objs/linux_x86_64/kanel_cli/linux/x86_64/debug/Kanel/Runtime/Sources/Core/EventBus.c.o", "Kanel/Runtime/Sources/Core/EventBus.c"],
-  "file": "Kanel/Runtime/Sources/Core/EventBus.c"
-},
-{
-  "directory": "/home/kbz8/Documents/Code/GRMHD/kanel-CLI",
-  "arguments": ["/usr/bin/clang", "-c", "-Qunused-arguments", "-m64", "-g", "-O3", "-std=c23", "-IKanel/Runtime/Includes", "-IKanel/Build", "-IKanel/Runtime/Sources", "-DKANEL_CLI_DEBUG", "-I", "/home/kbz8/.xmake/packages/v/vrg/@default/725e51fe81b74141ade9efbd3ccaf900/include", "-o", "build/Objs/linux_x86_64/kanel_cli/linux/x86_64/debug/Kanel/Runtime/Sources/Core/main.c.o", "Kanel/Runtime/Sources/Core/main.c"],
-  "file": "Kanel/Runtime/Sources/Core/main.c"
-},
-{
-  "directory": "/home/kbz8/Documents/Code/GRMHD/kanel-CLI",
-  "arguments": ["/usr/bin/clang", "-c", "-Qunused-arguments", "-m64", "-g", "-O3", "-std=c23", "-IKanel/Runtime/Includes", "-IKanel/Build", "-IKanel/Runtime/Sources", "-DKANEL_CLI_DEBUG", "-I", "/home/kbz8/.xmake/packages/v/vrg/@default/725e51fe81b74141ade9efbd3ccaf900/include", "-o", "build/Objs/linux_x86_64/kanel_cli/linux/x86_64/debug/Kanel/Runtime/Sources/Core/Logs.c.o", "Kanel/Runtime/Sources/Core/Logs.c"],
-  "file": "Kanel/Runtime/Sources/Core/Logs.c"
-},
-{
-  "directory": "/home/kbz8/Documents/Code/GRMHD/kanel-CLI",
-  "arguments": ["/usr/bin/clang", "-c", "-Qunused-arguments", "-m64", "-g", "-O3", "-std=c23", "-IKanel/Runtime/Includes", "-IKanel/Build", "-IKanel/Runtime/Sources", "-DKANEL_CLI_DEBUG", "-I", "/home/kbz8/.xmake/packages/v/vrg/@default/725e51fe81b74141ade9efbd3ccaf900/include", "-o", "build/Objs/linux_x86_64/kanel_cli/linux/x86_64/debug/Kanel/Runtime/Sources/Core/LibLoader.c.o", "Kanel/Runtime/Sources/Core/LibLoader.c"],
-  "file": "Kanel/Runtime/Sources/Core/LibLoader.c"
-},
-{
-  "directory": "/home/kbz8/Documents/Code/GRMHD/kanel-CLI",
-  "arguments": ["/usr/bin/clang", "-c", "-Qunused-arguments", "-m64", "-g", "-O3", "-std=c23", "-IKanel/Runtime/Includes", "-IKanel/Build", "-IKanel/Runtime/Sources", "-DKANEL_CLI_DEBUG", "-I", "/home/kbz8/.xmake/packages/v/vrg/@default/725e51fe81b74141ade9efbd3ccaf900/include", "-o", "build/Objs/linux_x86_64/kanel_cli/linux/x86_64/debug/Kanel/Runtime/Sources/Core/ModuleLoader.c.o", "Kanel/Runtime/Sources/Core/ModuleLoader.c"],
-  "file": "Kanel/Runtime/Sources/Core/ModuleLoader.c"
-},
-{
-  "directory": "/home/kbz8/Documents/Code/GRMHD/kanel-CLI",
-  "arguments": ["/usr/bin/clang", "-c", "-Qunused-arguments", "-m64", "-g", "-O3", "-std=c23", "-IKanel/Runtime/Includes", "-IKanel/Build", "-IKanel/Runtime/Sources", "-DKANEL_CLI_DEBUG", "-I", "/home/kbz8/.xmake/packages/v/vrg/@default/725e51fe81b74141ade9efbd3ccaf900/include", "-o", "build/Objs/linux_x86_64/kanel_cli/linux/x86_64/debug/Kanel/Runtime/Sources/Core/RuntimeOptions.c.o", "Kanel/Runtime/Sources/Core/RuntimeOptions.c"],
-  "file": "Kanel/Runtime/Sources/Core/RuntimeOptions.c"
-},
-{
-  "directory": "/home/kbz8/Documents/Code/GRMHD/kanel-CLI",
-  "arguments": ["/usr/bin/clang", "-c", "-Qunused-arguments", "-m64", "-g", "-O3", "-std=c23", "-IKanel/Runtime/Includes", "-IKanel/Build", "-IKanel/Runtime/Sources", "-DKANEL_CLI_DEBUG", "-I", "/home/kbz8/.xmake/packages/v/vrg/@default/725e51fe81b74141ade9efbd3ccaf900/include", "-o", "build/Objs/linux_x86_64/kanel_cli/linux/x86_64/debug/Kanel/Runtime/Sources/GPU/GPUSupport.c.o", "Kanel/Runtime/Sources/GPU/GPUSupport.c"],
-  "file": "Kanel/Runtime/Sources/GPU/GPUSupport.c"
-},
-{
-  "directory": "/home/kbz8/Documents/Code/GRMHD/kanel-CLI",
-  "arguments": ["/usr/bin/clang", "-c", "-Qunused-arguments", "-m64", "-g", "-O3", "-std=c23", "-IKanel/Runtime/Includes", "-IKanel/Build", "-IKanel/Runtime/Sources", "-DKANEL_CLI_DEBUG", "-I", "/home/kbz8/.xmake/packages/v/vrg/@default/725e51fe81b74141ade9efbd3ccaf900/include", "-o", "build/Objs/linux_x86_64/kanel_cli/linux/x86_64/debug/Kanel/Runtime/Sources/GPU/RHIBindPoint.c.o", "Kanel/Runtime/Sources/GPU/RHIBindPoint.c"],
+  "directory": "/home/kbz_8/Documents/Code/GRMHD/kanel-CLI",
+  "arguments": ["/usr/bin/clang", "-c", "-Qunused-arguments", "-m64", "-g", "-O3", "-std=c23", "-IKanel/Runtime/Includes", "-IKanel/Build", "-IKanel/Runtime/Sources", "-DKANEL_CLI_DEBUG", "-I", "/home/kbz_8/.xmake/packages/v/vrg/@default/725e51fe81b74141ade9efbd3ccaf900/include", "-o", "build/Objs/linux_x86_64/kanel_cli/linux/x86_64/debug/Kanel/Runtime/Sources/GPU/RHIBindPoint.c.o", "Kanel/Runtime/Sources/GPU/RHIBindPoint.c"],
   "file": "Kanel/Runtime/Sources/GPU/RHIBindPoint.c"
 },
 {
-  "directory": "/home/kbz8/Documents/Code/GRMHD/kanel-CLI",
-  "arguments": ["/usr/bin/clang", "-c", "-Qunused-arguments", "-m64", "-g", "-O3", "-std=c23", "-IKanel/Runtime/Includes", "-IKanel/Build", "-IKanel/Runtime/Sources", "-DKANEL_CLI_DEBUG", "-DKANEL_CLI_VULKAN_BUILD", "-DKANEL_CLI_VULKAN_DEBUG", "-DVK_NO_PROTOTYPES", "-DNZSL_STATIC", "-I", "/home/kbz8/.xmake/packages/n/nzsl/2024.09.14/f8c5efc4c4b245579e8bacfb7125a63c/include", "-I", "/home/kbz8/.xmake/packages/n/nazarautils/2024.08.27/c5665ee714854eb0b8ca0680632e4dc1/include", "-I", "/home/kbz8/.xmake/packages/f/fmt/11.0.2/d396b4e809304cf1ad4202e5aa292d4c/include", "-I", "/home/kbz8/.xmake/packages/e/efsw/1.4.0/6f9ce721488c4ab5b84d813f9ec32998/include", "-I", "/home/kbz8/.xmake/packages/v/vulkan-memory-allocator/v3.1.0/0071e6d310bd4794889fe99914304a77/include", "-fPIC", "-o", "build/Objs/linux_x86_64/kanel_vulkan/linux/x86_64/debug/Kanel/Runtime/Sources/Modules/GPU/Vulkan/VulkanDevice.c.o", "Kanel/Runtime/Sources/Modules/GPU/Vulkan/VulkanDevice.c"],
-  "file": "Kanel/Runtime/Sources/Modules/GPU/Vulkan/VulkanDevice.c"
+  "directory": "/home/kbz_8/Documents/Code/GRMHD/kanel-CLI",
+  "arguments": ["/usr/bin/clang", "-c", "-Qunused-arguments", "-m64", "-g", "-O3", "-std=c23", "-IKanel/Runtime/Includes", "-IKanel/Build", "-IKanel/Runtime/Sources", "-DKANEL_CLI_DEBUG", "-I", "/home/kbz_8/.xmake/packages/v/vrg/@default/725e51fe81b74141ade9efbd3ccaf900/include", "-o", "build/Objs/linux_x86_64/kanel_cli/linux/x86_64/debug/Kanel/Runtime/Sources/GPU/GPUSupport.c.o", "Kanel/Runtime/Sources/GPU/GPUSupport.c"],
+  "file": "Kanel/Runtime/Sources/GPU/GPUSupport.c"
 },
 {
-  "directory": "/home/kbz8/Documents/Code/GRMHD/kanel-CLI",
-  "arguments": ["/usr/bin/clang", "-c", "-Qunused-arguments", "-m64", "-g", "-O3", "-std=c23", "-IKanel/Runtime/Includes", "-IKanel/Build", "-IKanel/Runtime/Sources", "-DKANEL_CLI_DEBUG", "-DKANEL_CLI_VULKAN_BUILD", "-DKANEL_CLI_VULKAN_DEBUG", "-DVK_NO_PROTOTYPES", "-DNZSL_STATIC", "-I", "/home/kbz8/.xmake/packages/n/nzsl/2024.09.14/f8c5efc4c4b245579e8bacfb7125a63c/include", "-I", "/home/kbz8/.xmake/packages/n/nazarautils/2024.08.27/c5665ee714854eb0b8ca0680632e4dc1/include", "-I", "/home/kbz8/.xmake/packages/f/fmt/11.0.2/d396b4e809304cf1ad4202e5aa292d4c/include", "-I", "/home/kbz8/.xmake/packages/e/efsw/1.4.0/6f9ce721488c4ab5b84d813f9ec32998/include", "-I", "/home/kbz8/.xmake/packages/v/vulkan-memory-allocator/v3.1.0/0071e6d310bd4794889fe99914304a77/include", "-fPIC", "-o", "build/Objs/linux_x86_64/kanel_vulkan/linux/x86_64/debug/Kanel/Runtime/Sources/Modules/GPU/Vulkan/VulkanInstance.c.o", "Kanel/Runtime/Sources/Modules/GPU/Vulkan/VulkanInstance.c"],
-  "file": "Kanel/Runtime/Sources/Modules/GPU/Vulkan/VulkanInstance.c"
+  "directory": "/home/kbz_8/Documents/Code/GRMHD/kanel-CLI",
+  "arguments": ["/usr/bin/clang", "-c", "-Qunused-arguments", "-m64", "-g", "-O3", "-std=c23", "-IKanel/Runtime/Includes", "-IKanel/Build", "-IKanel/Runtime/Sources", "-DKANEL_CLI_DEBUG", "-I", "/home/kbz_8/.xmake/packages/v/vrg/@default/725e51fe81b74141ade9efbd3ccaf900/include", "-o", "build/Objs/linux_x86_64/kanel_cli/linux/x86_64/debug/Kanel/Runtime/Sources/Core/Logs.c.o", "Kanel/Runtime/Sources/Core/Logs.c"],
+  "file": "Kanel/Runtime/Sources/Core/Logs.c"
 },
 {
-  "directory": "/home/kbz8/Documents/Code/GRMHD/kanel-CLI",
-  "arguments": ["/usr/bin/clang", "-c", "-Qunused-arguments", "-m64", "-g", "-O3", "-std=c23", "-IKanel/Runtime/Includes", "-IKanel/Build", "-IKanel/Runtime/Sources", "-DKANEL_CLI_DEBUG", "-DKANEL_CLI_VULKAN_BUILD", "-DKANEL_CLI_VULKAN_DEBUG", "-DVK_NO_PROTOTYPES", "-DNZSL_STATIC", "-I", "/home/kbz8/.xmake/packages/n/nzsl/2024.09.14/f8c5efc4c4b245579e8bacfb7125a63c/include", "-I", "/home/kbz8/.xmake/packages/n/nazarautils/2024.08.27/c5665ee714854eb0b8ca0680632e4dc1/include", "-I", "/home/kbz8/.xmake/packages/f/fmt/11.0.2/d396b4e809304cf1ad4202e5aa292d4c/include", "-I", "/home/kbz8/.xmake/packages/e/efsw/1.4.0/6f9ce721488c4ab5b84d813f9ec32998/include", "-I", "/home/kbz8/.xmake/packages/v/vulkan-memory-allocator/v3.1.0/0071e6d310bd4794889fe99914304a77/include", "-fPIC", "-o", "build/Objs/linux_x86_64/kanel_vulkan/linux/x86_64/debug/Kanel/Runtime/Sources/Modules/GPU/Vulkan/VulkanQueue.c.o", "Kanel/Runtime/Sources/Modules/GPU/Vulkan/VulkanQueue.c"],
-  "file": "Kanel/Runtime/Sources/Modules/GPU/Vulkan/VulkanQueue.c"
+  "directory": "/home/kbz_8/Documents/Code/GRMHD/kanel-CLI",
+  "arguments": ["/usr/bin/clang", "-c", "-Qunused-arguments", "-m64", "-g", "-O3", "-std=c23", "-IKanel/Runtime/Includes", "-IKanel/Build", "-IKanel/Runtime/Sources", "-DKANEL_CLI_DEBUG", "-I", "/home/kbz_8/.xmake/packages/v/vrg/@default/725e51fe81b74141ade9efbd3ccaf900/include", "-o", "build/Objs/linux_x86_64/kanel_cli/linux/x86_64/debug/Kanel/Runtime/Sources/Core/EventBus.c.o", "Kanel/Runtime/Sources/Core/EventBus.c"],
+  "file": "Kanel/Runtime/Sources/Core/EventBus.c"
 },
 {
-  "directory": "/home/kbz8/Documents/Code/GRMHD/kanel-CLI",
-  "arguments": ["/usr/bin/clang", "-c", "-Qunused-arguments", "-m64", "-g", "-O3", "-std=c23", "-IKanel/Runtime/Includes", "-IKanel/Build", "-IKanel/Runtime/Sources", "-DKANEL_CLI_DEBUG", "-DKANEL_CLI_VULKAN_BUILD", "-DKANEL_CLI_VULKAN_DEBUG", "-DVK_NO_PROTOTYPES", "-DNZSL_STATIC", "-I", "/home/kbz8/.xmake/packages/n/nzsl/2024.09.14/f8c5efc4c4b245579e8bacfb7125a63c/include", "-I", "/home/kbz8/.xmake/packages/n/nazarautils/2024.08.27/c5665ee714854eb0b8ca0680632e4dc1/include", "-I", "/home/kbz8/.xmake/packages/f/fmt/11.0.2/d396b4e809304cf1ad4202e5aa292d4c/include", "-I", "/home/kbz8/.xmake/packages/e/efsw/1.4.0/6f9ce721488c4ab5b84d813f9ec32998/include", "-I", "/home/kbz8/.xmake/packages/v/vulkan-memory-allocator/v3.1.0/0071e6d310bd4794889fe99914304a77/include", "-fPIC", "-o", "build/Objs/linux_x86_64/kanel_vulkan/linux/x86_64/debug/Kanel/Runtime/Sources/Modules/GPU/Vulkan/VulkanCommandPool.c.o", "Kanel/Runtime/Sources/Modules/GPU/Vulkan/VulkanCommandPool.c"],
-  "file": "Kanel/Runtime/Sources/Modules/GPU/Vulkan/VulkanCommandPool.c"
+  "directory": "/home/kbz_8/Documents/Code/GRMHD/kanel-CLI",
+  "arguments": ["/usr/bin/clang", "-c", "-Qunused-arguments", "-m64", "-g", "-O3", "-std=c23", "-IKanel/Runtime/Includes", "-IKanel/Build", "-IKanel/Runtime/Sources", "-DKANEL_CLI_DEBUG", "-I", "/home/kbz_8/.xmake/packages/v/vrg/@default/725e51fe81b74141ade9efbd3ccaf900/include", "-o", "build/Objs/linux_x86_64/kanel_cli/linux/x86_64/debug/Kanel/Runtime/Sources/Core/RuntimeOptions.c.o", "Kanel/Runtime/Sources/Core/RuntimeOptions.c"],
+  "file": "Kanel/Runtime/Sources/Core/RuntimeOptions.c"
 },
 {
-  "directory": "/home/kbz8/Documents/Code/GRMHD/kanel-CLI",
-  "arguments": ["/usr/bin/clang", "-c", "-Qunused-arguments", "-m64", "-g", "-O3", "-std=c23", "-IKanel/Runtime/Includes", "-IKanel/Build", "-IKanel/Runtime/Sources", "-DKANEL_CLI_DEBUG", "-DKANEL_CLI_VULKAN_BUILD", "-DKANEL_CLI_VULKAN_DEBUG", "-DVK_NO_PROTOTYPES", "-DNZSL_STATIC", "-I", "/home/kbz8/.xmake/packages/n/nzsl/2024.09.14/f8c5efc4c4b245579e8bacfb7125a63c/include", "-I", "/home/kbz8/.xmake/packages/n/nazarautils/2024.08.27/c5665ee714854eb0b8ca0680632e4dc1/include", "-I", "/home/kbz8/.xmake/packages/f/fmt/11.0.2/d396b4e809304cf1ad4202e5aa292d4c/include", "-I", "/home/kbz8/.xmake/packages/e/efsw/1.4.0/6f9ce721488c4ab5b84d813f9ec32998/include", "-I", "/home/kbz8/.xmake/packages/v/vulkan-memory-allocator/v3.1.0/0071e6d310bd4794889fe99914304a77/include", "-fPIC", "-o", "build/Objs/linux_x86_64/kanel_vulkan/linux/x86_64/debug/Kanel/Runtime/Sources/Modules/GPU/Vulkan/VulkanShaderLoader.c.o", "Kanel/Runtime/Sources/Modules/GPU/Vulkan/VulkanShaderLoader.c"],
-  "file": "Kanel/Runtime/Sources/Modules/GPU/Vulkan/VulkanShaderLoader.c"
+  "directory": "/home/kbz_8/Documents/Code/GRMHD/kanel-CLI",
+  "arguments": ["/usr/bin/clang", "-c", "-Qunused-arguments", "-m64", "-g", "-O3", "-std=c23", "-IKanel/Runtime/Includes", "-IKanel/Build", "-IKanel/Runtime/Sources", "-DKANEL_CLI_DEBUG", "-I", "/home/kbz_8/.xmake/packages/v/vrg/@default/725e51fe81b74141ade9efbd3ccaf900/include", "-o", "build/Objs/linux_x86_64/kanel_cli/linux/x86_64/debug/Kanel/Runtime/Sources/Core/LibLoader.c.o", "Kanel/Runtime/Sources/Core/LibLoader.c"],
+  "file": "Kanel/Runtime/Sources/Core/LibLoader.c"
 },
 {
-  "directory": "/home/kbz8/Documents/Code/GRMHD/kanel-CLI",
-  "arguments": ["/usr/bin/clang", "-c", "-Qunused-arguments", "-m64", "-g", "-O3", "-std=c23", "-IKanel/Runtime/Includes", "-IKanel/Build", "-IKanel/Runtime/Sources", "-DKANEL_CLI_DEBUG", "-DKANEL_CLI_VULKAN_BUILD", "-DKANEL_CLI_VULKAN_DEBUG", "-DVK_NO_PROTOTYPES", "-DNZSL_STATIC", "-I", "/home/kbz8/.xmake/packages/n/nzsl/2024.09.14/f8c5efc4c4b245579e8bacfb7125a63c/include", "-I", "/home/kbz8/.xmake/packages/n/nazarautils/2024.08.27/c5665ee714854eb0b8ca0680632e4dc1/include", "-I", "/home/kbz8/.xmake/packages/f/fmt/11.0.2/d396b4e809304cf1ad4202e5aa292d4c/include", "-I", "/home/kbz8/.xmake/packages/e/efsw/1.4.0/6f9ce721488c4ab5b84d813f9ec32998/include", "-I", "/home/kbz8/.xmake/packages/v/vulkan-memory-allocator/v3.1.0/0071e6d310bd4794889fe99914304a77/include", "-fPIC", "-o", "build/Objs/linux_x86_64/kanel_vulkan/linux/x86_64/debug/Kanel/Runtime/Sources/Modules/GPU/Vulkan/VulkanPipeline.c.o", "Kanel/Runtime/Sources/Modules/GPU/Vulkan/VulkanPipeline.c"],
-  "file": "Kanel/Runtime/Sources/Modules/GPU/Vulkan/VulkanPipeline.c"
+  "directory": "/home/kbz_8/Documents/Code/GRMHD/kanel-CLI",
+  "arguments": ["/usr/bin/clang", "-c", "-Qunused-arguments", "-m64", "-g", "-O3", "-std=c23", "-IKanel/Runtime/Includes", "-IKanel/Build", "-IKanel/Runtime/Sources", "-DKANEL_CLI_DEBUG", "-I", "/home/kbz_8/.xmake/packages/v/vrg/@default/725e51fe81b74141ade9efbd3ccaf900/include", "-o", "build/Objs/linux_x86_64/kanel_cli/linux/x86_64/debug/Kanel/Runtime/Sources/Core/ModuleLoader.c.o", "Kanel/Runtime/Sources/Core/ModuleLoader.c"],
+  "file": "Kanel/Runtime/Sources/Core/ModuleLoader.c"
 },
 {
-  "directory": "/home/kbz8/Documents/Code/GRMHD/kanel-CLI",
-  "arguments": ["/usr/bin/clang", "-c", "-Qunused-arguments", "-m64", "-g", "-O3", "-std=c23", "-IKanel/Runtime/Includes", "-IKanel/Build", "-IKanel/Runtime/Sources", "-DKANEL_CLI_DEBUG", "-DKANEL_CLI_VULKAN_BUILD", "-DKANEL_CLI_VULKAN_DEBUG", "-DVK_NO_PROTOTYPES", "-DNZSL_STATIC", "-I", "/home/kbz8/.xmake/packages/n/nzsl/2024.09.14/f8c5efc4c4b245579e8bacfb7125a63c/include", "-I", "/home/kbz8/.xmake/packages/n/nazarautils/2024.08.27/c5665ee714854eb0b8ca0680632e4dc1/include", "-I", "/home/kbz8/.xmake/packages/f/fmt/11.0.2/d396b4e809304cf1ad4202e5aa292d4c/include", "-I", "/home/kbz8/.xmake/packages/e/efsw/1.4.0/6f9ce721488c4ab5b84d813f9ec32998/include", "-I", "/home/kbz8/.xmake/packages/v/vulkan-memory-allocator/v3.1.0/0071e6d310bd4794889fe99914304a77/include", "-fPIC", "-o", "build/Objs/linux_x86_64/kanel_vulkan/linux/x86_64/debug/Kanel/Runtime/Sources/Modules/GPU/Vulkan/VulkanLoader.c.o", "Kanel/Runtime/Sources/Modules/GPU/Vulkan/VulkanLoader.c"],
-  "file": "Kanel/Runtime/Sources/Modules/GPU/Vulkan/VulkanLoader.c"
-},
-{
-  "directory": "/home/kbz8/Documents/Code/GRMHD/kanel-CLI",
-  "arguments": ["/usr/bin/clang", "-c", "-Qunused-arguments", "-m64", "-g", "-O3", "-std=c23", "-IKanel/Runtime/Includes", "-IKanel/Build", "-IKanel/Runtime/Sources", "-DKANEL_CLI_DEBUG", "-DKANEL_CLI_VULKAN_BUILD", "-DKANEL_CLI_VULKAN_DEBUG", "-DVK_NO_PROTOTYPES", "-DNZSL_STATIC", "-I", "/home/kbz8/.xmake/packages/n/nzsl/2024.09.14/f8c5efc4c4b245579e8bacfb7125a63c/include", "-I", "/home/kbz8/.xmake/packages/n/nazarautils/2024.08.27/c5665ee714854eb0b8ca0680632e4dc1/include", "-I", "/home/kbz8/.xmake/packages/f/fmt/11.0.2/d396b4e809304cf1ad4202e5aa292d4c/include", "-I", "/home/kbz8/.xmake/packages/e/efsw/1.4.0/6f9ce721488c4ab5b84d813f9ec32998/include", "-I", "/home/kbz8/.xmake/packages/v/vulkan-memory-allocator/v3.1.0/0071e6d310bd4794889fe99914304a77/include", "-fPIC", "-o", "build/Objs/linux_x86_64/kanel_vulkan/linux/x86_64/debug/Kanel/Runtime/Sources/Modules/GPU/Vulkan/VulkanBuffer.c.o", "Kanel/Runtime/Sources/Modules/GPU/Vulkan/VulkanBuffer.c"],
-  "file": "Kanel/Runtime/Sources/Modules/GPU/Vulkan/VulkanBuffer.c"
-},
-{
-  "directory": "/home/kbz8/Documents/Code/GRMHD/kanel-CLI",
-  "arguments": ["/usr/bin/clang", "-c", "-Qunused-arguments", "-m64", "-g", "-O3", "-std=c23", "-IKanel/Runtime/Includes", "-IKanel/Build", "-IKanel/Runtime/Sources", "-DKANEL_CLI_DEBUG", "-DKANEL_CLI_VULKAN_BUILD", "-DKANEL_CLI_VULKAN_DEBUG", "-DVK_NO_PROTOTYPES", "-DNZSL_STATIC", "-I", "/home/kbz8/.xmake/packages/n/nzsl/2024.09.14/f8c5efc4c4b245579e8bacfb7125a63c/include", "-I", "/home/kbz8/.xmake/packages/n/nazarautils/2024.08.27/c5665ee714854eb0b8ca0680632e4dc1/include", "-I", "/home/kbz8/.xmake/packages/f/fmt/11.0.2/d396b4e809304cf1ad4202e5aa292d4c/include", "-I", "/home/kbz8/.xmake/packages/e/efsw/1.4.0/6f9ce721488c4ab5b84d813f9ec32998/include", "-I", "/home/kbz8/.xmake/packages/v/vulkan-memory-allocator/v3.1.0/0071e6d310bd4794889fe99914304a77/include", "-fPIC", "-o", "build/Objs/linux_x86_64/kanel_vulkan/linux/x86_64/debug/Kanel/Runtime/Sources/Modules/GPU/Vulkan/VulkanCommandBuffer.c.o", "Kanel/Runtime/Sources/Modules/GPU/Vulkan/VulkanCommandBuffer.c"],
-  "file": "Kanel/Runtime/Sources/Modules/GPU/Vulkan/VulkanCommandBuffer.c"
-},
-{
-  "directory": "/home/kbz8/Documents/Code/GRMHD/kanel-CLI",
-  "arguments": ["/usr/bin/clang", "-c", "-Qunused-arguments", "-m64", "-g", "-O3", "-std=c23", "-IKanel/Runtime/Includes", "-IKanel/Build", "-IKanel/Runtime/Sources", "-DKANEL_CLI_DEBUG", "-DKANEL_CLI_VULKAN_BUILD", "-DKANEL_CLI_VULKAN_DEBUG", "-DVK_NO_PROTOTYPES", "-DNZSL_STATIC", "-I", "/home/kbz8/.xmake/packages/n/nzsl/2024.09.14/f8c5efc4c4b245579e8bacfb7125a63c/include", "-I", "/home/kbz8/.xmake/packages/n/nazarautils/2024.08.27/c5665ee714854eb0b8ca0680632e4dc1/include", "-I", "/home/kbz8/.xmake/packages/f/fmt/11.0.2/d396b4e809304cf1ad4202e5aa292d4c/include", "-I", "/home/kbz8/.xmake/packages/e/efsw/1.4.0/6f9ce721488c4ab5b84d813f9ec32998/include", "-I", "/home/kbz8/.xmake/packages/v/vulkan-memory-allocator/v3.1.0/0071e6d310bd4794889fe99914304a77/include", "-fPIC", "-o", "build/Objs/linux_x86_64/kanel_vulkan/linux/x86_64/debug/Kanel/Runtime/Sources/Modules/GPU/Vulkan/VulkanCore.c.o", "Kanel/Runtime/Sources/Modules/GPU/Vulkan/VulkanCore.c"],
-  "file": "Kanel/Runtime/Sources/Modules/GPU/Vulkan/VulkanCore.c"
+  "directory": "/home/kbz_8/Documents/Code/GRMHD/kanel-CLI",
+  "arguments": ["/usr/bin/clang", "-c", "-Qunused-arguments", "-m64", "-g", "-O3", "-std=c23", "-IKanel/Runtime/Includes", "-IKanel/Build", "-IKanel/Runtime/Sources", "-DKANEL_CLI_DEBUG", "-I", "/home/kbz_8/.xmake/packages/v/vrg/@default/725e51fe81b74141ade9efbd3ccaf900/include", "-o", "build/Objs/linux_x86_64/kanel_cli/linux/x86_64/debug/Kanel/Runtime/Sources/Core/main.c.o", "Kanel/Runtime/Sources/Core/main.c"],
+  "file": "Kanel/Runtime/Sources/Core/main.c"
 }]

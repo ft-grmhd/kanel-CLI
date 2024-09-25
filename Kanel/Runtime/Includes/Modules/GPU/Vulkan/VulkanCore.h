@@ -34,7 +34,6 @@ typedef struct KbhVulkanContextHandler
 	size_t devices_count;
 } KbhVulkanContextHandler;
 
-
 KANEL_CLI_NONNULL(1) KbhRHIResult kbhVulkanInit(KbhVulkanContext* context);
 KbhRHIResult kbhVulkanLoadNewDevice(KbhVulkanContext context);
 void kbhVulkanUninit(KbhVulkanContext context);
