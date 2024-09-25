@@ -106,6 +106,7 @@ static KbhRHIResult kbhPickPhysicalDevice(VkInstance instance, VkPhysicalDevice*
 
 KbhRHIResult kbhCreateVulkanDevice(KbhVulkanContext context, KbhVulkanDevice* device)
 {
+	kbhLogsBeginSection();
 	if(context == KANEL_CLI_VULKAN_NULL_HANDLE)
 		return KBH_RHI_ERROR_INVALID_HANDLE;
 
@@ -148,6 +149,10 @@ KbhRHIResult kbhCreateVulkanDevice(KbhVulkanContext context, KbhVulkanDevice* de
 		queue_create_infos[i].pNext = KANEL_CLI_NULLPTR;
 	}
 
+	kbhGetVulkanPFNs()->vkGetPhysicalDeviceProperties((*device)->physical, &(*device)->properties);
+	kbhGetVulkanPFNs()->vkGetPhysicalDeviceMemoryProperties((*device)->physical, &(*device)->memory_properties);
+	kbhGetVulkanPFNs()->vkGetPhysicalDeviceFeatures((*device)->physical, &(*device)->features);
+
 	VkDeviceCreateInfo create_info;
 	create_info.sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO;
 	create_info.queueCreateInfoCount = unique_queues_count;
@@ -161,10 +166,11 @@ KbhRHIResult kbhCreateVulkanDevice(KbhVulkanContext context, KbhVulkanDevice* de
 	create_info.pNext = KANEL_CLI_NULLPTR;
 
 	kbhCheckVk(kbhGetVulkanPFNs()->vkCreateDevice((*device)->physical, &create_info, KANEL_CLI_NULLPTR, &(*device)->device));
+	kbhDebugLogFmt("Vulkan: logical device created from %s", (*device)->properties.deviceName);
 	kbhLoadDevice(*device);
 	for(int i = 0; i < KBH_VULKAN_QUEUE_END_ENUM; i++)
 		kbhCheckRHI(kbhRetrieveDeviceQueue(*device, i));
-	kbhDebugLog("Vulkan : retrieved device queues");
+	kbhDebugLog("Vulkan: retrieved device queues");
 
 	VmaVulkanFunctions vma_vulkan_func = {};
 	vma_vulkan_func.vkAllocateMemory                    = (*device)->vkAllocateMemory;
@@ -194,7 +200,8 @@ KbhRHIResult kbhCreateVulkanDevice(KbhVulkanContext context, KbhVulkanDevice* de
 
 	kbhCheckVk(vmaCreateAllocator(&allocator_create_info, &(*device)->allocator));
 
-	kbhDebugLogFmt("Vulkan : logical device created from %s", (*device)->properties.deviceName);
+	kbhDebugLog("Vulkan: logical device completed");
+	kbhLogsEndSection();
 	return KBH_RHI_SUCCESS;
 }
 
@@ -204,5 +211,5 @@ void kbhDestroyVulkanDevice(KbhVulkanDevice device)
 		return;
 	vmaDestroyAllocator(device->allocator);
 	device->vkDestroyDevice(device->device, KANEL_CLI_NULLPTR);
-	kbhDebugLog("Vulkan : logical device destroyed");
+	kbhDebugLog("Vulkan: logical device destroyed");
 }

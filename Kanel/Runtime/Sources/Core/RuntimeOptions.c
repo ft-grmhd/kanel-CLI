@@ -111,7 +111,7 @@ static void kbhAddRuntimeOptionBooleanToList(const char* name, bool boolean)
 
 bool kbhRuntimeOptionsParseCmd(int argc, char** argv)
 {
-	// TODO : add more options
+	// TODO: add more options
 	vrgcli("\nkanel CLI (C) 2024 kanel devs")
 	{
 		vrgarg("-h, --help\tDisplay this help message")

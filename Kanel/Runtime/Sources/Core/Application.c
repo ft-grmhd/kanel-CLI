@@ -8,6 +8,7 @@
 #include <Core/ModuleLoader.h>
 #include <Core/ModulesBindPoints/GPU/GPUSupport.h>
 #include <Core/EventBus.h>
+#include <Core/Logs.h>
 #include <Utils/UtilsDefs.h>
 
 #include <stdlib.h>
@@ -51,6 +52,7 @@ void kbhLaunchCoreApplication()
 	if(kbhRuntimeOptionsGetString("gpu", dummy, 1024))
 	{
 		kbhInitGPUSupport();
+		kbhMessage("Launching computations using GPU accelerated harware");
 		kbhUninitGPUSupport();
 	}
 }

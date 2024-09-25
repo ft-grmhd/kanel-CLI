@@ -29,7 +29,7 @@ void kbhEventBusSend(const char* listener_name, KbhEvents event)
 			return;
 		}
 	}
-	kbhWarningFmt("Event Bus : could not find listener '%s'", listener_name);
+	kbhWarningFmt("Event Bus: could not find listener '%s'", listener_name);
 }
 
 void kbhEventBusSendBroadcast(KbhEvents event)

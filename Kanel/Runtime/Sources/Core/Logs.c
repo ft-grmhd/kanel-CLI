@@ -16,6 +16,11 @@
 	#define PATH_SEPARATOR '/'
 #endif
 
+#ifdef KANEL_CLI_DEBUG
+	#define LOGS_TABS_WIDTH 4
+	static uint32_t __logs_nesting = 0;
+#endif
+
 void kbhMessageBackend(const char* format, ...)
 {
 	printf(KBH_ANSI_BLUE "[kanel-CLI Message] " KBH_ANSI_DEF);
@@ -62,7 +67,7 @@ void kbhDebugLogBackend(const char* format, ...)
 	#ifndef KANEL_CLI_DEBUG
 		KANEL_CLI_UNUSED(format);
 	#else
-		printf(KBH_ANSI_BLUE "[kanel-CLI Debug] " KBH_ANSI_DEF);
+		printf(KBH_ANSI_BLUE "[kanel-CLI Debug] %*s" KBH_ANSI_DEF, __logs_nesting * LOGS_TABS_WIDTH, "");
 		va_list argptr;
 		va_start(argptr, format);
 		vfprintf(stdout, format, argptr);
@@ -70,3 +75,16 @@ void kbhDebugLogBackend(const char* format, ...)
 		putchar('\n');
 	#endif
 }
+
+#ifdef KANEL_CLI_DEBUG
+	void kbhLogsBeginSection()
+	{
+		__logs_nesting++;
+	}
+
+	void kbhLogsEndSection()
+	{
+		if(__logs_nesting > 0)
+			__logs_nesting--;
+	}
+#endif

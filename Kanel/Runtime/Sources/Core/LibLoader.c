@@ -22,12 +22,12 @@ KbhLibModule kbhLoadLibrary(const char* libpath)
 	#if defined(KANEL_CLI_PLAT_WINDOWS)
 		module = LoadLibraryA(libpath);
 		if(!module)
-			kbhErrorFmt("Lib Loader : could not load %s", libpath);
+			kbhErrorFmt("Lib Loader: could not load %s", libpath);
 	#else
 		dlerror();
 		module = dlopen(libpath, RTLD_NOW | RTLD_GLOBAL);
 		if(!module)
-			kbhErrorFmt("Lib Loader : could not load %s. %s", libpath, dlerror());
+			kbhErrorFmt("Lib Loader: could not load %s. %s", libpath, dlerror());
 	#endif
 	return (module ? module : KBH_NULL_LIB_MODULE);
 }

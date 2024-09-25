@@ -15,6 +15,14 @@ KANEL_CLI_NONNULL(1, 2, 3) void kbhErrorBackend(const char* format, const char* 
 KANEL_CLI_NONNULL(1, 2, 3) void kbhFatalErrorBackend(const char* format, const char* file, const char* function, uint32_t line, ...);
 KANEL_CLI_NONNULL(1) void kbhDebugLogBackend(const char* format, ...);
 
+#ifndef KANEL_CLI_DEBUG
+	#define kbhLogsBeginSection();
+	#define kbhLogsEndSection() ((void)(0))
+#else
+	void kbhLogsBeginSection();
+	void kbhLogsEndSection();
+#endif
+
 #undef  kbhMessage
 #define kbhMessage(format) kbhMessageBackend(format)
 

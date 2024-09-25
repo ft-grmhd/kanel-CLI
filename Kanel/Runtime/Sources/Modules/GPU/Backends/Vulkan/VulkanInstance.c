@@ -46,9 +46,9 @@ static size_t __kbh_extra_layers_count = 0;
 	static VKAPI_ATTR VkBool32 VKAPI_CALL kbhVulkanDebugCallback(VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity, VkDebugUtilsMessageTypeFlagsEXT messageType, const VkDebugUtilsMessengerCallbackDataEXT* pCallbackData, void* pUserData)
 	{
 		if(messageSeverity == VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT)
-			kbhErrorFmt("\nVulkan validation error : %s\n", pCallbackData->pMessage);
+			kbhErrorFmt("\nVulkan validation error: %s\n", pCallbackData->pMessage);
 		else if(messageSeverity == VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT)
-			kbhWarningFmt("\nVulkan validation warning : %s\n", pCallbackData->pMessage);
+			kbhWarningFmt("\nVulkan validation warning: %s\n", pCallbackData->pMessage);
 		return VK_FALSE;
 	}
 
@@ -164,7 +164,7 @@ VkInstance kbhVulkanCreateInstance(const char** extensions_enabled, uint32_t ext
 	free(new_extension_set);
 	kbhVulkanInitValidationLayers(instance);
 #endif
-	kbhDebugLog("Vulkan : instance created");
+	kbhDebugLog("Vulkan: instance created");
 	return instance;
 }
 
@@ -180,5 +180,5 @@ void kbhVulkanDestroyInstance(VkInstance instance)
 	__kbh_extra_layers_count = 0;
 #endif
 	kbhGetVulkanPFNs()->vkDestroyInstance(instance, KANEL_CLI_NULLPTR);
-	kbhDebugLog("Vulkan : instance destroyed");
+	kbhDebugLog("Vulkan: instance destroyed");
 }

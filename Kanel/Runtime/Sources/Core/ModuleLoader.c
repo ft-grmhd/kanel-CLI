@@ -73,8 +73,8 @@ static void kbhCompleteRHILoad(KbhLibModule module)
 	PFN_kbhRHILoaderPFNs loader_function = (PFN_kbhRHILoaderPFNs)kbhLoadSymbolFromLibModule(module, "kbhRHIFrontendAcquirePFNs");
 	*kbhGetRHILoaderPFNs() = loader_function();
 	if(strcmp(kbhGetRHILoaderPFNs()->f_kbhRHIBackendGetBuildVersion(), KANEL_CLI_VERSION) != 0)
-		kbhFatalError("Module loader : cannot load RHI backend, conflict in build versions");
-	kbhDebugLog("Module loader : "KANEL_CLI_LIB_PREFIX "kanel_gpu" KANEL_CLI_LIB_EXTENSION " loaded ");
+		kbhFatalError("Module loader: cannot load RHI backend, conflict in build versions");
+	kbhDebugLog("Module loader: "KANEL_CLI_LIB_PREFIX "kanel_gpu" KANEL_CLI_LIB_EXTENSION " loaded ");
 }
 
 KbhLibModule kbhCoreLoadModule(KbhCoreModule type)
@@ -100,5 +100,5 @@ void kbhCoreUnloadAllModules()
 void kbhCoreUnloadModule(KbhCoreModule type)
 {
 	kbhRemoveLibModule(type);
-	kbhDebugLog("Module loader : unloaded a module");
+	kbhDebugLog("Module loader: unloaded a module");
 }

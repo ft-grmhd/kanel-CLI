@@ -41,6 +41,7 @@ KbhRHIResult kbhVulkanLoadNewDevice(KbhVulkanContext context)
 	kbhVerify(context->devices != KANEL_CLI_NULLPTR); // Verify and not return error because if alloc fails, older devices are lost
 	kbhCheckRHI(kbhCreateVulkanDevice(context, &context->devices[context->devices_count]));
 	context->devices_count++;
+	kbhDebugLog("Vulkan: Successfully initialized");
 	return KBH_RHI_SUCCESS;
 }
 

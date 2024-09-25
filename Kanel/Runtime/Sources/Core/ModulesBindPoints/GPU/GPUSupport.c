@@ -12,18 +12,24 @@ static KbhRHIContext __rhi_context;
 
 bool kbhInitGPUSupport()
 {
+	kbhDebugLog("Initializing GPU accelerated hardware backend");
 	KbhRHILoaderPFNs* pfns = kbhGetRHILoaderPFNs();
 	if(pfns->f_kbhRHIBackendInitContext == KANEL_CLI_NULLPTR)
 	{
-		kbhError("GPU Support : " KANEL_CLI_LIB_PREFIX "kanel_gpu" KANEL_CLI_LIB_EXTENSION " is not loaded");
+		kbhError("GPU Support: " KANEL_CLI_LIB_PREFIX "kanel_gpu" KANEL_CLI_LIB_EXTENSION " is not loaded");
 		return false;
 	}
-	kbhCheckRHI(pfns->f_kbhRHIBackendInitContext(&__rhi_context));
+	kbhLogsBeginSection();
+		kbhCheckRHI(pfns->f_kbhRHIBackendInitContext(&__rhi_context));
+	kbhLogsEndSection();
 	return true;
 }
 
 void kbhUninitGPUSupport()
 {
+	kbhDebugLog("Shutting down GPU accelerated hardware backend");
 	KbhRHILoaderPFNs* pfns = kbhGetRHILoaderPFNs();
-	pfns->f_kbhRHIBackendUninitContext(__rhi_context);
+	kbhLogsBeginSection();
+		pfns->f_kbhRHIBackendUninitContext(__rhi_context);
+	kbhLogsEndSection();
 }

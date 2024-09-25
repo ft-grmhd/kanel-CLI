@@ -53,7 +53,7 @@ KbhRHIResult kbhRHIInit(KbhRHIContext* context)
 		};
 	#endif
 
-	KbhRHIType backend = KBH_RHI_DEFAULT_BACKEND; // TODO : possibilty to override backend in the command line
+	KbhRHIType backend = KBH_RHI_DEFAULT_BACKEND; // TODO: possibilty to override backend in the command line
 
 	#ifndef KANEL_CLI_EMBEDDED_RHI_BACKENDS
 		__kbh_backend_module = kbhLoadLibrary(backends_path[(int)backend]);
@@ -63,16 +63,16 @@ KbhRHIResult kbhRHIInit(KbhRHIContext* context)
 		PFN_kbhRHILoaderPFNs loader_function = (PFN_kbhRHILoaderPFNs)kbhLoadSymbolFromLibModule(__kbh_backend_module, backends_loader_names[(int)backend]);
 		if(!loader_function)
 		{
-			kbhErrorFmt("RHI : could not load the %s backend", backends_path[(int)backend]);
+			kbhErrorFmt("RHI: could not load the %s backend", backends_path[(int)backend]);
 			return KBH_RHI_ERROR_INITIALIZATION_FAILED;
 		}
 		(*context)->pfns = loader_function();
 		if(strcmp((*context)->pfns.f_kbhRHIBackendGetBuildVersion(), kbhGetBuildVersion()) != 0)
 		{
-			kbhErrorFmt("RHI : cannot load %s backend, conflict in build versions", backends_path[(int)backend]);
+			kbhErrorFmt("RHI: cannot load %s backend, conflict in build versions", backends_path[(int)backend]);
 			return KBH_RHI_ERROR_INITIALIZATION_FAILED;
 		}
-		kbhDebugLogFmt("RHI : %s backend loaded", backends_path[(int)backend]);
+		kbhDebugLogFmt("RHI: %s backend loaded", backends_path[(int)backend]);
 	#else
 		PFN_kbhRHILoaderPFNs backends_loader[(int)KBH_RHI_TYPE_END_ENUM] = {
 			(PFN_kbhRHILoaderPFNs)kbhRHIVulkanBackendAcquirePFNs,
@@ -82,10 +82,13 @@ KbhRHIResult kbhRHIInit(KbhRHIContext* context)
 		if(backend == KBH_RHI_NONE)
 			return KBH_RHI_ERROR_INITIALIZATION_FAILED;
 		(*context)->pfns = backends_loader[(int)backend]();
-		kbhDebugLog("RHI : backend loaded");
+		kbhDebugLog("RHI: backend loaded");
 	#endif
 
-	kbhCheckRHI((*context)->pfns.f_kbhRHIBackendInitContext(&(*context)->impl_context));
+	kbhLogsBeginSection();
+		kbhCheckRHI((*context)->pfns.f_kbhRHIBackendInitContext(&(*context)->impl_context));
+	kbhLogsEndSection();
+	kbhDebugLog("RHI: Successfully initialized GPU acceleration");
 	(*context)->impl_type = backend;
 	return KBH_RHI_SUCCESS;
 }
@@ -101,10 +104,13 @@ void kbhRHIUninit(KbhRHIContext context)
 {
 	if(context == KANEL_CLI_NULLPTR)
 		return;
-	context->pfns.f_kbhRHIBackendUninitContext(context->impl_context);
+	kbhDebugLog("RHI: unloading backend");
+	kbhLogsBeginSection();
+		context->pfns.f_kbhRHIBackendUninitContext(context->impl_context);
+	kbhLogsEndSection();
 	free(context);
 	kbhUnloadLibrary(__kbh_backend_module);
-	kbhDebugLog("RHI : backend unloaded");
+	kbhDebugLog("RHI: backend unloaded");
 }
 
 KANEL_CLI_RHI_API KbhRHILoaderPFNs kbhRHIFrontendAcquirePFNs()
