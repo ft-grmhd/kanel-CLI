@@ -17,6 +17,7 @@ KANEL_CLI_RHI_DEFINE_NULLABLE_HANDLE(KbhRHIContext);
 
 KANEL_CLI_NONNULL(1) KbhRHIResult kbhRHIInit(KbhRHIContext* context);
 KbhRHIType kbhRHIGetBackendType(KbhRHIContext context);
+void kbhRHILaunchComputations(KbhRHIContext context);
 void kbhRHIUninit(KbhRHIContext context);
 
 KANEL_CLI_RHI_API KbhRHILoaderPFNs kbhRHIFrontendAcquirePFNs();

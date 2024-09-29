@@ -10,6 +10,7 @@
 #include <Modules/GPU/RHI/RHICore.h>
 
 #include <Core/Logs.h>
+#include <Core/Memory/StackAllocator.h>
 
 #include <string.h>
 #include <stdlib.h>
@@ -17,10 +18,11 @@
 
 static int32_t kbhScorePhysicalDevice(VkPhysicalDevice device, const char** device_extensions, uint32_t device_extensions_count)
 {
+	KANEL_CLI_DECLARE_STACK_POOL_ALLOCATOR(allocator, sizeof(VkExtensionProperties) * 4096);
 	/* Check extensions support */
 	uint32_t extension_count;
 	kbhGetVulkanPFNs()->vkEnumerateDeviceExtensionProperties(device, KANEL_CLI_NULLPTR, &extension_count, KANEL_CLI_NULLPTR);
-	VkExtensionProperties* props = (VkExtensionProperties*)malloc(sizeof(VkExtensionProperties) * extension_count + 1);
+	VkExtensionProperties* props = (VkExtensionProperties*)kbhAllocInPool(&allocator, sizeof(VkExtensionProperties) * extension_count + 1);
 	if(!props)
 		return -1;
 	kbhGetVulkanPFNs()->vkEnumerateDeviceExtensionProperties(device, KANEL_CLI_NULLPTR, &extension_count, props);
@@ -43,7 +45,6 @@ static int32_t kbhScorePhysicalDevice(VkPhysicalDevice device, const char** devi
 			break;
 		}
 	}
-	free(props);
 	if(are_there_required_device_extensions == false)
 		return -1;
 
@@ -80,8 +81,10 @@ static KbhRHIResult kbhPickPhysicalDevice(VkInstance instance, VkPhysicalDevice*
 	kbhAssert(instance != VK_NULL_HANDLE);
 	kbhAssert(device != KANEL_CLI_NULLPTR);
 
+	KANEL_CLI_DECLARE_STACK_POOL_ALLOCATOR(allocator, sizeof(VkPhysicalDevice) * 4096);
+
 	kbhGetVulkanPFNs()->vkEnumeratePhysicalDevices(instance, &device_count, KANEL_CLI_NULLPTR);
-	devices = (VkPhysicalDevice*)malloc(sizeof(VkPhysicalDevice) * device_count + 1);
+	devices = (VkPhysicalDevice*)kbhAllocInPool(&allocator, sizeof(VkPhysicalDevice) * device_count + 1);
 	if(!devices)
 		return KBH_RHI_ERROR_ALLOCATION_FAILED;
 	kbhGetVulkanPFNs()->vkEnumeratePhysicalDevices(instance, &device_count, devices);
@@ -95,7 +98,6 @@ static KbhRHIResult kbhPickPhysicalDevice(VkInstance instance, VkPhysicalDevice*
 			chosen_one = devices[i];
 		}
 	}
-	free(devices);
 	if(chosen_one != VK_NULL_HANDLE)
 	{
 		*device = chosen_one;
@@ -118,7 +120,8 @@ KbhRHIResult kbhCreateVulkanDevice(KbhVulkanContext context, KbhVulkanDevice* de
 
 	const float queue_priority = 1.0f;
 
-	VkDeviceQueueCreateInfo* queue_create_infos = (VkDeviceQueueCreateInfo*)calloc(1, KBH_VULKAN_QUEUE_END_ENUM * sizeof(VkDeviceQueueCreateInfo));
+	KANEL_CLI_DECLARE_STACK_POOL_ALLOCATOR(allocator, KBH_VULKAN_QUEUE_END_ENUM * sizeof(VkDeviceQueueCreateInfo) +  kbhGetPoolAllocatorFlagSize());
+	VkDeviceQueueCreateInfo* queue_create_infos = (VkDeviceQueueCreateInfo*)kbhCallocInPool(&allocator, 1, KBH_VULKAN_QUEUE_END_ENUM * sizeof(VkDeviceQueueCreateInfo));
 	if(!queue_create_infos)
 		return KBH_RHI_ERROR_ALLOCATION_FAILED;
 

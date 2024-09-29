@@ -30,7 +30,7 @@ typedef struct KbhVulkanDeviceHandler
 	VmaAllocator allocator;
 
 	#define KANEL_CLI_VULKAN_DEVICE_FUNCTION(func) PFN_##func func;
-	#include <Modules/GPU/Backends/Vulkan/VulkanDevicePrototypes.h>
+		#include <Modules/GPU/Backends/Vulkan/VulkanDevicePrototypes.h>
 	#undef KANEL_CLI_VULKAN_DEVICE_FUNCTION
 } KbhVulkanDeviceHandler;
 

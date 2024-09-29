@@ -52,7 +52,7 @@ void kbhLaunchCoreApplication()
 	if(kbhRuntimeOptionsGetString("gpu", dummy, 1024))
 	{
 		kbhInitGPUSupport();
-		kbhMessage("Launching computations using GPU accelerated harware");
+		kbhGPULaunchComputations();
 		kbhUninitGPUSupport();
 	}
 }

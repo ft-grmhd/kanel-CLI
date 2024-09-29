@@ -25,6 +25,12 @@ bool kbhInitGPUSupport()
 	return true;
 }
 
+void kbhGPULaunchComputations()
+{
+	kbhMessage("Launching computations using GPU accelerated harware");
+	//kbhRHILaunchComputations(__rhi_context);
+}
+
 void kbhUninitGPUSupport()
 {
 	kbhDebugLog("Shutting down GPU accelerated hardware backend");

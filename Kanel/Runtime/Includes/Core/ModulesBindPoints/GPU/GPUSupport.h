@@ -8,6 +8,7 @@
 #include <stdbool.h>
 
 bool kbhInitGPUSupport();
+void kbhGPULaunchComputations();
 void kbhUninitGPUSupport();
 
 #endif

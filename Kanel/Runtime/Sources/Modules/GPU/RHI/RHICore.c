@@ -100,6 +100,10 @@ KbhRHIType kbhRHIGetBackendType(KbhRHIContext context)
 	return context->impl_type;
 }
 
+void kbhRHILaunchComputations(KbhRHIContext context)
+{
+}
+
 void kbhRHIUninit(KbhRHIContext context)
 {
 	if(context == KANEL_CLI_NULLPTR)
