@@ -17,7 +17,7 @@
 
 KbhRHIResult kbhVulkanInit(KbhVulkanContext* context)
 {
-	*context = (KbhVulkanContext)malloc(sizeof(KbhVulkanContextHandler));
+	*context = (KbhVulkanContext)calloc(1, sizeof(KbhVulkanContextHandler));
 	if(!*context)
 		return KBH_RHI_ERROR_INITIALIZATION_FAILED;
 

@@ -22,11 +22,14 @@ bool kbhPoolAllocatorCanHold(KbhPoolAllocator* allocator, size_t size)
 	return (size < allocator->heap_size - allocator->mem_used);
 }
 
+bool kbhPoolAllocatorContains(KbhPoolAllocator* allocator, void* ptr)
+{
+	return (const uint8_t*)ptr >= allocator->heap && (const uint8_t*)ptr < allocator->heap_end;
+}
+
 void* kbhCallocInPool(KbhPoolAllocator* allocator, size_t n, size_t size)
 {
-	void* ptr = kbhAllocInPoolAligned(allocator, size * n, 0);
-	memset(ptr, 0, size * n);
-	return ptr;
+	return kbhCallocInPoolAligned(allocator, n, size, 0);
 }
 
 void* kbhCallocInPoolAligned(KbhPoolAllocator* allocator, size_t n, size_t size, size_t aligment)
@@ -84,6 +87,11 @@ void* kbhAllocInPoolAligned(KbhPoolAllocator* allocator, size_t size, size_t ali
 void kbhFreeInPool(KbhPoolAllocator* allocator, void* ptr)
 {
 	kbhVerify(allocator->heap);
+	if(!kbhPoolAllocatorContains(allocator, ptr))
+	{
+		kbhError("Pool Allocator: trying to free a pointer allocated by another allocator");
+		return;
+	}
 	KbhRedBlackTreeNode_uint64_t* node = kbhRedBlackTreeFindNodePtr_uint64_t(allocator->used_flags, (KbhRedBlackTreeNode_uint64_t*)(ptr - sizeof(KbhRedBlackTreeNode_uint64_t)));
 	if(node == KANEL_CLI_NULLPTR)
 		kbhWarning("Pool allocator: could not find the flag of an allocation");

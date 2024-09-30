@@ -22,6 +22,7 @@ typedef struct KbhPoolAllocator
 
 KANEL_CLI_NONNULL(1, 2, 3) void kbhInitPoolAllocator(KbhPoolAllocator* allocator, const uint8_t* pool, const uint8_t* pool_end);
 KANEL_CLI_NONNULL(1) bool kbhPoolAllocatorCanHold(KbhPoolAllocator* allocator, size_t size);
+KANEL_CLI_NONNULL(1, 2) bool kbhPoolAllocatorContains(KbhPoolAllocator* allocator, void* ptr);
 KANEL_CLI_NONNULL(1) void* kbhAllocInPool(KbhPoolAllocator* allocator, size_t size);
 KANEL_CLI_NONNULL(1) void* kbhAllocInPoolAligned(KbhPoolAllocator* allocator, size_t size, size_t aligment);
 KANEL_CLI_NONNULL(1) void* kbhCallocInPool(KbhPoolAllocator* allocator, size_t n, size_t size);

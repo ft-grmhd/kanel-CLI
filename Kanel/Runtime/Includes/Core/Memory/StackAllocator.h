@@ -7,10 +7,16 @@
 
 #include <Core/CompilationProfile.h>
 #include <Core/Memory/PoolAllocator.h>
+#include <Core/Memory/FixedAllocator.h>
 
 #define KANEL_CLI_DECLARE_STACK_POOL_ALLOCATOR(name, pool_size) \
-	uint8_t stack_allocator_pool_##name[pool_size]; \
-	KbhPoolAllocator name = { stack_allocator_pool_##name, (void*)(stack_allocator_pool_##name + pool_size), KANEL_CLI_NULLPTR, KANEL_CLI_NULLPTR, pool_size, 0 }
+	uint8_t stack_allocator_pool_heap_##name[pool_size]; \
+	KbhPoolAllocator name = { stack_allocator_pool_heap_##name, (void*)(stack_allocator_pool_heap_##name + pool_size), KANEL_CLI_NULLPTR, KANEL_CLI_NULLPTR, pool_size, 0 }
+
+#define KANEL_CLI_DECLARE_STACK_FIXED_ALLOCATOR(name, pool_size, block_size) \
+	uint8_t stack_allocator_fixed_heap_##name[pool_size]; \
+	KbhFixedAllocator name; \
+	kbhInitFixedAllocator(&name, stack_allocator_fixed_heap_##name, pool_size, block_size)
 
 #define kbhStaticAllocStack(size) ((char[size]){ 0 })
 
